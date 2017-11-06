@@ -20,7 +20,7 @@ Login: **vagrant**
 
 Password: **vagrant**
 
-For root access you can use "**sudo <command>**" with same password or use "**sudo su -**" to have sharp(#) console.
+For root access you can use "**sudo «command»**" with same password or use "**sudo su -**" to have sharp(#) console.
 
 **Couchbase** is available in your browser (outside of virtual machine, if you want).
 The link is http://172.31.32.253:8091
