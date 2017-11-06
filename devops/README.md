@@ -15,8 +15,11 @@ When finish, you will need to wait 1 or 2 minutes for a system restart (you will
 
 You will use:
 
+
 Login: **vagrantup**
+
 Password: **vagrant**
+
 For root access you can use "**sudo <command>**" with same password or use "**sudo su -**" to have sharp(#) console.
 
 **Couchbase** is available in your browser (outside of virtual machine, if you want).
