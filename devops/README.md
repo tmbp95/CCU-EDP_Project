@@ -16,7 +16,7 @@ When finish, you will need to wait 1 or 2 minutes for a system restart (you will
 You will use:
 
 
-Login: **vagrantup**
+Login: **vagrant**
 
 Password: **vagrant**
 
