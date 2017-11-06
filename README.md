@@ -1,4 +1,6 @@
-﻿# CCU Platform (EDP)
+Message from Hexaminer: You must check devops, frontend and backend folders.
+
+# CCU Platform (EDP)
 
 |Group  | Number  |Name                                      |Email                     |GitHub     |
 |-------|---------|------------------------------------------|--------------------------|-----------|
