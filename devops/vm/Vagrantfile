@@ -96,17 +96,24 @@ Vagrant.configure(2) do |config|
   # echo "sudo docker run -d --name ccu2017db -p 8091-8094:8091-8094 -p 11210:11210 couchbase" > /home/vagrant/setupcouchbase.sh
    sudo docker run -d --name ccu2017db -p 8091-8094:8091-8094 -p 11210:11210 --restart "unless-stopped" couchbase
   # sudo chmod a+x /home/vagrant/setupcouchbase.sh
-   
+
+  # Mongodb https://hub.docker.com/_/mongo/
+  # sudo mkdir /srv/mongodata
+  # sudo docker pull mongo
+  # sudo docker run --name ccu2017mongodb --restart unless-stopped -d -p 27017:27017 -v /srv/mongodata:/data/db mongo
+
    echo "*************************************"
+
+
    echo "******   NODEJS INSTALL   *******"
    echo "*************************************"
-	
+
 	curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 	sudo apt-get install -y nodejs
 	sudo apt-get install -y build-essential
 
   # sudo apt-get install nodejs npm -y # Version Apt-get Ubuntu (no needed)
-  sudo npm install -g grunt-cli yo
+  # sudo npm install -g grunt-cli yo
   echo "git clone https://github.com/tmbp95/ccu.git" > /home/vagrant/ccugitclone.sh
   sudo chmod a+x /home/vagrant/ccugitclone.sh
   # cd main
@@ -123,7 +130,14 @@ Vagrant.configure(2) do |config|
   echo "******** Desktop Environment ********"
   echo "*************************************"
 
-   sudo apt install lubuntu-core lxterminal lubuntu-software-center aptitude virtualbox-guest-dkms synaptic leafpad evince file-roller firefox -y
+   sudo apt install lubuntu-core lxterminal lubuntu-software-center aptitude virtualbox-guest-dkms synaptic leafpad evince file-roller firefox git-cola -y
+
+  echo "*************************************"
+  echo "********   Atom.io INSTALL   ********"
+  echo "*************************************"
+
+     sudo add-apt-repository ppa:webupd8team/atom
+     sudo apt update && sudo apt install atom -y
 
   echo "*************************************"
   echo "**************   FIM   **************"
@@ -131,6 +145,6 @@ Vagrant.configure(2) do |config|
 
   echo "Login: vagrant Password: vagrant"
   shutdown -r 1 "Virtual Machine will reboot in 1 min..."
-  
+
    SHELL
 end
