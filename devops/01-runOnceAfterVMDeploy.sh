@@ -9,7 +9,8 @@ sudo chown root.root /etc/profile.d/nodejs.sh
 sudo chmod go-wx /etc/profile.d/nodejs.sh
 
 export PATH=$PATH:~/.npm-global/bin
-npm install -g grunt-cli yo
+npm install -g grunt-cli yo 
+npm install -g generator-rest generator-angular
 
 # Atom additional addons/plugins (packages)
 apm install platformio-ide-terminal
