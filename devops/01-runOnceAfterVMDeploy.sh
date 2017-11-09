@@ -8,6 +8,9 @@ sudo mv ~/nodejs.sh /etc/profile.d/nodejs.sh
 sudo chown root.root /etc/profile.d/nodejs.sh
 sudo chmod go-wx /etc/profile.d/nodejs.sh
 
+export PATH=$PATH:~/.npm-global/bin
+npm install -g grunt-cli yo
+
 # Atom additional addons/plugins (packages)
 apm install platformio-ide-terminal
 apm install browser-plus
