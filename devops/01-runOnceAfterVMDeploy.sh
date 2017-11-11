@@ -18,4 +18,6 @@ npm install -g grunt-cli yo
 apm install platformio-ide-terminal
 apm install browser-plus
 
+echo 'Please, reboot this virtual machine with "sudo reboot" command.'
+
 exit 0
