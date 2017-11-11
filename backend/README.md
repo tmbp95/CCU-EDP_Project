@@ -12,3 +12,6 @@ You can visit http://yeoman.io/generators/ to know more about generator-ng-fulls
 # ng-fullstack-app (Server)
 [![Build Status](https://secure.travis-ci.org/user.name/ng-fullstack-app.png?branch=master)](https://travis-ci.org/user.name/ng-fullstack-app)
 [![Coverage Status](https://coveralls.io/repos/user.name/ng-fullstack-app/badge.svg?branch=master)](https://coveralls.io/r/user.name/ng-fullstack-app/?branch=master)
+
+# ng-fullstack getting-started
+https://github.com/ericmdantas/generator-ng-fullstack/wiki/Getting-Started
