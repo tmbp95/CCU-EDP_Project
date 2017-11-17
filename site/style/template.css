@@ -1,0 +1,30 @@
+/* Template structure */
+
+/* Larger than mobile - USING THIS ONE!!*/
+@media (min-width: 320px) {
+	body{
+		background-color:#f6f4f4;
+		padding:0;
+		border:0;
+	}
+	h1 { 
+	   font-size: 18pt;
+	   font-family: Verdana;
+	}
+	h1.teste{
+		margin:0 auto;
+		text-align:center;
+	}
+}
+
+/* Larger than phablet */
+@media (min-width: 550px) {}
+
+/* Larger than tablet */
+@media (min-width: 750px) {}
+
+/* Larger than desktop */
+@media (min-width: 1000px) {}
+
+/* Larger than Desktop HD */
+@media (min-width: 1200px) {}
