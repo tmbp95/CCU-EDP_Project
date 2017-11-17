@@ -3,7 +3,9 @@ Firefox- Ctrl + Shift + M ("no device selected" menu -> Samsung Galaxy S5 ou edi
 
 Chrome- 1º Ctrl + Shift + I; 2º Ctrl + Shift + M ("Responsive" menu -> Samsung Galaxy S5 ou editar para adicionar o mesmo)
 
-Development Team -> Frontend Team [FT]
+Development Team
+
+                 -> Frontend Team [FT]
 
                  -> Backend Team  [BT]
 
