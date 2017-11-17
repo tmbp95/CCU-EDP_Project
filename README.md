@@ -15,5 +15,5 @@ Development Team
 |6 	    |78973 	  |Tiago Miguel Borralho Pereira             |correio.tiago@gmail.com 	    |tmbp95       | FT |
 |6 	    |81061 	  |Miguel Alexandre Aço Renda                |                              |             | FT |
 |6 	    |82040 	  |Francisco Rodrigues de Oliveira Ribeiro   |franciscoribeiro96@hotmail.com|chicoribeiro | FT |
-|7     	|82527 	  |Carolina Isabel Martins Neves             |                              |             | FT |
+|7     	|82527 	  |Carolina Isabel Martins Neves             |carolina.mneves@gmail.com     |carolNeves   | FT |
 |6 	    |87847 	  |Rui Miguel Soares Grancho                 |                              |             | BT |
