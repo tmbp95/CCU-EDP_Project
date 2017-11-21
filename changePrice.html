@@ -1,0 +1,55 @@
+<html>
+	<head>
+		<title>EDP change price</title>
+		<meta charset="utf-8" />   
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="js/jquery.min.js"></script>   
+		<link href="style/css/bootstrap-toggle.min.css" rel="stylesheet">
+		<link href="style/css/bootstrap.min.css" rel="stylesheet">
+		<link href="style/style-prices.css" rel="stylesheet">
+		<script src="style/js/bootstrap-toggle.min.js"></script>
+	</head>
+	
+	<body>
+		<div class= "pricesBox" style="position:fixed">
+			<div class="edpTittle">
+				<a class="edpPrices" href="">
+					<span class="lettering-tittle">Change Price</span>
+				</a>
+			</div>
+			<div class="home" style="position:relative; left:30px;" >
+				<span class="input-group-btn">
+					<button type="button" class="btn btn-default">
+	  					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+					</button>
+				</span>
+			</div>
+			<div class="back">
+				<span class="input-group-btn" style="position:relative; right:30px;">
+					<button type="button" class="btn btn-default">
+	  					<span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+					</button>
+				</span>
+			</div>
+			<br>
+			<div class=changeBox>
+				<p class="description">Current Price 10€</p>
+				<form class="form-horizontal" role="form">
+				<div>
+					<label class="description">New Price</label>
+					<input class="box" type="number" min="0" style="width: 50px; position:relative; right:-40px; top:-20px;">
+					<label class="description">&nbsp&nbsp €</label>
+				</div>
+				</form>
+			</div>
+			<div class="confirm" style="margin: 50px auto;">
+					<button type="button" class="btn btn-danger" style="width:150px;">Confirm</button>
+			</div>
+			<br>
+			<div class="descAverage">
+				<p class="average" style="position:relative; left:-10px;">Average Price Today:	 1€/kW</p>	
+			</div>
+		</div>
+	</body>
+	
+</html>

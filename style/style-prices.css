@@ -15,17 +15,23 @@
 		font-family: EDPPreonMedium,sans-serif;
 		color: #d52b1e;
 	}
-	
-	a.edpHist{
+	a.edpPrices{
 		font-size: 180%;
 		text-decoration: none;
 	}
-	div.edpHistory{
+	div.edpTittle{
 		width:85px;
-		margin:0 auto;
+		margin: 0 30;
 		margin-top:20px;
 		text-align: center; 
-	}
+		white-space: nowrap;
+	}		
+	div.pricesBox{
+		width:250px;
+		margin:0 auto;
+		margin-top:0px;
+		margin-left:50px;
+	}	
 	div.home{
 		width:-1px;
 		margin:20 auto;
@@ -38,61 +44,44 @@
 		margin-top:-50px;
 		text-align: left; 
 	}
-	
-	div.headingText{
-		float:left;
-		font-family: EDPPreonMedium,sans-serif;
-		color: #333;
-		-webkit-font-smoothing: antialiased;
-		position: relative;
-		font-size:120%;
-		margin-top:-10px;
-		opacity:0.8;
-	}	
-	p.description{
-		font-family: EDPPreonMedium,sans-serif;
-		text-transform: lowercase;
-		color: #333;
-		-webkit-font-smoothing: antialiased;
-		position: relative;
-		font-size:100%;
-		left: 1em;
-		top: -0.6em;
-	}	
-	div.sold{
-		width:250px;
-		margin:0 auto;
-		margin-top:20px;
-	}
-	div.bought{
+	div.changeBox{
 		width:250px;
 		margin:0 auto;
 		margin-top:50px;
+		margin-left:-10px;
 	}
-	div.more{
-		width:150px;
+	p.description{
+		font-family: EDPPreonMedium,sans-serif;
+		color: #333;
+		-webkit-font-smoothing: antialiased;
+		position: relative;
+		font-size:170%;
+		left: 1em;
+		top: -0.6em;
 	}
-	
-	div.transaction{
+	label.description{
+		font-family: EDPPreonMedium,sans-serif;
+		color: #333;
+		-webkit-font-smoothing: antialiased;
+		position: relative;
+		font-size:170%;
+		left: 1em;
+		top: -0.6em;
+		font-weight: normal !important;
+	} 
+	div.confirm{
 		width:150px;
 		margin:0 auto;
 		margin-top:5px;
 	}
-	
-	
-	div.stroke{
-		float:left;
-		width:90px;
-		height:1px;
-		margin-top:5px;
-		background-color:#333;
-		opacity:0.5;
+	p.average{
+		font-family: EDPPreonMedium,sans-serif;
+		color: #333;
+		-webkit-font-smoothing: antialiased;
+		position: relative;
+		font-size:130%;
+		left: 1em;
+		top: -0.6em;
+		white-space: nowrap;
 	}
-	div.separator{
-		float:left;
-		width:10px;
-		height:1px;
-		margin-top:5px;
-	}
-	
 }

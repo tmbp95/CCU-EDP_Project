@@ -1,5 +1,4 @@
 <html>
-
 	<head>
 		<title>EDP history</title>
 		<meta charset="utf-8" />   
@@ -7,58 +6,60 @@
 		<script src="js/jquery.min.js"></script>   
 		<link href="style/css/bootstrap-toggle.min.css" rel="stylesheet">
 		<link href="style/css/bootstrap.min.css" rel="stylesheet">
-		<link href="style/historyTemp.css" rel="stylesheet">
-		<link href="style/checkbox.css" rel="stylesheet">
+		<link href="style/style-history.css" rel="stylesheet">
 		<script src="style/js/bootstrap-toggle.min.js"></script>
 
 	</head>
 	
 	<body>
-		<div class="edpHistory">
-			<a class="edpHist" href="">
-				<span class="lettering-tittle">History</span>
-			</a>
-		</div>
-		<div class="home" style="position:relative; right:0px;" >
-			<span class="input-group-btn">
-				<button type="button" class="btn btn-default">
-  					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-				</button>
-			</span>
-		</div>
-		<div class="back">
-			<span class="input-group-btn">
-				<button type="button" class="btn btn-default">
-  					<span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
-				</button>
-			</span>
-		</div>
-		<br>
-		
-		<div class="sold">
-			<div class="headingText">SOLD</div>
-			<br>
-			<br>
-			<p class="description">1. 10kW	&nbsp&nbsp&nbsp&nbsp	10€	 &nbsp&nbsp&nbsp&nbsp	08/04/2017</p>
-			<p class="description">2. 25kW	 &nbsp&nbsp&nbsp&nbsp		18€		&nbsp&nbsp&nbsp&nbsp		06/04/2017</p>
-			<div style="width:100%;height:35px;"></div>
-			<div class="more" style="margin: 0 auto; margin-top: -30px; position:relative; left:130px;">
-				<button type="button" class="btn btn-danger" style="width:60px;">More</button>
+		<div class="historyBox" style="position:fixed">
+			<div class="edpHistory">
+				<a class="edpHist" href="">
+					<span class="lettering-tittle">History</span>
+				</a>
 			</div>
-		</div>
-		<div class="bought">
-			<div class="headingText">BOUGHT</div>
-			<br>
-			<br>
-			<p class="description">1. 12kW	 &nbsp&nbsp&nbsp&nbsp		15€		&nbsp&nbsp&nbsp&nbsp		18/01/2017</p>
-			<p class="description">2. 40kW	 &nbsp&nbsp&nbsp&nbsp		30€		&nbsp&nbsp&nbsp&nbsp		20/12/2017</p>
-			<div style="width:100%;height:35px;"></div>
-			<div class="more" style="margin: 0 auto; margin-top: -30px; position:relative; left:130px;">
-				<button type="button" class="btn btn-danger" style="width:60px;">More</button>
+			<div class="home" style="position:relative; left:30px;" >
+				<span class="input-group-btn">
+					<button type="button" class="btn btn-default">
+	  					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+					</button>
+				</span>
 			</div>
-		</div>
-		<div class="transaction" style="margin: 50px auto;">
-				<button type="button" class="btn btn-danger" style="width:150px;">Transaction balance</button>
+			<div class="back">
+				<span class="input-group-btn" style="position:relative; right:30px;">
+					<button type="button" class="btn btn-default">
+	  					<span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+					</button>
+				</span>
+			</div>
+			<br>
+			<div class="purchasesBpx">
+			<div class="soldBox">
+				<div class="headingText">SOLD</div>
+				<br>
+				<br>
+				<p class="description">1. 10kW	&nbsp&nbsp&nbsp&nbsp	10€	 &nbsp&nbsp&nbsp&nbsp	08/04/2017</p>
+				<p class="description">2. 25kW	 &nbsp&nbsp&nbsp&nbsp		18€		&nbsp&nbsp&nbsp&nbsp		06/04/2017</p>
+				<div style="width:100%;height:35px;"></div>
+				<div class="more" style="margin: 0 auto; margin-top: -30px; position:relative; left:130px;">
+					<button type="button" class="btn btn-danger" style="width:60px;">More</button>
+				</div>
+			</div>
+			<div class="boughtBox">
+				<div class="headingText">BOUGHT</div>
+				<br>
+				<br>
+				<p class="description">1. 12kW	 &nbsp&nbsp&nbsp&nbsp		15€		&nbsp&nbsp&nbsp&nbsp		18/01/2017</p>
+				<p class="description">2. 40kW	 &nbsp&nbsp&nbsp&nbsp		30€		&nbsp&nbsp&nbsp&nbsp		20/12/2017</p>
+				<div style="width:100%;height:35px;"></div>
+				<div class="more" style="margin: 0 auto; margin-top: -30px; position:relative; left:130px;">
+					<button type="button" class="btn btn-danger" style="width:60px;">More</button>
+				</div>
+			</div>
+			</div>
+			<div class="transaction" style="margin: 50px auto;">
+					<button type="button" class="btn btn-danger" style="width:150px;">Transaction Balance</button>
+			</div>
 		</div>
 	</body>
 </html>
