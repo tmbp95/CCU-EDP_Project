@@ -93,7 +93,7 @@
 
 	.footer{
 		position: absolute;
-		top: 600px;
+		top: 575px;
 		width: 100%;
 		float: left;
 	}
@@ -108,7 +108,7 @@
 		float: right;
 		margin-right: 5px;
 		margin-left: 20px;
-		margin-top: -5px;
+		margin-top: -8px;
 	}
 
 }
