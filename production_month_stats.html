@@ -1,0 +1,111 @@
+<html>
+
+	<head>
+		<title>EDP platform</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="js/jquery.min.js"></script>
+		<link href="style/css/bootstrap-toggle.min.css" rel="stylesheet">
+		<link href="style/css/bootstrap.min.css" rel="stylesheet">
+		<link href="style/style-production_month_stats.css" rel="stylesheet">
+		<link href="style/checkbox.css" rel="stylesheet">
+		<script src="style/js/bootstrap-toggle.min.js"></script>
+
+	</head>
+
+	<body>
+		<div class="top-bar">
+			<div class="settings">
+				<button type="button" class="btn btn-default" aria-label="Left Align">
+					<span class="glyphicon glyphicon-menu-left" aria-hidden="true" style="height: 20px; font-size:20; "></span>
+				</button>
+			</div>
+
+			<div class="title">Production</div>
+
+			<div class="buttons">
+				<button type="button" class="btn btn-default" aria-label="Left Align">
+					<span class="glyphicon glyphicon-home" aria-hidden="true" style="height: 20px; font-size:20; "></span>
+				</button>
+			</div>
+		</div>
+		<div style="clear:both"></div>
+		<br>
+		<div style="margin:0 auto;width:193px;">
+			<ul class="nav nav-pills">
+				<li role="presentation" ><a href="#"><font style="position:relative;top:-3px">Day</font></a></li>
+				<li role="presentation" class="active" style="margin-left:5px;"><a href="#"><font style="position:relative;top:-3px">Month</font></a></li>
+				<li role="presentation" style="margin-left:5px;"><a href="#"><font style="position:relative;top:-3px">Year</font></a></li>
+			</ul>
+		</div>
+		<div id="linechart"></div>
+		<div style="clear:both"></div>
+
+		<div class="headingBox">
+			<div class="stroke"></div>
+			<div class="separator"></div>
+			<div class="text">Production</div>
+			<div class="separator"></div>
+			<div class="stroke"></div>
+		</div>
+		<div style="width:100%;height:5px;"></div>
+		<div class="headingBoxMonth">
+			<div class="text">11/2017</div>
+		</div>
+		<div id="tablediv">
+		<script src="http://d3js.org/d3.v3.min.js"></script>
+
+		<script>
+
+
+					d3.json('datamonth.json', function (error,data) {
+
+							function tabulate(data, columns) {
+								var table = d3.select('#tablediv').append('table')
+								var thead = table.append('thead')
+								var	tbody = table.append('tbody');
+
+								// append the header row
+								thead.append('tr')
+									.selectAll('th')
+									.data(columns).enter()
+									.append('th');
+
+								// create a row for each object in the data
+								var rows = tbody.selectAll('tr')
+									.data(data)
+									.enter()
+									.append('tr');
+
+								// create a cell in each row for each column
+								var cells = rows.selectAll('td')
+									.data(function (row) {
+										return columns.map(function (column) {
+											return {column: column, value: row[column]};
+										});
+									})
+									.enter()
+									.append('td')
+										.text(function (d) { return d.value; });
+
+								return table;
+				}
+
+				// render the table(s)
+				tabulate(data, ['date','close']); // 2 column table
+			});
+
+		</script>
+	</div>
+		<div style="clear:both;width:100%;height:10px;"></div>
+
+		<br><br>
+		<br><br>
+		<div class="footer2">
+			<label class="lbl4" style="margin-top:3px;">Help</label>
+			<label class="lbl4" style="margin-left:5px;margin-top:3px;">Contact</label>
+			<label class="lbl4" style="margin-left:5px;margin-top:3px;">T&C</label>
+		</div>
+	</body>
+
+</html>
