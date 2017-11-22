@@ -55,8 +55,13 @@
 				</div>
 				<div style="width:100%;height:35px;"></div>
 				<div class="input-group" style="margin: 0 auto;">
-					<button type="button" class="btn btn-danger" style="width:218px;">Login</button>
+					<button type="button" id="loginButton" class="btn btn-danger" style="width:218px;">Login</button>
 				</div>
+				<script>
+					$("#loginButton").on("click", function(){
+						location.href = "menu.html";
+					})
+			    </script>
 				<div style="width:100%;height:10px;"></div>
 				<a href=""><label class="lbl2">Forgot your password?</label></a>
 			</div>

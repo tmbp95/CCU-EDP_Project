@@ -33,9 +33,9 @@
 		<br>
 		<div style="margin:0 auto;width:193px;">
 			<ul class="nav nav-pills">
-				<li role="presentation" ><a href="#"><font style="position:relative;top:-3px">Day</font></a></li>
-				<li role="presentation" style="margin-left:5px;"><a href="#"><font style="position:relative;top:-3px">Month</font></a></li>
-				<li role="presentation" class="active" style="margin-left:5px;"><a href="#"><font style="position:relative;top:-3px">Year</font></a></li>
+				<li role="presentation" ><a href="production_day.html"><font style="position:relative;top:-3px">Day</font></a></li>
+				<li role="presentation" style="margin-left:5px;"><a href="production_month.html"><font style="position:relative;top:-3px">Month</font></a></li>
+				<li role="presentation" class="active" style="margin-left:5px;"><a href="production_year.html"><font style="position:relative;top:-3px">Year</font></a></li>
 			</ul>
 		</div>
 		<div id="barchart"></div>
@@ -137,9 +137,14 @@
 			<button type="button" class="btn btn-default" style="background-color: #333;width:40px;height:34px;">
 				<span class="glyphicon glyphicon-chevron-left" aria-hidden="true" style="color:#eee;height: 20px; font-size:15;float:left;margin-top:2px;"></span>
 			</button>
-			<button type="button" class="btn btn-default" style="width:115px;height:34px;">
+			<button type="button" id="seeDetails" class="btn btn-default" style="width:115px;height:34px;">
 				<label class="lbl3" style="margin-top:3px;color: #333;font-size:12">See Details</label>
 			</button>
+			<script>
+					$("#seeDetails").on("click", function(){
+						location.href = "production_month_stats.html";
+					})
+			</script>
 			<button type="button" class="btn btn-default" style="width:40px;height:34px;background-color:#333;">
 				<span class="glyphicon glyphicon-chevron-right" aria-hidden="true" style="color:#eee;height: 20px; font-size:15;float:right;margin-top:2px;"></span>
 			</button>
