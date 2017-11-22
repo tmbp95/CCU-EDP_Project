@@ -1,0 +1,92 @@
+/* Template structure */
+@font-face {
+ 	font-family: EDPPreonMedium;
+ 	src: url(fonts/EDPPreonMedium.otf);
+}
+
+@media (min-width: 320px) {
+	body{
+		background-color:#f6f4f4;
+		padding:0;
+		border:0;
+	}
+	
+	span.lettering-tittle{
+		font-family: EDPPreonMedium,sans-serif;
+		color: #d52b1e;
+	}
+	
+	div.historyBox{
+		width:250px;
+		margin:0 auto;
+		margin-top:0px;
+		margin-left:50px;
+	}
+	a.edpHist{
+		font-size: 180%;
+		text-decoration: none;
+	}
+	div.edpHistory{
+		width:85px;
+		margin:0 auto;
+		margin-top:20px;
+		text-align: center; 
+	}
+	div.home{
+		width:-1px;
+		margin:20 auto;
+		margin-top:-30px;
+		text-align: right; 
+	}
+	div.back{
+		width:320px;
+		margin:0 auto;
+		margin-top:-50px;
+		text-align: left; 
+	}
+	div.headingText{
+		float:left;
+		font-family: EDPPreonMedium,sans-serif;
+		color: #333;
+		-webkit-font-smoothing: antialiased;
+		position: relative;
+		font-size:120%;
+		margin-top:-10px;
+		opacity:0.8;
+	}	
+	p.description{
+		font-family: EDPPreonMedium,sans-serif;
+		text-transform: lowercase;
+		color: #333;
+		-webkit-font-smoothing: antialiased;
+		position: relative;
+		font-size:100%;
+		left: 1em;
+		top: -0.6em;
+	}	
+	div.purchasesBox{
+		width:250px;
+		margin:0 auto;
+		margin-top:20px;
+		margin-left:30px;
+	}
+	}
+	div.soldBox{
+		width:250px;
+		margin:0 auto;
+		margin-top:20px;
+	}
+	div.boughtBox{
+		width:250px;
+		margin:0 auto;
+		margin-top:50px;
+	}
+	div.more{
+		width:150px;
+	}	
+	div.transaction{
+		width:150px;
+		margin:0 auto;
+		margin-top:5px;
+	}
+}
