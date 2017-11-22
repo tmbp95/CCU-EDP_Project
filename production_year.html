@@ -7,7 +7,7 @@
 		<script src="js/jquery.min.js"></script>   
 		<link href="style/css/bootstrap-toggle.min.css" rel="stylesheet">
 		<link href="style/css/bootstrap.min.css" rel="stylesheet">
-		<link href="style/style-production.css" rel="stylesheet">
+		<link href="style/style-production_year.css" rel="stylesheet">
 		<link href="style/checkbox.css" rel="stylesheet">
 		<script src="style/js/bootstrap-toggle.min.js"></script>
 
@@ -25,8 +25,13 @@
 
 			<div class="buttons">
 				<button type="button" class="btn btn-default" aria-label="Left Align">
-					<span class="glyphicon glyphicon-home" aria-hidden="true" style="height: 20px; font-size:20; "></span>
+					<span id="homeButton" class="glyphicon glyphicon-home" aria-hidden="true" style="height: 20px; font-size:20; "></span>
 				</button>
+				<script>
+					$("#homeButton").on("click", function(){
+						location.href = "menu.html";
+					})
+			    </script>
 			</div>
 		</div>
 		<div style="clear:both"></div>
@@ -142,7 +147,7 @@
 			</button>
 			<script>
 					$("#seeDetails").on("click", function(){
-						location.href = "production_month_stats.html";
+						location.href = "production_year_stats.html";
 					})
 			</script>
 			<button type="button" class="btn btn-default" style="width:40px;height:34px;background-color:#333;">

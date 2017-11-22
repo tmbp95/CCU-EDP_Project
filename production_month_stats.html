@@ -16,17 +16,27 @@
 	<body>
 		<div class="top-bar">
 			<div class="settings">
-				<button type="button" class="btn btn-default" aria-label="Left Align">
+				<button id="backButton" type="button" class="btn btn-default" aria-label="Left Align">
 					<span class="glyphicon glyphicon-menu-left" aria-hidden="true" style="height: 20px; font-size:20; "></span>
 				</button>
+				<script>
+					$("#backButton").on("click", function(){
+						location.href = "production_month.html";
+					})
+			    </script>
 			</div>
 
 			<div class="title">Production</div>
 
 			<div class="buttons">
 				<button type="button" class="btn btn-default" aria-label="Left Align">
-					<span class="glyphicon glyphicon-home" aria-hidden="true" style="height: 20px; font-size:20; "></span>
+					<span id="homeButton" class="glyphicon glyphicon-home" aria-hidden="true" style="height: 20px; font-size:20; "></span>
 				</button>
+				<script>
+					$("#homeButton").on("click", function(){
+						location.href = "menu.html";
+					})
+			    </script>
 			</div>
 		</div>
 		<div style="clear:both"></div>
@@ -62,6 +72,7 @@
 
 							function tabulate(data, columns) {
 								var table = d3.select('#tablediv').append('table')
+								table.attr("class", "table table-striped");
 								var thead = table.append('thead')
 								var	tbody = table.append('tbody');
 
@@ -86,7 +97,14 @@
 									})
 									.enter()
 									.append('td')
-										.text(function (d) { return d.value; });
+										.text(function (d) { return d.value; })
+										.style("text-align", function(d){
+											if(d.column == "close"){
+												return "right";
+											}else{
+												return "left";
+											}
+										})
 
 								return table;
 				}

@@ -7,7 +7,7 @@
 		<script src="js/jquery.min.js"></script>
 		<link href="style/css/bootstrap-toggle.min.css" rel="stylesheet">
 		<link href="style/css/bootstrap.min.css" rel="stylesheet">
-		<link href="style/style-production_day_stats.css" rel="stylesheet">
+		<link href="style/style-production_year_stats.css" rel="stylesheet">
 		<link href="style/checkbox.css" rel="stylesheet">
 		<script src="style/js/bootstrap-toggle.min.js"></script>
 
@@ -21,7 +21,7 @@
 				</button>
 				<script>
 					$("#backButton").on("click", function(){
-						location.href = "production_day.html";
+						location.href = "production_year.html";
 					})
 			    </script>
 			</div>
@@ -29,24 +29,23 @@
 			<div class="title">Production</div>
 
 			<div class="buttons">
-				<button id="homeButton" type="button" class="btn btn-default" aria-label="Left Align">
-					<span class="glyphicon glyphicon-home" aria-hidden="true" style="height: 20px; font-size:20; "></span>
+				<button type="button" class="btn btn-default" aria-label="Left Align">
+					<span id="homeButton" class="glyphicon glyphicon-home" aria-hidden="true" style="height: 20px; font-size:20; "></span>
 				</button>
 				<script>
 					$("#homeButton").on("click", function(){
 						location.href = "menu.html";
 					})
 			    </script>
-
 			</div>
 		</div>
 		<div style="clear:both"></div>
 		<br>
 		<div style="margin:0 auto;width:193px;">
 			<ul class="nav nav-pills">
-				<li role="presentation" class="active" ><a href="production_day_stats.html"><font style="position:relative;top:-3px">Day</font></a></li>
+				<li role="presentation" ><a href="production_day_stats.html"><font style="position:relative;top:-3px">Day</font></a></li>
 				<li role="presentation" style="margin-left:5px;"><a href="production_month_stats.html"><font style="position:relative;top:-3px">Month</font></a></li>
-				<li role="presentation" style="margin-left:5px;"><a href="production_year_stats.html"><font style="position:relative;top:-3px">Year</font></a></li>
+				<li role="presentation" class="active" style="margin-left:5px;"><a href="production_year_stats.html"><font style="position:relative;top:-3px">Year</font></a></li>
 			</ul>
 		</div>
 		<div id="linechart"></div>
@@ -60,19 +59,19 @@
 			<div class="stroke"></div>
 		</div>
 		<div style="width:100%;height:5px;"></div>
-		<div class="headingBoxDay">
-			<div class="text">24/11/2017</div>
+		<div class="headingBoxMonth">
+			<div class="text">11/2017</div>
 		</div>
-		<div id="tablediv">
+		<div id="tablediv2"></div>
 		<script src="http://d3js.org/d3.v3.min.js"></script>
 
 		<script>
 
 
-					d3.json('dataday.json', function (error,data) {
+					d3.json('data.json', function (error,data) {
 
 							function tabulate(data, columns) {
-								var table = d3.select('#tablediv').append('table')
+								var table = d3.select('#tablediv2').append('table')
 								table.attr("class", "table table-striped");
 								var thead = table.append('thead')
 								var	tbody = table.append('tbody');
@@ -100,7 +99,7 @@
 									.append('td')
 										.text(function (d) { return d.value; })
 										.style("text-align", function(d){
-											if(d.column == "close"){
+											if(d.column == "Freq"){
 												return "right";
 											}else{
 												return "left";
@@ -115,6 +114,7 @@
 			});
 
 		</script>
+
 	</div>
 		<div style="clear:both;width:100%;height:10px;"></div>
 

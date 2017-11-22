@@ -36,16 +36,16 @@
 	  stroke: #000;
 	  shape-rendering: crispEdges;
 	}
- th {
-    position: relative;
-    padding: 5px 67px;
-    text-align: left;
-  }
-  td {
-    position: relative;
-    padding: 3px 3px;
-    text-align: left;
-  }
+  th {
+     position: relative;
+     padding: 5px 63px;
+     text-align: left;
+   }
+   td {
+     position: relative;
+     padding: 3px 3px;
+     text-align: left;
+   }
 /* Using this one when the screen has height ~ 480 and the user opens the keyboard */
 @media (min-height: 280px){
 
@@ -129,8 +129,8 @@
 		margin-top:-5px;
 		opacity:0.8;
 	}
-	div.headingBoxDay{
-		width:70px;
+	div.headingBoxMonth{
+		width:50px;
 		margin:0 auto;
 		margin-top:20px;
 	}
@@ -159,7 +159,7 @@
     	line-height: 15px;
     	color: #d52b1e;
 	}
-  #tablediv{
+  #tablediv2{
 		width:300px;
 		margin:0 auto;
     left: 0px;
