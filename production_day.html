@@ -1,0 +1,165 @@
+<html>
+
+	<head>
+		<title>EDP platform</title>
+		<meta charset="utf-8" />   
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="js/jquery.min.js"></script>   
+		<link href="style/css/bootstrap-toggle.min.css" rel="stylesheet">
+		<link href="style/css/bootstrap.min.css" rel="stylesheet">
+		<link href="style/style-production_day.css" rel="stylesheet">
+		<link href="style/checkbox.css" rel="stylesheet">
+		<script src="style/js/bootstrap-toggle.min.js"></script>
+
+	</head>
+
+	<body>
+		<div class="top-bar">
+			<div class="settings">
+				<button type="button" class="btn btn-default" aria-label="Left Align">
+					<span class="glyphicon glyphicon-menu-left" aria-hidden="true" style="height: 20px; font-size:20; "></span>
+				</button>
+			</div>
+				
+			<div class="title">Production</div>
+
+			<div class="buttons">
+				<button type="button" class="btn btn-default" aria-label="Left Align">
+					<span class="glyphicon glyphicon-home" aria-hidden="true" style="height: 20px; font-size:20; "></span>
+				</button>
+			</div>
+		</div>
+		<div style="clear:both"></div>
+		<br>
+		<div style="margin:0 auto;width:193px;">
+			<ul class="nav nav-pills">
+				<li role="presentation" class="active"><a href="production_day.html"><font style="position:relative;top:-3px">Day</font></a></li>
+				<li role="presentation" style="margin-left:5px;"><a href="production_month.html"><font style="position:relative;top:-3px">Month</font></a></li>
+				<li role="presentation" style="margin-left:5px;"><a href="production_year.html"><font style="position:relative;top:-3px">Year</font></a></li>
+			</ul>
+		</div>
+		<div id="barchart"></div>
+		<div style="clear:both"></div>
+		<script src="http://d3js.org/d3.v3.min.js"></script>
+		<script>
+			var margin = {top: 20, right: 0, bottom: 70, left: 20},
+			    width = 300 - margin.left - margin.right,
+			    height = 300 - margin.top - margin.bottom;
+
+
+			// set the ranges
+			var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
+
+			var y = d3.scale.linear().range([height, 0]);
+
+			// define the axis
+			var xAxis = d3.svg.axis()
+			    .scale(x)
+			    .orient("bottom")
+
+
+			var yAxis = d3.svg.axis()
+			    .scale(y)
+			    .orient("left")
+			    .ticks(10);
+
+
+			// add the SVG element
+			var svg = d3.select("#barchart").append("svg")
+			    .attr("width", width + margin.left + margin.right)
+			    .attr("height", height + margin.top + margin.bottom)
+			  .append("g")
+			    .attr("transform", 
+			          "translate(" + margin.left + "," + margin.top + ")");
+
+
+			// get the data
+			d3.json("dataDayGraph.json", function(error, data) {
+
+			    data.forEach(function(d) {
+			        d.Letter = d.Letter;
+			        d.Freq = +d.Freq;
+			    });
+				
+			  // scale the range of the data
+			  x.domain(data.map(function(d) { return d.Letter; }));
+			  y.domain([0, d3.max(data, function(d) { return d.Freq; })]);
+
+			  // add axis
+			  svg.append("g")
+			      .attr("class", "x axis")
+			      .attr("transform", "translate(0," + height + ")")
+			      .call(xAxis)
+			    .selectAll("text")
+			      .style("text-anchor", "end")
+			      .attr("dx", "-.8em")
+			      .attr("dy", "-.55em")
+			      .attr("transform", "rotate(-90)" );
+
+			  svg.append("g")
+			      .attr("class", "y axis")
+			      .call(yAxis)
+			    .append("text")
+			      .attr("transform", "rotate(-90)")
+			      .attr("y", 5)
+			      .attr("dy", ".71em")
+			      .style("text-anchor", "end")
+			      .text("KW");
+
+
+			  // Add bar chart
+			  svg.selectAll("bar")
+			      .data(data)
+			    .enter().append("rect")
+			      .attr("class", "bar")
+			      .attr("x", function(d) { return x(d.Letter); })
+			      .attr("width", x.rangeBand())
+			      .attr("y", function(d) { return y(d.Freq); })
+			      .attr("height", function(d) { return height - y(d.Freq); });
+
+			});
+
+
+		</script>
+		<div class="headingBox">
+			<div class="stroke"></div>
+			<div class="separator"></div>
+			<div class="text">Production</div>
+			<div class="separator"></div>
+			<div class="stroke"></div>
+		</div>
+		<div style="width:100%;height:5px;"></div>
+		<div class="headingBoxDay">
+			<div class="text">15/11/2017</div>
+		</div>
+		<div style="clear:both;width:100%;height:10px;"></div>
+		<div class="otherBox">
+			<button type="button" class="btn btn-default" style="background-color: #333;width:40px;height:34px;">
+				<span class="glyphicon glyphicon-chevron-left" aria-hidden="true" style="color:#eee;height: 20px; font-size:15;float:left;margin-top:2px;"></span>
+			</button>
+			<button type="button" id="seeDetails" class="btn btn-default" style="width:115px;height:34px;">
+				<label class="lbl3" style="margin-top:3px;color: #333;font-size:12">See Details</label>
+			</button>
+			<script>
+					$("#seeDetails").on("click", function(){
+						location.href = "production_day_stats.html";
+					})
+			</script>
+			<button type="button" class="btn btn-default" style="width:40px;height:34px;background-color:#333;">
+				<span class="glyphicon glyphicon-chevron-right" aria-hidden="true" style="color:#eee;height: 20px; font-size:15;float:right;margin-top:2px;"></span>
+			</button>
+		</div>
+		<div class="otherBox2">
+			<button type="button" class="btn btn-danger" style="height:34px;width:156px">
+					<label class="lbl3" style="margin-top:3px;color: #eee;font-size:11">Compare with usage</label>
+			</button>
+		</div>
+		<br><br>
+		<div class="footer2">
+			<label class="lbl4" style="margin-top:3px;">Help</label>
+			<label class="lbl4" style="margin-left:5px;margin-top:3px;">Contact</label>
+			<label class="lbl4" style="margin-left:5px;margin-top:3px;">T&C</label>
+		</div>
+	</body>
+
+</html>
