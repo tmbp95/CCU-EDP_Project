@@ -11,43 +11,62 @@
 	</head>
 	
 	<body>
-		<div class= "pricesBox" style="position:fixed">
-			<div class="topBar" style="position:relative; left:50px;">
-				<div class="home" style="position:relative; right:-10px;">
-					<a href="./menu.html">
-						<button id="homeButton" type="button" class="btn btn-default" aria-label="Left Align">
-								<span class="glyphicon glyphicon-home" aria-hidden="true" style="height: 20px; font-size:20; "></span>
-						</button>
-					</a>
-				</div>
-				<div class="title">Change Price</div>
-				<div class="back" style="position:relative; left: -100px; top:-43px;">
-					<a href="./transactions.html">
-						<button id="backButton" type="button" class="btn btn-default" aria-label="Left Align">
-							<span class="glyphicon glyphicon-menu-left" aria-hidden="true" style="height: 20px; font-size:20; "></span>
-						</button>
-					</a>
-				</div>
+		<div class="top-bar">
+
+			<div class="settings">
+					<button id="backButton" type="button" class="btn btn-default" aria-label="Left Align">
+						<span class="glyphicon glyphicon-menu-left" aria-hidden="true" style="height: 20px; font-size:20; "></span>
+					</button>
+					<script>
+						$("#backButton").on("click", function(){
+							location.href = "transactions.html";
+						})
+				    </script>
 			</div>
+
+				<div class="title">Transactions</div>
+
+			<div class="buttons">
+					<button id="homeButton" type="button" class="btn btn-default" aria-label="Left Align">
+						<span class="glyphicon glyphicon-home" aria-hidden="true" style="height: 20px; font-size:20; "></span>
+					</button>
+					<script>
+						$("#homeButton").on("click", function(){
+							location.href = "menu.html";
+						})
+				    </script>
+			</div>
+
+		</div>
+		<div style="clear:both"></div>
+		<div class="pricesBox" style="">
 			<br>
 			<div class=changeBox>
 				<p class="description">Current Price 10€</p>
 				<form class="form-horizontal" role="form">
 				<div>
 					<label class="description">New Price</label>
-					<input class="box" type="number" min="0" style="width: 50px; position:relative; right:-40px; top:-20px;">
+					<input class="box" type="number" min="0" value="10" style="text-align:right;width: 50px; position:relative; right:-20px; top:-20px;">
 					<label class="description">&nbsp&nbsp €</label>
 				</div>
 				</form>
 			</div>
-			<div class="confirm" style="margin: 50px auto;">
+			<div class="confirm" style="">
 					<button type="button" class="btn btn-danger" style="width:150px;">Confirm</button>
 			</div>
 			<br>
 			<div class="descAverage">
-				<p class="average" style="position:relative; left:-10px;">Average Price Today:	 1€/kW</p>	
+				<p class="average" style="">Average Price Today:	 1€/kW</p>	
 			</div>
 		</div>
+		<br><br>
+		<div class="footer2">
+			<label class="lbl4" style="margin-top:3px;">Help</label>
+			<label class="lbl4" style="margin-left:5px;margin-top:3px;">Contact</label>
+			<label class="lbl4" style="margin-left:5px;margin-top:3px;">T&C</label>
+		</div>
+
+
 	</body>
 	
 </html>

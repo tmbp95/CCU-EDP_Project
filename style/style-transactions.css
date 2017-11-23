@@ -24,11 +24,26 @@
 }
 /* Using this one when the screen has height ~ 480 */
 @media (min-height: 480px){
-	
+	.footer2{
+		width:102px;
+		position: relative;
+		bottom: 10px;
+		left: 0;
+		right: 0;
+		margin: auto;
+	}
 }
 /* Using this one when the screen has height ~ 640 like Samsung S5 */
 @media (min-height: 640px) {
+	.footer2{
+		width:102px;
+		position: absolute;
+		bottom: 10px;
+		left: 0;
+		right: 0;
+		margin: auto;
 
+	}
 }
 /* Larger than mobile - USING THIS ONE!!*/
 @media (min-width: 320px) {
@@ -119,7 +134,19 @@
 }
 
 /* Larger than phablet */
-@media (min-width: 550px) {}
+@media (min-width: 360px) {
+
+	.title{
+		float: left;
+		width: 20%;
+		text-align: center;
+		margin: 5px;
+		padding-left: 10%;
+		font-family: EDPPreonMedium,sans-serif;
+		color: #d52b1e;
+		font-size: 23px;
+	}
+}
 
 /* Larger than tablet */
 @media (min-width: 750px) {}
