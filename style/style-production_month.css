@@ -233,6 +233,15 @@ path {
 		position:relative;
 		top:30px;
 	}
+	a.list-group-item, button{
+		font-family: EDPPreonMedium,sans-serif;
+	}
+	a.list-group-item, ul{
+		font-family: EDPPreonMedium,sans-serif;
+	}
+	div.headButtons{
+		display: inline;
+	}
 }
 
 

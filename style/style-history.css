@@ -89,4 +89,7 @@
 		margin:0 auto;
 		margin-top:5px;
 	}
+	a.list-group-item, button{
+		font-family: EDPPreonMedium,sans-serif;
+	}
 }
