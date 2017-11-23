@@ -15,18 +15,29 @@
 
 	<body>
 		<div class="top-bar">
-		<div class="settings">
-				<button type="button" class="btn btn-default" aria-label="Left Align">
-					<span class="glyphicon glyphicon-menu-left" aria-hidden="true" style="height: 20px; font-size:20; "></span>
-				</button>
+
+			<div class="settings">
+					<button id="backButton" type="button" class="btn btn-default" aria-label="Left Align">
+						<span class="glyphicon glyphicon-menu-left" aria-hidden="true" style="height: 20px; font-size:20; "></span>
+					</button>
+					<script>
+						$("#backButton").on("click", function(){
+							location.href = "menu.html";
+						})
+				    </script>
 			</div>
 
-			<div class="title">Transactions</div>
+				<div class="title">Transactions</div>
 
 			<div class="buttons">
-				<button type="button" class="btn btn-default" aria-label="Left Align">
-					<span class="glyphicon glyphicon-home" aria-hidden="true" style="height: 20px; font-size:20; "></span>
-				</button>
+					<button id="homeButton" type="button" class="btn btn-default" aria-label="Left Align">
+						<span class="glyphicon glyphicon-home" aria-hidden="true" style="height: 20px; font-size:20; "></span>
+					</button>
+					<script>
+						$("#homeButton").on("click", function(){
+							location.href = "menu.html";
+						})
+				    </script>
 			</div>
 
 		</div>
@@ -35,30 +46,36 @@
 
 			<div class="sell" style="font-size: 20px;">Your current transaction</div>
 
-			<div class="sell" style="">SELL:</div>
+			<div class="sell" >SELL:</div>
 
 			<div class="transaction" style="margin-top: 20px;padding-left: 20px; padding-right: 20px;width: 100%;">
-				<div style="float: left;">10 Kw </div> 
-				<div style="float: left; margin-left: 30%;">10€</div>
-				<div style="float: right;">
-
-					<button type="button" class="btn btn-danger" style="font-size: 13px; margin-top: -5px;">
+				<table style="width:100%">
+					<tr>
+						<th style="width:40%"></th>
+						<th style="width:30%"></th>
+						<th style="width:30%"></th>
+					</tr>
+				  <tr>
+				    <td>10 Kw</td>
+				    <td>10€</td>
+				    <td><button type="button" class="btn btn-danger" style="font-size: 13px;">
 						<label class="lbl3" style="">Change Price</label>
-					</button>
-
+					</button></td>
+				  </tr>
+				</table>
 				</div>
 			</div>
 
-			<button type="button" class="btn btn-danger" style="margin-top: 60px; margin-left: 35%; font-size: 20px;">
+		<div style="clear:both;width:100%;height:70px;"></div>
+		<div class="sell">
+			<button type="button" class="btn btn-danger" style=" font-size: 20px;">
 					<label class="lbl3" style="">History</label>
 			</button>
-
 		</div>
-
-		<div class="footer">
-			<a href="#" class="help">Help</a>
-			<a href="#" class="help">Contact</a>
-			<a href="#" class="help">T&C</a>
+		<div class="footer2">
+			<label class="lbl4" style="margin-top:3px;">Help</label>
+			<label class="lbl4" style="margin-left:5px;margin-top:3px;">Contact</label>
+			<label class="lbl4" style="margin-left:5px;margin-top:3px;">T&C</label>
 		</div>
 
 	</body>

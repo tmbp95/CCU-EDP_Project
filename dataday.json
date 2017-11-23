@@ -1,14 +1,14 @@
 [
-  { "date" : " 0-2: ","close" : 0.4},
-  { "date" : " 2-4:  ","close" : 0.5},
-  { "date" : " 4-6:  " ,"close" : 0.3},
-  { "date" : " 6-8:  ", "close" : 1.2},
-  { "date" : " 8-10:  ","close" :  2.1},
-  { "date" : " 10-12:  ","close" : 3.7},
-  { "date" : " 12-14:  ","close" : 4.9},
-  { "date" : " 14-16:  ","close" : 2.6},
-  { "date" : " 15-18:  ","close" : 2.5},
-  { "date" : "18-20:  ","close" : 1.7},
-  { "date" : "20-22:  ","close" : 2.1},
-  { "date" : "22-00:  ","close" : 2.4}
+  { "date" : " 00h-02h","close" : 0.4},
+  { "date" : " 02h-04h","close" : 0.5},
+  { "date" : " 04h-06h" ,"close" : 0.3},
+  { "date" : " 06h-08h", "close" : 1.2},
+  { "date" : " 08h-10h","close" : 2.1},
+  { "date" : " 10h-12h","close" : 3.7},
+  { "date" : " 12h-14h","close" : 4.9},
+  { "date" : " 14h-16h","close" : 2.6},
+  { "date" : " 15h-18h","close" : 2.5},
+  { "date" : "18h-20h","close" : 1.7},
+  { "date" : "20h-22h","close" : 2.1},
+  { "date" : "22h-00h","close" : 2.4}
 ]

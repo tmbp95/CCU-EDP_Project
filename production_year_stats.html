@@ -29,8 +29,8 @@
 			<div class="title">Production</div>
 
 			<div class="buttons">
-				<button type="button" class="btn btn-default" aria-label="Left Align">
-					<span id="homeButton" class="glyphicon glyphicon-home" aria-hidden="true" style="height: 20px; font-size:20; "></span>
+				<button id="homeButton" type="button" class="btn btn-default" aria-label="Left Align">
+					<span class="glyphicon glyphicon-home" aria-hidden="true" style="height: 20px; font-size:20; "></span>
 				</button>
 				<script>
 					$("#homeButton").on("click", function(){
@@ -50,7 +50,7 @@
 		</div>
 		<div id="linechart"></div>
 		<div style="clear:both"></div>
-
+		<br>
 		<div class="headingBox">
 			<div class="stroke"></div>
 			<div class="separator"></div>
@@ -59,19 +59,19 @@
 			<div class="stroke"></div>
 		</div>
 		<div style="width:100%;height:5px;"></div>
-		<div class="headingBoxMonth">
-			<div class="text">11/2017</div>
+		<div class="headingBoxYear">
+			<div class="text">2017</div>
 		</div>
-		<div id="tablediv2"></div>
+		<div id="tablediv"></div>
 		<script src="http://d3js.org/d3.v3.min.js"></script>
 
 		<script>
 
 
-					d3.json('data.json', function (error,data) {
+					d3.json('datayear.json', function (error,data) {
 
 							function tabulate(data, columns) {
-								var table = d3.select('#tablediv2').append('table')
+								var table = d3.select('#tablediv').append('table')
 								table.attr("class", "table table-striped");
 								var thead = table.append('thead')
 								var	tbody = table.append('tbody');
@@ -97,9 +97,15 @@
 									})
 									.enter()
 									.append('td')
-										.text(function (d) { return d.value; })
+										.text(function (d) { 
+											if(d.column == "close"){
+												return d.value + "kW"; 
+											}else{
+												return d.value; 
+											}
+										})
 										.style("text-align", function(d){
-											if(d.column == "Freq"){
+											if(d.column == "close"){
 												return "right";
 											}else{
 												return "left";
@@ -116,10 +122,7 @@
 		</script>
 
 	</div>
-		<div style="clear:both;width:100%;height:10px;"></div>
-
-		<br><br>
-		<br><br>
+		<div style="clear:both;width:100%;height:25px;"></div>
 		<div class="footer2">
 			<label class="lbl4" style="margin-top:3px;">Help</label>
 			<label class="lbl4" style="margin-left:5px;margin-top:3px;">Contact</label>

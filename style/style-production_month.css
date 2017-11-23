@@ -36,6 +36,18 @@
 	  stroke: #000;
 	  shape-rendering: crispEdges;
 	}
+	.area {
+  stroke: #d52b1e;
+  stroke-width: 2;
+  clip-path: url(#clip);
+  fill:none;
+}
+
+.zoom {
+  cursor: move;
+  fill: none;
+  pointer-events: all;
+}
 
 /* Using this one when the screen has height ~ 480 and the user opens the keyboard */
 @media (min-height: 280px){
@@ -43,11 +55,25 @@
 }
 /* Using this one when the screen has height ~ 480 */
 @media (min-height: 480px){
-
+	.footer2{
+		width:102px;
+		position: relative;
+		bottom: 10px;
+		left: 0;
+		right: 0;
+		margin: auto;
+	}
 }
 /* Using this one when the screen has height ~ 640 like Samsung S5 */
 @media (min-height: 640px) {
-
+	.footer2{
+		width:102px;
+		position: relative;
+		bottom: -35px;
+		left: 0;
+		right: 0;
+		margin: auto;
+	}
 }
 /* Larger than mobile - USING THIS ONE!!*/
 @media (min-width: 320px) {
@@ -73,7 +99,7 @@
 		width: 20%;
 		text-align: center;
 		margin: 5px;
-		padding-left: 14%;
+		padding-left: 10%;
 		font-family: EDPPreonMedium,sans-serif;
 		color: #d52b1e;
 		font-size: 23px;
@@ -144,15 +170,6 @@
     	color: #d52b1e;
 	}
 
-	.footer2{
-		width:102px;
-		position: relative;
-		bottom: 10px;
-		left: 0;
-		right: 0;
-		margin: auto;
-	}
-
 	.help{
 		float: left;
 		margin-right: 15px;
@@ -167,7 +184,7 @@
 	}
 
 	#linechart{
-		width:300px;
+		width:260px;
 		margin:0 auto;
 		position:relative;
 		top:30px;
@@ -199,10 +216,25 @@ path {
     shape-rendering: crispEdges;
 }
 
+@media (min-width: 360px) {
+	.title{
+		float: left;
+		width: 20%;
+		text-align: center;
+		margin: 5px;
+		padding-left: 14%;
+		font-family: EDPPreonMedium,sans-serif;
+		color: #d52b1e;
+		font-size: 23px;
+	}
+	#linechart{
+		width:300px;
+		margin:0 auto;
+		position:relative;
+		top:30px;
+	}
 }
 
-/* Larger than phablet */
-@media (min-width: 550px) {}
 
 /* Larger than tablet */
 @media (min-width: 750px) {}

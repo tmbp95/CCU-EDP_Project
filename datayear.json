@@ -1,0 +1,62 @@
+[
+{
+	"date": "January",
+	"mindate": "Jan",
+	"close": 20	
+},
+{
+	"date" : "February",
+	"mindate": "Feb",
+	"close": 12
+},
+{
+	"date" : "March",
+	"mindate": "Mar",
+	"close": 47
+},
+{
+	"date" : "April",
+	"mindate": "Apr",
+	"close": 34
+},
+{
+	"date" : "May",
+	"mindate": "May",
+	"close" : 54
+},
+{
+	"date" : "June",
+	"mindate": "Jun",
+	"close" : 21
+},
+{
+	"date" : "July",
+	"mindate": "Jul",
+	"close" : 57
+},
+{
+	"date" : "August",
+	"mindate": "Aug",
+	"close" : 31
+},
+{
+	"date" : "September",
+	"mindate": "Sep",
+	"close" : 17
+},
+{
+	"date" : "October",
+	"mindate": "Oct",
+	"close" : 5
+},
+{
+	"date" : "November",
+	"mindate": "Nov",
+	"close" : 23
+},
+{
+	"date" : "December",
+	"mindate": "Dec",
+	"close" : 39
+}
+]

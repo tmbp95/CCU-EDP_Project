@@ -16,17 +16,27 @@
 	<body>
 		<div class="top-bar">
 			<div class="settings">
-				<button type="button" class="btn btn-default" aria-label="Left Align">
+				<button id="backButton" type="button" class="btn btn-default" aria-label="Left Align">
 					<span class="glyphicon glyphicon-menu-left" aria-hidden="true" style="height: 20px; font-size:20; "></span>
 				</button>
+				<script>
+					$("#backButton").on("click", function(){
+						location.href = "menu.html";
+					})
+			    </script>
 			</div>
-				
+
 			<div class="title">Production</div>
 
 			<div class="buttons">
-				<button type="button" class="btn btn-default" aria-label="Left Align">
+				<button id="homeButton" type="button" class="btn btn-default" aria-label="Left Align">
 					<span class="glyphicon glyphicon-home" aria-hidden="true" style="height: 20px; font-size:20; "></span>
 				</button>
+				<script>
+					$("#homeButton").on("click", function(){
+						location.href = "menu.html";
+					})
+			    </script>
 			</div>
 		</div>
 		<div style="clear:both"></div>
@@ -42,9 +52,10 @@
 		<div style="clear:both"></div>
 		<script src="http://d3js.org/d3.v3.min.js"></script>
 		<script>
-			var margin = {top: 20, right: 0, bottom: 70, left: 20},
-			    width = 300 - margin.left - margin.right,
-			    height = 300 - margin.top - margin.bottom;
+			var widthCSS = $("#barchart").width();
+			var margin = {top: 20, right: 0, bottom: 70, left: 25},
+			    width = widthCSS - margin.left - margin.right,
+			    height = 280 - margin.top - margin.bottom;
 
 
 			// set the ranges
@@ -74,16 +85,16 @@
 
 
 			// get the data
-			d3.json("dataDayGraph.json", function(error, data) {
+			d3.json("dataday.json", function(error, data) {
 
 			    data.forEach(function(d) {
-			        d.Letter = d.Letter;
-			        d.Freq = +d.Freq;
+			        d.date = d.date;
+			        d.close = +d.close;
 			    });
 				
 			  // scale the range of the data
-			  x.domain(data.map(function(d) { return d.Letter; }));
-			  y.domain([0, d3.max(data, function(d) { return d.Freq; })]);
+			  x.domain(data.map(function(d) { return d.date; }));
+			  y.domain([0, d3.max(data, function(d) { return d.close; })]);
 
 			  // add axis
 			  svg.append("g")
@@ -101,7 +112,8 @@
 			      .call(yAxis)
 			    .append("text")
 			      .attr("transform", "rotate(-90)")
-			      .attr("y", 5)
+			      .attr("y", -17)
+			      .attr("x", 7)
 			      .attr("dy", ".71em")
 			      .style("text-anchor", "end")
 			      .text("KW");
@@ -112,15 +124,16 @@
 			      .data(data)
 			    .enter().append("rect")
 			      .attr("class", "bar")
-			      .attr("x", function(d) { return x(d.Letter); })
+			      .attr("x", function(d) { return x(d.date); })
 			      .attr("width", x.rangeBand())
-			      .attr("y", function(d) { return y(d.Freq); })
-			      .attr("height", function(d) { return height - y(d.Freq); });
+			      .attr("y", function(d) { return y(d.close); })
+			      .attr("height", function(d) { return height - y(d.close); });
 
 			});
 
 
 		</script>
+		<br>
 		<div class="headingBox">
 			<div class="stroke"></div>
 			<div class="separator"></div>

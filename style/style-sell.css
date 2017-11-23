@@ -24,12 +24,46 @@
 }
 /* Using this one when the screen has height ~ 480 */
 @media (min-height: 480px){
-	
+	.footer2{
+		width:102px;
+		position: absolute;
+		bottom: 10px;
+		left: 0;
+		right: 0;
+		margin: auto;
+	}
+	.balance{
+		font-family: EDPPreonMedium,sans-serif;
+	}
+	.balance2{
+		font-family: EDPPreonMedium,sans-serif;
+		margin-top:50px;
+	}
+}
 }
 /* Using this one when the screen has height ~ 640 like Samsung S5 */
 @media (min-height: 640px) {
+	.footer2{
+		width:102px;
+		position: absolute;
+		bottom: 0px;
+		left: 0;
+		right: 0;
+		margin: auto;
+	}
+	.balance{
+		height: 93px;
+		font-family: EDPPreonMedium,sans-serif;
+		margin-top:100px;
+	}
+	.balance2{
+		height: 93px;
+		font-family: EDPPreonMedium,sans-serif;
+		margin-top:100px;
+	}
 
 }
+
 /* Larger than mobile - USING THIS ONE!!*/
 @media (min-width: 320px) {
 	body{
@@ -41,7 +75,6 @@
 	.top-bar{
 		width: 100%;
 		height: 36px;
-		float: left;
 		margin-top: 10px;
 	}
 
@@ -70,13 +103,6 @@
 		font-family: EDPPreonMedium,sans-serif;
 	}
 	
-	.balance{
-		position: absolute;
-		top: 100px;
-		width: 100%;
-		height: 93px;
-		font-family: EDPPreonMedium,sans-serif;
-	}
 
 	div.panel-body{
 		height: 60px;
@@ -87,17 +113,9 @@
 
 	.sell{
 		width: 100%;
-		height: 40px;
 		text-align: center;
 		font-size: 16px;
 		margin-top: 45px;
-	}
-
-	.footer{
-		position: absolute;
-		top: 575px;
-		width: 100%;
-		float: left;
 	}
 
 	.help{

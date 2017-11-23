@@ -18,6 +18,10 @@
   	cursor: default;
   	font-weight:normal;
 }
+
+
+
+
 /* Using this one when the screen has height ~ 480 and the user opens the keyboard */
 @media (min-height: 280px){ 
 	div.edpLogoBox{
@@ -32,6 +36,14 @@
 		margin:0 auto;
 		margin-top:5%;
 	}
+	.footer2{
+		width:102px;
+		position: relative;
+		bottom: 10px;
+		left: 0;
+		right: 0;
+		margin: auto;
+	}
 }
 /* Using this one when the screen has height ~ 640 like Samsung S5 */
 @media (min-height: 640px) {
@@ -39,6 +51,14 @@
 		width:138px;
 		margin:0 auto;
 		margin-top:25%;
+	}
+	.footer2{
+		width:102px;
+		position: relative;
+		bottom: -60px;
+		left: 0;
+		right: 0;
+		margin: auto;
 	}
 }
 /* Larger than mobile - USING THIS ONE!!*/
