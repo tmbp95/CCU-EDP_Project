@@ -27,13 +27,13 @@
 
 	.options{
 		position: relative;
-		top:25px;
+		top:2px;
 		width: 100%;
 		height: 400px;
 	}
 	.balance{
 		position: relative;
-		bottom: -10px;
+		top: 30px;
 		width: 100%;
 		height: 93px;
 		font-family: EDPPreonMedium,sans-serif;
@@ -52,13 +52,13 @@
 
 	.options{
 		position: relative;
-		top:45px;
+		top:25px;
 		width: 100%;
 		height: 400px;
 	}
 	.balance{
 		position: relative;
-		bottom: -35px;
+		top: 40px;
 		width: 100%;
 		height: 93px;
 		font-family: EDPPreonMedium,sans-serif;

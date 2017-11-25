@@ -37,35 +37,86 @@
 
 		<div class="balance2">
 			<div class="panel panel-default">
+				<table style="margin-left:10px;margin:10px;">
+					<tr>
+						<th class="firstRow" style=""></th>
+						<th style="width:90px;"></th>
+						<th></th>
+					</tr>
+					<tr>
+						<td class="lbl4" >Average Price Today: </td>
+						<td class="lbl4" style="text-align:center;">1 €/Kw</td>
+						<td style="text-align:right;">
+							<button type="button" class="btn btn-danger" style="margin-top: 0px;margin-left: 0%;height:30px;width:100px;">
+								<label class="lbl4" style="position:relative;top:0px;left:-4px;">Check Market</label>
+							</button>
+						</td>
+					</tr>
+					<tr style="font-size:0.5em;">
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td class="lbl4">Available Balance: </td>
+						<td class="lbl4" style="text-align:center;">1 Kw</td>
+						<td style="text-align:right;">
+							<button type="button" class="btn btn-danger" style="margin-top: 0px;margin-left: 0%;height:30px;width:100px;">
+								<label class="lbl4" style="position:relative;top:0px;left:0px;">My Balance</label>
+							</button>
+						</td>
+					</tr>
+				</table>	
+			</div>
+			<div class="panel panel-default" style="margin-top:-10px;">
 			  <div class="panel-body">Amount
 			  	<div class="input-group" style="width: 40%; float: right;">
 				  <input type="text" class="form-control">
-				  <span class="input-group-addon">Kw</span>
+				  <span class="input-group-addon" style="font-size:.6em;max-width:10px;"><font style="position:relative;left:-3px;">kW</font></span>
 				</div>
 				</div>			  
 			</div>
 
-			<div class="panel panel-default">
-			  <div class="panel-body">Price
-			  	<div class="input-group" style="width: 40%; float: right;">
-				  <input type="text" class="form-control">
-				  <span class="input-group-addon">€</span>
-				</div>
-				</div>			  
+			<div class="panel panel-default" style="margin-top:-10px;">
+			  	<div class="panel-body">Price
+			  		<div class="input-group" style="width: 40%; float: right;">
+				  		<input type="text" class="form-control">
+				 		<span class="input-group-addon">€</span>
+					</div>
+				</div>	
+				<span style="font-size:.9em;position:relative;left:15px;color:#333;top:-15px;opacity:0.9;">You will earn: 5€</span>  
+				<button type="button" class="btn btn-danger buttonRow" style="position:relative;top: 15px;height:30px;">
+						<label class="lbl3" style="position:relative;top:-2px;left:-2px;">Sell</label>
+				</button>
+				<div style="width:100%;height:30px;clear:both;"></div>
 			</div>
 
-			<div class="sell">You are selling: 1 €/Kw</div>
 
-			<button type="button" class="btn btn-danger" style="margin-top: 15px;margin-left: 40%;">
-					<label class="lbl3" style="position:relative;top:3px;">Sell</label>
-			</button>
-
-			<div class="sell">Average Price Today: 1 €/Kw</div>
-
-			<button type="button" class="btn btn-danger" style="margin-top: 15px;margin-left: 30%;">
-					<label class="lbl3" style="position:relative;top:3px;">Check Market</label>
-			</button>
-
+			<div class="panel panel-default" style="margin-top:-10px;">
+				<div class="sellTitle">Currently selling:</div>
+				<table class="table table-striped" style="margin:10px;margin-left:20px;width:89%">
+					<tr>
+						<td class="lbl5">1 kW</td>
+						<td class="lbl5">1 €/Kw</td>
+						<td class="lbl5">dd-mm-yyyy</td>
+						<td>
+							<button type="button" class="btn btn-danger" style="margin-top: 0px;margin-left: 0%;height:25px;width:80px;">
+								<label class="lbl5" style="position:relative;top:0px;left:-2px;">Change Price</label>
+							</button>
+						</td>
+					</tr>
+					<tr>
+						<td class="lbl5">1 kW</td>
+						<td class="lbl5">1 €/Kw</td>
+						<td class="lbl5">dd-mm-yyyy</td>
+						<td>
+							<button type="button" class="btn btn-danger" style="margin-top: 0px;margin-left: 0%;height:25px;width:80px;">
+								<label class="lbl5" style="position:relative;top:0px;left:-2px;">Change Price</label>
+							</button>
+						</td>
+					</tr>
+				</table>					
+			</div>
 		</div>
 
 		<br><br>

@@ -18,6 +18,12 @@
   	cursor: default;
   	font-weight:normal;
 }
+.lbl5 {
+	font-size:.6em;
+  	cursor: default;
+  	vertical-align: middle !important;
+  	font-weight:normal;
+}
 /* Using this one when the screen has height ~ 480 and the user opens the keyboard */
 @media (min-height: 280px){ 
 	
@@ -26,7 +32,7 @@
 @media (min-height: 480px){
 	.footer2{
 		width:102px;
-		position: absolute;
+		position: relative;
 		bottom: 10px;
 		left: 0;
 		right: 0;
@@ -37,7 +43,7 @@
 	}
 	.balance2{
 		font-family: EDPPreonMedium,sans-serif;
-		margin-top:50px;
+		margin-top:30px;
 	}
 	.sellbutton{
 		width: 100%;
@@ -65,7 +71,7 @@
 	.balance2{
 		height: 93px;
 		font-family: EDPPreonMedium,sans-serif;
-		margin-top:100px;
+		margin-top:50px;
 	}
 	.sellbutton{
 		width: 100%;
@@ -129,6 +135,13 @@
 		font-size: 16px;
 		margin-top: 45px;
 	}
+	.sellTitle{
+		width: 80%;
+		text-align: left;
+		font-size: 16px;
+		margin-top: 15px;
+		margin-left:5%;
+	}
 	
 
 	.help{
@@ -137,10 +150,21 @@
 		margin-left: 5px;
 	}
 
+	.firstRow{
+		width:110px;
+	}
+
 }
 
 /* Larger than phablet */
-@media (min-width: 550px) {}
+@media (min-width: 360px) {
+	.firstRow{
+		width:150px;
+	}
+	.buttonRow{
+		margin-left:30px;
+	}
+}
 
 /* Larger than tablet */
 @media (min-width: 750px) {}
