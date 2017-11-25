@@ -17,6 +17,12 @@
   	cursor: default;
   	font-weight:normal;
 }
+.lbl5 {
+	font-size:.7em;
+  	cursor: default;
+  	vertical-align: middle !important;
+  	font-weight:normal;
+}
 
 @media (min-height: 480px){
 	.footer2{
@@ -28,10 +34,12 @@
 		margin: auto;
 	}
 	div.historyBox{
-		width:250px;
 		margin:0 auto;
 		margin-top:0px;
-		margin-left:30px;
+	}
+	.balance2{
+		font-family: EDPPreonMedium,sans-serif;
+		margin-top:30px;
 	}
 }
 /* Using this one when the screen has height ~ 640 like Samsung S5 */
@@ -46,10 +54,13 @@
 
 	}
 	div.historyBox{
-		width:250px;
 		margin:0 auto;
 		margin-top:80px;
-		margin-left:50px;
+	}
+	.balance2{
+		height: 93px;
+		font-family: EDPPreonMedium,sans-serif;
+		margin-top:50px;
 	}
 }
 
@@ -63,6 +74,14 @@
 	span.lettering-tittle{
 		font-family: EDPPreonMedium,sans-serif;
 		color: #d52b1e;
+	}
+
+	.sellTitle{
+		width: 80%;
+		text-align: left;
+		font-size: 16px;
+		margin-top: 15px;
+		margin-left:5%;
 	}
 	
 	.top-bar{
@@ -110,8 +129,8 @@
 		-webkit-font-smoothing: antialiased;
 		position: relative;
 		font-size:120%;
-		margin-top:-10px;
-		opacity:0.8;
+		margin-left:10px;
+		margin:10px;
 	}	
 	p.description{
 		font-family: EDPPreonMedium,sans-serif;
@@ -129,17 +148,7 @@
 		margin-top:60px;
 		margin-left:100px;
 	}
-	}
-	div.soldBox{
-		width:250px;
-		margin:0 auto;
-		margin-top:50px;
-	}
-	div.boughtBox{
-		width:250px;
-		margin:0 auto;
-		margin-top:50px;
-	}
+
 	div.more{
 		width:60px;
 	}	

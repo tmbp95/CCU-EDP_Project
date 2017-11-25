@@ -19,7 +19,7 @@
   	font-weight:normal;
 }
 .lbl5 {
-	font-size:.6em;
+	font-size:.7em;
   	cursor: default;
   	vertical-align: middle !important;
   	font-weight:normal;
@@ -153,6 +153,9 @@
 	.firstRow{
 		width:110px;
 	}
+	.spaceTD{
+		width:0px;
+	}
 
 }
 
@@ -163,6 +166,9 @@
 	}
 	.buttonRow{
 		margin-left:30px;
+	}
+	.spaceTD{
+		width:0px;
 	}
 }
 
