@@ -22,7 +22,11 @@
   	cursor: default;
   	vertical-align: middle !important;
   	font-weight:normal;
+  	width:40px;
 }
+
+
+
 
 @media (min-height: 480px){
 	.footer2{
@@ -70,6 +74,9 @@
 		padding:0;
 		border:0;
 	}
+
+	
+
 	
 	span.lettering-tittle{
 		font-family: EDPPreonMedium,sans-serif;
@@ -159,5 +166,15 @@
 	}
 	a.list-group-item, button{
 		font-family: EDPPreonMedium,sans-serif;
+	}
+	.spaceTD{
+		width:0px;
+	}
+}
+
+/* Larger than phablet */
+@media (min-width: 360px) {
+	.spaceTD{
+		width:10px;
 	}
 }

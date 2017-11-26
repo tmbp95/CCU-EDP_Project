@@ -118,9 +118,9 @@
 	}
 
 	div.headingBox{
-		width:175px;
+		width:201px;
 		margin:0 auto;
-		margin-top:10px;
+		margin-top:-5px;
 	}
 	div.stroke{
 		float:left;
@@ -132,7 +132,7 @@
 	}
 	div.separator{
 		float:left;
-		width:10px;
+		width:8px;
 		height:1px;
 		margin-top:5px;
 	}
@@ -147,9 +147,11 @@
 		opacity:0.8;
 	}
 	div.headingBoxMonth{
-		width:50px;
+		min-width:50px;
+		width:auto;
+		max-width:70px;
 		margin:0 auto;
-		margin-top:20px;
+		margin-top:10px;	
 	}
 
 	.options{
@@ -187,15 +189,16 @@
 		width:260px;
 		margin:0 auto;
 		position:relative;
-		top:30px;
+		top:10px;
 	}
 	div.otherBox{
 		width:203px;
 		margin:0 auto;
+		margin-top:-5px;
 	}
 	div.otherBox2{
 		position:relative;
-		top:15px;
+		top:10px;
 		width:156px;
 		margin:0 auto;
 	}
@@ -231,7 +234,7 @@ path {
 		width:300px;
 		margin:0 auto;
 		position:relative;
-		top:30px;
+		top:10px;
 	}
 }
 

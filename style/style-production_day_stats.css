@@ -18,6 +18,12 @@
   	cursor: default;
   	font-weight:normal;
 }
+.lbl5 {
+	font-size:.7em;
+  	cursor: default;
+  	vertical-align: middle !important;
+  	font-weight:normal;
+}
  .bar{
     fill: #c9302c;
   }
@@ -115,9 +121,9 @@
 	}
 
 	div.headingBox{
-		width:175px;
+		width:201px;
 		margin:0 auto;
-		margin-top:10px;
+		margin-top:-5px;
 	}
 	div.stroke{
 		float:left;
@@ -129,7 +135,7 @@
 	}
 	div.separator{
 		float:left;
-		width:10px;
+		width:8px;
 		height:1px;
 		margin-top:5px;
 	}
@@ -145,6 +151,7 @@
 	}
 	div.headingBoxDay{
 		width:70px;
+		max-width:80px;
 		margin:0 auto;
 		margin-top:20px;
 	}
@@ -174,12 +181,12 @@
     	color: #d52b1e;
 	}
   	#tablediv{
-		width:300px;
 		margin:0 auto;
     left: 0px;
     right: 0px;
 		position:relative;
-		top:20px;
+		top:10px;
+		font-family: EDPPreonMedium,sans-serif;
 	}
 
 	.help{

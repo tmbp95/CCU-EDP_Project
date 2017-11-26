@@ -2,61 +2,73 @@
 {
 	"date": "January",
 	"mindate": "Jan",
+	"numberMonth": 0,
 	"close": 20	
 },
 {
 	"date" : "February",
 	"mindate": "Feb",
+	"numberMonth": 1,
 	"close": 12
 },
 {
 	"date" : "March",
 	"mindate": "Mar",
+	"numberMonth": 2,
 	"close": 47
 },
 {
 	"date" : "April",
 	"mindate": "Apr",
+	"numberMonth": 3,
 	"close": 34
 },
 {
 	"date" : "May",
 	"mindate": "May",
+	"numberMonth": 4,
 	"close" : 54
 },
 {
 	"date" : "June",
 	"mindate": "Jun",
+	"numberMonth": 5,
 	"close" : 21
 },
 {
 	"date" : "July",
 	"mindate": "Jul",
+	"numberMonth": 6,
 	"close" : 57
 },
 {
 	"date" : "August",
 	"mindate": "Aug",
+	"numberMonth": 7,
 	"close" : 31
 },
 {
 	"date" : "September",
 	"mindate": "Sep",
+	"numberMonth": 8,
 	"close" : 17
 },
 {
 	"date" : "October",
 	"mindate": "Oct",
+	"numberMonth": 9,
 	"close" : 5
 },
 {
 	"date" : "November",
 	"mindate": "Nov",
+	"numberMonth": 10,
 	"close" : 23
 },
 {
 	"date" : "December",
 	"mindate": "Dec",
+	"numberMonth": 11,
 	"close" : 39
 }
 ]

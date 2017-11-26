@@ -14,6 +14,136 @@
 	</head>
 
 	<body>
+		<script src="js/d3v4.js"></script>
+		<script>
+
+			
+			
+			var storage = [];
+			var value;
+			var date = new Date();
+			var day = date.getDate();
+			if(day<10) day = '0' + day;
+			var month = date.getMonth()+1;
+			if(month<10) month = '0' + month;
+			var year = date.getFullYear();
+			date = day+"-"+month+"-"+year;
+			var record = localStorage.getItem("storage");
+			var counter = localStorage.getItem("counterstorage");
+			if (counter == null){
+				var counter = 1;
+			}
+			if (record != null){
+				storage.unshift(record);
+			}
+
+			$(document).ready(function(){
+				storage.forEach(function(d){
+					$('#currentlySelling').append(d);
+				})
+			})
+
+			$('body').click(function(e) {
+			    if (!$(e.target).closest('.popupDiv').length){
+			        $(".popupDiv").hide();
+			        $("#popupDiv-back").hide();
+			    }
+			});
+
+			function validateForm() {
+				var price = document.forms["myForm"]["price"].value;
+			    var quantity = document.forms["myForm"]["quantity"].value;
+			  	
+			    if (quantity == "") {
+			        console.log("Amount field must be filled out");
+			        return false;
+			    }
+			    if (price == "") {
+			        console.log("Price field must be filled out");
+			        return false;
+			    }
+			    value = '<tr class="' + counter + '"><td class="spaceTD"></td><td class="lbl5">' + quantity + ' kW</td><td class="lbl5">' + price + ' €/Kw</td><td class="lbl5">' + date + '</td><td><button type="button" id="priceChange' + counter + '" onclick="someFunc(' + counter + ',' + price + ',' + quantity + ')" class="btn btn-danger" style="margin-top: 0px;margin-left: 0%;height:25px;width:85px;"><label class="lbl5" style="position:relative;top:0px;left:-5px;">Change Price</label></button></td></tr>';
+
+			    storage.unshift(value);
+
+			    localStorage.setItem("storage", storage);
+			    counter++;
+			    localStorage.setItem("counterstorage", counter);
+			} 
+
+			function validateFormPopup() {
+				var price = document.forms["myFormPopup"]["newPrice"].value;
+				var id = document.forms["myFormPopup"]["id"].value;
+			  	var quantity = document.forms["myFormPopup"]["quantity"].value;
+
+			    if (price == 0) {
+			        console.log("Price field must be filled out");
+			        return false;
+			    }
+			    console.log(storage);
+			    storage.forEach(function(d){
+			    	d.split("<tr class=\"").forEach(function(x){
+			    		if(x[0]==id){
+			    		storage.splice(d,1);
+			    		console.log(storage);
+			    		value = '<tr class="' + id + '"><td class="spaceTD"></td><td class="lbl5">' + quantity + ' kW</td><td class="lbl5">' + price + ' €/Kw</td><td class="lbl5">' + date + '</td><td><button type="button" id="priceChange' + id + '" onclick="someFunc(' + id + ',' + price + ',' + quantity + ')" class="btn btn-danger" style="margin-top: 0px;margin-left: 0%;height:25px;width:85px;"><label class="lbl5" style="position:relative;top:0px;left:-5px;">Change Price</label></button></td></tr>';
+
+			    	}
+			    	});
+			    })
+
+			    storage.unshift(value);
+
+			    localStorage.setItem("storage", storage);
+			} 
+
+			function someFunc(value, price, quantity){
+				$("#priceChange" + value).ready(function(){
+					$("html, body").animate({ scrollTop: 0 });
+					$("#popupDiv-back").delay( 100 ).fadeIn(100);
+					$(".popupDiv").show(40);
+					$(".oldPrice").html(price);
+					$(".oldPriceInput").val(price);
+					$(".id").val(value);
+					$(".quantity").val(quantity);
+				})
+			}
+
+								
+		</script>
+		<div id="popupDiv-back"></div>
+		<div class="popupDiv">
+			<div class="pricesBox">
+				<br>
+				<form name="myFormPopup" onsubmit="return validateFormPopup()" method="post">
+					<input type="hidden" class="id" name="id">
+					<input type="hidden" class="quantity" name="quantity">
+				<div class=changeBox>
+					<div class="headingBox">
+						<div class="stroke"></div>
+						<div class="separator"></div>
+						<div class="text">Change Price</div>
+						<div class="separator"></div>
+						<div class="stroke"></div>
+					</div>
+					<br><br>
+					<p class="description">Current Price <label class="oldPrice"></label>€</p>
+					
+					<div style="margin-top:10px">
+						
+						<label class="description">New Price</label>
+						<input class="box" class="oldPriceInput" name="newPrice" type="number" value="0" min="0" style="text-align:right;width: 50px; position:relative;right:-5px; top:-10px;">
+						<label class="description" style="margin-left:5px;">€</label>
+						
+					</div>
+					
+				</div>
+				<div class="confirm" style="">
+						<button type="submit" class="btn btn-danger" style="width:150px;">Confirm</button>
+				</div>
+				</form>
+			</div>
+		</div>
 		<div class="top-bar">
 		<div class="settings">
 				<a href="./menu.html">
@@ -69,55 +199,33 @@
 				</table>	
 			</div>
 			<div class="panel panel-default" style="margin-top:-10px;">
-			  <div class="panel-body">Amount
-			  	<div class="input-group" style="width: 40%; float: right;">
-				  <input type="text" class="form-control">
-				  <span class="input-group-addon" style="font-size:.6em;max-width:10px;"><font style="position:relative;left:-3px;">kW</font></span>
-				</div>
-				</div>			  
-			</div>
-
-			<div class="panel panel-default" style="margin-top:-10px;">
-			  	<div class="panel-body">Price
-			  		<div class="input-group" style="width: 40%; float: right;">
-				  		<input type="text" class="form-control">
-				 		<span class="input-group-addon">€</span>
-					</div>
-				</div>	
-				<span style="font-size:.9em;position:relative;left:15px;color:#333;top:-15px;opacity:0.9;">You will earn: 5€</span>  
-				<button type="button" class="btn btn-danger buttonRow" style="position:relative;top: 15px;height:30px;">
-						<label class="lbl3" style="position:relative;top:-2px;left:-2px;">Sell</label>
-				</button>
+				<form name="myForm" onsubmit="return validateForm()" method="post">
+					<div class="panel-body">Amount
+				  		<div class="input-group" style="width: 40%; float: right;">
+					  		<input type="text" name="quantity" class="form-control">
+					  		<span class="input-group-addon"  style="font-size:.6em;width:10px;max-width:10px;" id="teste"><font style="position:relative;left:-3px;">kW</font></span>
+						</div>
+					</div>			  
+				  	<div class="panel-body">Price
+				  		<div class="input-group" style="width: 40%; float: right;">
+					  		<input type="text" name="price" class="form-control">
+					 		<span class="input-group-addon">€</span>
+						</div>
+					</div>	
+					<span style="font-size:.9em;position:relative;left:15px;color:#333;top:-15px;opacity:0.9;">You will earn: 5€</span>  
+					<button type="submit" value="submit" class="btn btn-danger buttonRow" style="position:relative;top: 15px;height:30px;">
+							<label class="lbl3" style="position:relative;top:-2px;left:-2px;">Sell</label>
+					</button>
+				</form>
 				<div style="width:100%;height:30px;clear:both;"></div>
 			</div>
 
 
 			<div class="panel panel-default" style="margin-top:-10px;">
 				<div class="sellTitle">Currently selling:</div>
-				<table class="table table-striped" style="margin-top:10px;">
+				<table id="currentlySelling" class="table table-striped" style="margin-top:10px;">
 					<tr></tr>
-					<tr>
-						<td class="spaceTD"></td>
-						<td class="lbl5">1 kW</td>
-						<td class="lbl5">1 €/Kw</td>
-						<td class="lbl5">dd-mm-yyyy</td>
-						<td>
-							<button type="button" class="btn btn-danger" style="margin-top: 0px;margin-left: 0%;height:25px;width:85px;">
-								<label class="lbl5" style="position:relative;top:0px;left:-5px;">Change Price</label>
-							</button>
-						</td>
-					</tr>
-					<tr>
-						<td class="spaceTD"></td>
-						<td class="lbl5">1 kW</td>
-						<td class="lbl5">1 €/Kw</td>
-						<td class="lbl5">dd-mm-yyyy</td>
-						<td>
-							<button type="button" class="btn btn-danger" style="margin-top: 0px;margin-left: 0%;height:25px;width:85px;">
-								<label class="lbl5" style="position:relative;top:0px;left:-5px;">Change Price</label>
-							</button>
-						</td>
-					</tr>
+					
 				</table>
 				<br>					
 			</div>

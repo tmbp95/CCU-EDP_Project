@@ -14,6 +14,11 @@
 	</head>
 
 	<body>
+		<script>
+			var queryString = decodeURIComponent(window.location.search);
+				queryString = queryString.substring(1);
+				var queries = queryString.split("=");
+		</script>
 		<div class="top-bar">
 			<div class="settings">
 				<button id="backButton" type="button" class="btn btn-default" aria-label="Left Align">
@@ -21,7 +26,7 @@
 				</button>
 				<script>
 					$("#backButton").on("click", function(){
-						location.href = "production_month.html";
+						location.href = 'production_month.html?' + queryString
 					})
 			    </script>
 			</div>
@@ -37,15 +42,16 @@
 						location.href = "menu.html";
 					})
 			    </script>
+
 			</div>
 		</div>
 		<div style="clear:both"></div>
 		<br>
 		<div style="margin:0 auto;width:215px;font-family: EDPPreonMedium,sans-serif;">
 			<ul class="nav nav-pills">
-				<li role="presentation" ><a href="production_day_stats.html"><font style="position:relative;top:-3px">Day</font></a></li>
-				<li role="presentation" class="active" style="margin-left:5px;"><a href="production_month_stats.html"><font style="position:relative;top:-3px">Month</font></a></li>
-				<li role="presentation" style="margin-left:5px;"><a href="production_year_stats.html"><font style="position:relative;top:-3px">Year</font></a></li>
+				<li role="presentation"><a onclick="location.href = 'production_day_stats.html?' + queryString" style="cursor:pointer;"><font style="position:relative;top:-5px">Day</font></a></li>
+				<li role="presentation" class="active" style="margin-left:5px;"><a onclick="location.href = 'production_month_stats.html?' + queryString" style="cursor:pointer;"><font style="position:relative;top:-5px">Month</font></a></li>
+				<li role="presentation" style="margin-left:5px;"><a onclick="location.href = 'production_year_stats.html?' + queryString" style="cursor:pointer;"><font style="position:relative;top:-5px">Year</font></a></li>
 			</ul>
 		</div>
 		<div id="linechart"></div>
@@ -54,73 +60,104 @@
 		<div class="headingBox">
 			<div class="stroke"></div>
 			<div class="separator"></div>
-			<div class="text">Production</div>
+			<div class="text">Production Log</div>
 			<div class="separator"></div>
 			<div class="stroke"></div>
 		</div>
-		<div style="width:100%;height:5px;"></div>
-		<div class="headingBoxMonth">
-			<div class="text">11/2017</div>
-		</div>
-		<div id="tablediv">
-		<script src="http://d3js.org/d3.v3.min.js"></script>
+		<br>
+		<div class="panel panel-default">
+			<div style="width:100%;height:5px;"></div>
+			<div class="headingBoxMonth">
+				<div class="text textdata">24/11/2017</div>
+			</div>
+			<script>
+				var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+ 									 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-		<script>
+				var date = new Date(queries[1]);
+				var day = date.getDate();
+				if(day<10) day =  "0" + day;
+				var month = date.getMonth()+1;
+				var year = date.getFullYear();
 
-
-					d3.json('datamonth.json', function (error,data) {
-
-							function tabulate(data, columns) {
-								var table = d3.select('#tablediv').append('table')
-								table.attr("class", "table table-striped");
-								var thead = table.append('thead')
-								var	tbody = table.append('tbody');
-
-								// append the header row
-								thead.append('tr')
-									.selectAll('th')
-									.data(columns).enter()
-									.append('th');
-
-								// create a row for each object in the data
-								var rows = tbody.selectAll('tr')
-									.data(data)
-									.enter()
-									.append('tr');
-
-								// create a cell in each row for each column
-								var cells = rows.selectAll('td')
-									.data(function (row) {
-										return columns.map(function (column) {
-											return {column: column, value: row[column]};
-										});
-									})
-									.enter()
-									.append('td')
-										.text(function (d) { 
-											if(d.column == "close"){
-												return d.value + "kW"; 
-											}else{
-												return d.value; 
-											}
-										})
-										.style("text-align", function(d){
-											if(d.column == "close"){
-												return "right";
-											}else{
-												return "left";
-											}
-										})
-
-								return table;
+				function updateDate(){
+					var day = date.getDate();
+					if(day<10) day =  "0" + day;
+					var month = date.getMonth();
+					if(month<10) month =  "0" + month;
+					var year = date.getFullYear();
+					return date;
 				}
 
-				// render the table(s)
-				tabulate(data, ['date','close']); // 2 column table
-			});
+				$(".textdata").html(monthNames[month-1] + ' ' + year);
+			</script>
+			<div id="tablediv">
+				<script src="http://d3js.org/d3.v3.min.js"></script>
 
-		</script>
-	</div>
+				<script>
+							d3.csv('data.csv', function (error,data) {
+
+
+									function tabulate(data, columnsData) {
+										var table = d3.select('#tablediv').append('table')
+										table.attr("class", "table table-striped");
+										var	tbody = table.append('tbody');
+
+									
+
+										// create a row for each object in the data
+										var rows = tbody.selectAll('tr')
+											.data(data)
+											.enter()
+											.append('tr');
+
+										// create a cell in each row for each column
+										var cells = rows.selectAll('td')
+											.data(function (row) {
+
+													var columns = [];
+
+													columnsData.map(function (column) {
+														monthData = row.date.split("-")[1];
+														if(monthData==monthNames[month-1]){
+															columns.push(column);														
+														}		
+													});	
+													return columns.map(function (column) {	
+														return {column: column, value: row[column]};												
+													});	
+											})
+											.enter()
+											.append('td')
+												.html(function (d) { 
+													if(d.column == "close"){
+														return d.value + " kW"; 
+													}else{
+														newDay = d.value.split("-")[0];
+														date.setDate(newDay);												
+														return '<a style="cursor:pointer" onclick="location.href=\'production_day_stats.html?date=' + updateDate() + '\'">' + d.value + '</a>'; 
+													}
+												})
+												.style("text-align", function(d){
+													if(d.column == "close"){
+														return "right";
+													}else{
+														return "left";
+													}
+												})
+												.attr("class", "lbl5");
+
+
+										return table;
+						}
+
+						// render the table(s)
+						tabulate(data, ['date','close']); // 2 column table
+					});
+
+				</script>
+			</div>
+		</div>
 		<div style="clear:both;width:100%;height:25px;"></div>
 		<div class="footer2">
 			<label class="lbl4" style="margin-top:3px;">Help</label>

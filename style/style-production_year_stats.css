@@ -18,6 +18,12 @@
   	cursor: default;
   	font-weight:normal;
 }
+.lbl5 {
+	font-size:.7em;
+  	cursor: default;
+  	vertical-align: middle !important;
+  	font-weight:normal;
+}
  .bar{
     fill: #c9302c;
   }
@@ -36,16 +42,16 @@
 	  stroke: #000;
 	  shape-rendering: crispEdges;
 	}
-  th {
-     position: relative;
-     padding: 5px 63px;
-     text-align: left;
-   }
-   td {
-     position: relative;
-     padding: 3px 3px;
-     text-align: left;
-   }
+ th {
+    position: relative;
+    padding: 5px 67px;
+    text-align: left;
+  }
+  td {
+    position: relative;
+    padding: 3px 3px;
+    text-align: left;
+  }
 /* Using this one when the screen has height ~ 480 and the user opens the keyboard */
 @media (min-height: 280px){
 
@@ -115,9 +121,9 @@
 	}
 
 	div.headingBox{
-		width:175px;
+		width:201px;
 		margin:0 auto;
-		margin-top:10px;
+		margin-top:-5px;
 	}
 	div.stroke{
 		float:left;
@@ -129,7 +135,7 @@
 	}
 	div.separator{
 		float:left;
-		width:10px;
+		width:8px;
 		height:1px;
 		margin-top:5px;
 	}
@@ -144,7 +150,8 @@
 		opacity:0.8;
 	}
 	div.headingBoxYear{
-		width:30px;
+		width:35px;
+		max-width:40px;
 		margin:0 auto;
 		margin-top:20px;
 	}
@@ -173,14 +180,15 @@
     	line-height: 15px;
     	color: #d52b1e;
 	}
-	#tablediv{
-		width:300px;
+  	#tablediv{
 		margin:0 auto;
     left: 0px;
     right: 0px;
 		position:relative;
-		top:20px;
+		top:10px;
+		font-family: EDPPreonMedium,sans-serif;
 	}
+
 	.help{
 		float: left;
 		margin-right: 15px;
@@ -206,6 +214,8 @@
 	}
 
   }
+
+
 @media (min-width: 360px) {
 	.title{
 		float: left;
@@ -226,6 +236,7 @@
 		top:20px;
 	}
 }
+
 
 /* Larger than tablet */
 @media (min-width: 750px) {}

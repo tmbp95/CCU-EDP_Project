@@ -37,6 +37,20 @@
 	  shape-rendering: crispEdges;
 	}
 
+div.tooltip {
+	  position: absolute;
+	  text-align: left;
+	  height: auto;
+	  padding: 4px;
+	  font: 12px sans-serif;
+	  background: #1f1f1f;
+	  color:white;
+	  border: 0px;
+	  border-radius:5px;
+	  pointer-events: none;
+	  margin-top:-20px;
+	}
+
 /* Using this one when the screen has height ~ 480 and the user opens the keyboard */
 @media (min-height: 280px){ 
 	
@@ -106,9 +120,9 @@
 	}
 
 	div.headingBox{
-		width:175px;
+		width:201px;
 		margin:0 auto;
-		margin-top:10px;
+		margin-top:-5px;
 	}
 	div.stroke{
 		float:left;
@@ -120,7 +134,7 @@
 	}
 	div.separator{
 		float:left;
-		width:10px;
+		width:8px;
 		height:1px;
 		margin-top:5px;
 	}
@@ -135,9 +149,11 @@
 		opacity:0.8;
 	}
 	div.headingBoxYear{
-		width:35px;
+		min-width:35px;
+		width:auto;
+		max-width:40px;
 		margin:0 auto;
-		margin-top:20px;
+		margin-top:10px;
 	}
 
 	.options{
@@ -187,10 +203,11 @@
 	div.otherBox{
 		width:203px;
 		margin:0 auto;
+		margin-top:-5px;
 	}
 	div.otherBox2{
 		position:relative;
-		top:15px;
+		top:10px;
 		width:156px;
 		margin:0 auto;
 	}
