@@ -1,0 +1,50 @@
+[
+{
+	"Letter": "2",
+	"Freq": 0.4	
+},
+{
+	"Letter" : "4",
+	"Freq": 0.5
+},
+{
+	"Letter" : "6",
+	"Freq": 0.3
+},
+{
+	"Letter" : "8",
+	"Freq": 1.2
+},
+{
+	"Letter" : "10",
+	"Freq" : 2.1
+},
+{
+	"Letter" : "12",
+	"Freq" : 3.7
+},
+{
+	"Letter" : "14",
+	"Freq" : 4.9
+},
+{
+	"Letter" : "16",
+	"Freq" : 2.6
+},
+{
+	"Letter" : "18",
+	"Freq" : 2.5
+},
+{
+	"Letter" : "20",
+	"Freq" : 1.7
+},
+{
+	"Letter" : "22",
+	"Freq" : 2.1
+},
+{
+	"Letter" : "0",
+	"Freq" : 2.4
+}
+]

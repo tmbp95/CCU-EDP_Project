@@ -18,23 +18,25 @@
   	cursor: default;
   	font-weight:normal;
 }
-
-
-
-
 /* Using this one when the screen has height ~ 480 and the user opens the keyboard */
 @media (min-height: 280px){ 
-	div.edpLogoBox{
-		width:138px;
-		margin:0 auto;
-	}
+	
 }
 /* Using this one when the screen has height ~ 480 */
 @media (min-height: 480px){
-	div.edpLogoBox{
-		width:138px;
-		margin:0 auto;
-		margin-top:5%;
+
+	.options{
+		position: relative;
+		top:2px;
+		width: 100%;
+		height: 400px;
+	}
+	.balance{
+		position: relative;
+		top: 30px;
+		width: 100%;
+		height: 93px;
+		font-family: EDPPreonMedium,sans-serif;
 	}
 	.footer2{
 		width:102px;
@@ -47,10 +49,19 @@
 }
 /* Using this one when the screen has height ~ 640 like Samsung S5 */
 @media (min-height: 640px) {
-	div.edpLogoBox{
-		width:138px;
-		margin:0 auto;
-		margin-top:25%;
+
+	.options{
+		position: relative;
+		top:25px;
+		width: 100%;
+		height: 400px;
+	}
+	.balance{
+		position: relative;
+		top: 40px;
+		width: 100%;
+		height: 93px;
+		font-family: EDPPreonMedium,sans-serif;
 	}
 	.footer2{
 		width:102px;
@@ -68,74 +79,75 @@
 		padding:0;
 		border:0;
 	}
-	a.edpLogo { 
-		font-size: 180%;
-		text-decoration: none;
+
+	.top-bar{
+		width: 100%;
+		height: 36px;
+		float: left;
+		margin-top: 10px;
 	}
-	span.lettering-edp{
-		font-family: EDPPreonMedium,sans-serif;
-		color: #333;
-		letter-spacing: -.062em;
+
+	.settings{
+		float: left;
+		margin: 5px;
 	}
-	span.lettering-online{
+
+	.title{
+		float: left;
+		width: 20%;
+		text-align: center;
+		margin: 5px;
+		padding-left: 8%;
 		font-family: EDPPreonMedium,sans-serif;
 		color: #d52b1e;
+		font-size: 23px;
 	}
-	p.description{
+
+	.buttons{
+		float: right;
+		margin: 5px;
+	}
+
+
+	a.list-group-item, button{
 		font-family: EDPPreonMedium,sans-serif;
-		text-transform: lowercase;
-		color: #333;
-		-webkit-font-smoothing: antialiased;
-		position: relative;
-		font-size:70%;
-		left: 1em;
-		top: -0.6em;
 	}
-	div.headingLoginBox{
-		width:250px;
-		margin:0 auto;
-		margin-top:20px;
+	
+
+	div.panel-body{
+		height: 45px;
+    	line-height: 15px;
+    	color: #d52b1e;
 	}
-	div.stroke{
-		float:left;
-		width:90px;
-		height:1px;
-		margin-top:5px;
-		background-color:#333;
-		opacity:0.5;
+
+	.help{
+		float: left;
+		margin-right: 15px;
+		margin-left: 5px;
 	}
-	div.separator{
-		float:left;
-		width:10px;
-		height:1px;
-		margin-top:5px;
+
+	#log-out{
+		float: right;
+		margin-right: 5px;
+		margin-left: 20px;
+		margin-top: -8px;
 	}
-	div.headingText{
-		float:left;
-		font-family: EDPPreonMedium,sans-serif;
-		color: #333;
-		-webkit-font-smoothing: antialiased;
-		position: relative;
-		font-size:100%;
-		margin-top:-5px;
-		opacity:0.8;
-	}
-	div.edpLoginBox{
-		width:250px;
-		margin:0 auto;
-		margin-top:50px;
-	}
-	div.checkbox{
-		margin-left:10px;
-	}
-	div.otherLoginBox{
-		width:230px;
-		margin:0 auto;
-	}
+
 }
 
-/* Larger than phablet */
-@media (min-width: 550px) {}
+@media (min-width: 360px) {
+
+	.title{
+		float: left;
+		width: 20%;
+		text-align: center;
+		margin: 5px;
+		padding-left: 13%;
+		font-family: EDPPreonMedium,sans-serif;
+		color: #d52b1e;
+		font-size: 23px;
+	}
+}
 
 /* Larger than tablet */
 @media (min-width: 750px) {}

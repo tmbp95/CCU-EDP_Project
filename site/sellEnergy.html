@@ -1,0 +1,304 @@
+<html>
+
+	<head>
+		<title>EDP platform</title>
+		<meta charset="utf-8" />   
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="js/jquery.min.js"></script>   
+		<link href="style/css/bootstrap-toggle.min.css" rel="stylesheet">
+		<link href="style/css/bootstrap.min.css" rel="stylesheet">
+		<link href="style/style-sell.css" rel="stylesheet">
+		<link href="style/checkbox.css" rel="stylesheet">
+		<script src="style/js/bootstrap-toggle.min.js"></script>
+
+	</head>
+
+	<body>
+		<script src="js/d3v4.js"></script>
+		<script>
+
+			
+			
+			var storage = [];
+			var value;
+			var date = new Date();
+			var day = date.getDate();
+			if(day<10) day = '0' + day;
+			var month = date.getMonth()+1;
+			if(month<10) month = '0' + month;
+			var year = date.getFullYear();
+			date = day+"-"+month+"-"+year;
+			var record = localStorage.getItem("storage");
+			var counter = localStorage.getItem("counterstorage");
+			if (counter == null){
+				var counter = 1;
+			}
+			if (record != null){
+				storage.unshift(record);
+			}
+
+			$(document).ready(function(){
+				storage.forEach(function(d){
+					$('#currentlySelling').append(d);
+				})
+			})
+
+			$('body').click(function(e) {
+			    if (!$(e.target).closest('.popupDiv').length){
+			        $(".popupDiv").hide();
+			        $("#popupDiv-back").hide();
+			    }
+			});
+
+			function validateForm() {
+				console.log("ola");
+				var price = document.forms["myForm"]["price"].value;
+			    var quantity = document.forms["myForm"]["quantity"].value;
+			  	
+			    if (quantity == "") {
+			        alert("Amount field must be filled out");
+			        return false;
+			    }
+			    if (price == "") {
+			        alert("Price field must be filled out");
+			        return false;
+			    }
+			    value = '<tr class="' + counter + '"><td class="spaceTD"></td><td class="lbl5">' + quantity + ' kW</td><td class="lbl5">' + price + ' €/Kw</td><td class="lbl5">' + date + '</td><td><button type="button" id="priceChange' + counter + '" onclick="someFunc(' + counter + ',' + price + ',' + quantity + ')" class="btn btn-danger" style="margin-top: 0px;margin-left: 0%;height:25px;width:85px;"><label class="lbl5" style="position:relative;top:0px;left:-5px;">Change Price</label></button></td></tr>';
+
+			    storage.unshift(value);
+
+			    localStorage.setItem("storage", storage);
+			    counter++;
+			    localStorage.setItem("counterstorage", counter);
+			} 
+
+			function validateFormPopup() {
+				var price = document.forms["myFormPopup"]["newPrice"].value;
+				var id = document.forms["myFormPopup"]["id"].value;
+			  	var quantity = document.forms["myFormPopup"]["quantity"].value;
+
+			    if (price == 0) {
+			        alert("Price field must be filled out");
+			        return false;
+			    }
+			    console.log(storage);
+			    storage.forEach(function(d){
+			    	d.split("<tr class=\"").forEach(function(x){
+			    		if(x[0]==id){
+			    		storage.splice(d,1);
+			    		console.log(storage);
+			    		value = '<tr class="' + id + '"><td class="spaceTD"></td><td class="lbl5">' + quantity + ' kW</td><td class="lbl5">' + price + ' €/Kw</td><td class="lbl5">' + date + '</td><td><button type="button" id="priceChange' + id + '" onclick="someFunc(' + id + ',' + price + ',' + quantity + ')" class="btn btn-danger" style="margin-top: 0px;margin-left: 0%;height:25px;width:85px;"><label class="lbl5" style="position:relative;top:0px;left:-5px;">Change Price</label></button></td></tr>';
+
+			    	}
+			    	});
+			    })
+
+			    storage.unshift(value);
+
+			    localStorage.setItem("storage", storage);
+			} 
+
+			function someFunc(value, price, quantity){
+				$("#priceChange" + value).ready(function(){
+					$("html, body").animate({ scrollTop: 0 });
+					$("#popupDiv-back").delay( 100 ).fadeIn(100);
+					$(".popupDiv").show(40);
+					$(".oldPrice").html(price);
+					$(".oldPriceInput").val(price);
+					$(".id").val(value);
+					$(".quantity").val(quantity);
+				})
+			}
+
+
+
+								
+		</script>
+		<div id="popupDiv-back"></div>
+		<div class="popupDiv">
+			<div class="pricesBox">
+				<br>
+				<form name="myFormPopup" onsubmit="validateFormPopup()" method="post">
+					<input type="hidden" class="id" name="id">
+					<input type="hidden" class="quantity" name="quantity">
+				<div class=changeBox>
+					<div class="headingBox">
+						<div class="stroke"></div>
+						<div class="separator"></div>
+						<div class="text">Change Price</div>
+						<div class="separator"></div>
+						<div class="stroke"></div>
+					</div>
+					<br><br>
+					<p class="description">Current Price: <label class="oldPrice" style="margin-left:18px;"></label> €/kW</p>
+					
+					<div style="margin-top:10px">
+						
+						<label class="description">New Price: </label>
+						<input class="box oldPriceInput" name="newPrice" type="number" step="0.1" value="0" min="0" style="text-align:right;width: 50px; position:relative;right:-5px; top:-10px;">
+						<label class="description" style="margin-left:5px;">€/kW</label>
+						<br>
+						<label class="description earn2" style="font-size:.9em;position:relative;left:0px;color:#333;top:-10px;opacity:0.9;visibility:hidden;">You will earn: <font class="amountEarn2">_</font> €</span> 
+
+					</div>
+<script>
+				$(document).ready(function(){
+					$(".oldPriceInput").val($(".oldPrice").val());
+				})
+				$( ".oldPriceInput " ).change(function() {
+			  		$(".earn2").css("visibility", "visible"); 
+			  		$(".amountEarn2").html($(".oldPriceInput").val()*$(".quantity").val());
+				});
+				$( ".oldPriceInput " ).click(function() {
+			  		$(".earn2").css("visibility", "visible"); 
+			  		$(".amountEarn2").html($(".oldPriceInput").val()*$(".quantity").val());
+				});
+				$( ".oldPriceInput " ).keyup(function() {
+			  		$(".earn2").css("visibility", "visible"); 
+			  		$(".amountEarn2").html($(".oldPriceInput").val()*$(".quantity").val());
+				});
+			</script>
+					
+				</div>
+				<div class="confirm" style="">
+						<button type="submit" class="btn btn-danger" style="width:150px;">Confirm</button>
+				</div>
+				</form>
+			</div>
+		</div>
+		<div class="top-bar">
+		<div class="settings">
+				<a href="./menu.html">
+				<button type="button" class="btn btn-default" aria-label="Left Align">
+					<span class="glyphicon glyphicon-menu-left" aria-hidden="true" style="height: 20px; font-size:20; "></span>
+				</button>
+				</a>
+			</div>
+
+			<div class="title">Sell Energy</div>
+
+			<div class="buttons">
+				<a href="./menu.html">
+				<button type="button" class="btn btn-default" aria-label="Left Align">
+					<span class="glyphicon glyphicon-home" aria-hidden="true" style="height: 20px; font-size:20; "></span>
+				</button>
+				</a>
+			</div>
+
+		</div>
+
+		<div class="balance2">
+			<div class="panel panel-default">
+				<table style="margin-left:10px;margin:10px;">
+					<tr>
+						<th class="firstRow" style=""></th>
+						<th style="width:90px;"></th>
+						<th></th>
+					</tr>
+					<tr>
+						<td class="lbl4" >Average Price Today: </td>
+						<td class="lbl4" style="text-align:center;">1 €/Kw</td>
+						<td style="text-align:right;">
+							<button type="button" class="btn btn-danger" style="margin-top: 0px;margin-left: 0%;height:30px;width:100px;">
+								<label class="lbl4" style="position:relative;top:0px;left:-4px;">Check Market</label>
+							</button>
+						</td>
+					</tr>
+					<tr style="font-size:0.5em;">
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td class="lbl4">Available Balance: </td>
+						<td class="lbl4" style="text-align:center;">35 Kw</td>
+						<td style="text-align:right;">
+							<button type="button" class="btn btn-danger" style="margin-top: 0px;margin-left: 0%;height:30px;width:100px;">
+								<label class="lbl4" style="position:relative;top:0px;left:0px;">My Balance</label>
+							</button>
+						</td>
+					</tr>
+				</table>	
+			</div>
+			<div class="panel panel-default" style="margin-top:-10px;">
+				<form name="myForm" onsubmit="validateForm()" method="post">
+					<div class="panel-body">Amount
+				  		<div class="input-group" style="width: 40%; float: right;">
+					  		<input type="text" name="quantity" class="form-control kW">
+					  		<span class="input-group-addon"  style="font-size:.6em;width:10px;max-width:10px;"><font style="position:relative;left:-3px;">kW</font></span>
+						</div>
+					</div>			  
+				  	<div class="panel-body">Price <label class="lbl4" style="color:#333;font-size:0.6em"> (per kW)</label>
+				  		<div class="input-group" style="width: 40%; float: right;">
+					  		<input type="text" name="price" class="form-control euros">
+					 		<span class="input-group-addon">€</span>
+						</div>
+					</div>	
+					<span class="earn" style="font-size:.9em;position:relative;left:15px;color:#333;top:-15px;opacity:0.9;visibility:hidden;">You will earn: <font class="amountEarn">_</font> €</span> 
+					<div style="clear:both;"></div>
+					<button type="submit" value="submit" class="btn btn-danger buttonRow" style="position:relative;top: 15px;height:30px;margin-left:-40px;left:50%;">
+							<label class="lbl3" style="position:relative;top:-2px;left:-2px;">Sell</label>
+					</button>
+				</form>
+				<div style="width:100%;height:30px;clear:both;"></div>
+			</div>
+			<script>
+				$(document).ready(function(){
+					$(".euros").val("");
+					$(".kW").val("");
+				})
+				$( ".kW " ).change(function() {
+					if($(".euros").val()==1 || $(".euros").val()==0){
+			  			$(".euros").val(1);
+			  		}
+			  		$(".earn").css("visibility", "visible"); 
+			  		$(".amountEarn").html($(".euros").val()*$(".kW").val());
+				});
+				$( ".kW " ).click(function() {
+					if($(".euros").val()==1 || $(".euros").val()==0){
+			  			$(".euros").val(1);
+			  		}
+			  		$(".earn").css("visibility", "visible"); 
+			  		$(".amountEarn").html($(".euros").val()*$(".kW").val());
+				});
+				$( ".kW " ).keyup(function() {
+					if($(".euros").val()==1 || $(".euros").val()==0){
+			  			$(".euros").val(1);
+			  		}
+			  		$(".earn").css("visibility", "visible"); 
+			  		$(".amountEarn").html($(".euros").val()*$(".kW").val());
+				});
+				$( ".euros " ).change(function() {
+			  		$(".earn").css("visibility", "visible"); 
+			  		$(".amountEarn").html($(".euros").val()*$(".kW").val());
+				});
+				$( ".euros " ).click(function() {
+			  		$(".earn").css("visibility", "visible"); 
+			  		$(".amountEarn").html($(".euros").val()*$(".kW").val());
+				});
+				$( ".euros " ).keyup(function() {
+			  		$(".earn").css("visibility", "visible"); 
+			  		$(".amountEarn").html($(".euros").val()*$(".kW").val());
+				});
+			</script>
+
+			<div class="panel panel-default" style="margin-top:-10px;">
+				<div class="sellTitle">Currently selling:</div>
+				<table id="currentlySelling" class="table table-striped" style="margin-top:10px;">
+					<tr></tr>
+					
+				</table>
+				<br>					
+			</div>
+		</div>
+
+		<br><br>
+		<div class="footer2">
+			<label class="lbl4" style="margin-top:3px;">Help</label>
+			<label class="lbl4" style="margin-left:5px;margin-top:3px;">Contact</label>
+			<label class="lbl4" style="margin-left:5px;margin-top:3px;">T&C</label>
+		</div>
+
+	</body>
+
+</html>

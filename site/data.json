@@ -1,0 +1,50 @@
+[
+{
+	"Letter": "Jan",
+	"Freq": 20	
+},
+{
+	"Letter" : "Feb",
+	"Freq": 12
+},
+{
+	"Letter" : "Mar",
+	"Freq": 47
+},
+{
+	"Letter" : "Apr",
+	"Freq": 34
+},
+{
+	"Letter" : "May",
+	"Freq" : 54
+},
+{
+	"Letter" : "Jun",
+	"Freq" : 21
+},
+{
+	"Letter" : "Jul",
+	"Freq" : 57
+},
+{
+	"Letter" : "Aug",
+	"Freq" : 31
+},
+{
+	"Letter" : "Sep",
+	"Freq" : 17
+},
+{
+	"Letter" : "Oct",
+	"Freq" : 5
+},
+{
+	"Letter" : "Nov",
+	"Freq" : 23
+},
+{
+	"Letter" : "Dec",
+	"Freq" : 39
+}
+]
