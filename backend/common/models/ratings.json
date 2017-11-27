@@ -1,0 +1,36 @@
+{
+  "name": "ratings",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "client_id": {
+      "type": "number",
+      "required": true
+    },
+    "producer_id": {
+      "type": "number",
+      "required": true
+    },
+    "transaction_id": {
+      "type": "number",
+      "required": true
+    },
+    "payment_id": {
+      "type": "number"
+    },
+    "rating": {
+      "type": "string"
+    },
+    "when_rated": {
+      "type": "date",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

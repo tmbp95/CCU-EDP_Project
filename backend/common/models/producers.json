@@ -1,0 +1,21 @@
+{
+  "name": "producers",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "producer_id": {
+      "type": "number",
+      "required": true
+    },
+    "production": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

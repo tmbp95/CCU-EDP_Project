@@ -1,0 +1,33 @@
+{
+  "name": "transactions",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "transaction_id": {
+      "type": "number",
+      "required": true
+    },
+    "client_id": {
+      "type": "number",
+      "required": true
+    },
+    "energy_id": {
+      "type": "number",
+      "required": true
+    },
+    "production": {
+      "type": "string"
+    },
+    "transaction_time": {
+      "type": "date",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

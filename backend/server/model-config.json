@@ -1,0 +1,44 @@
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "../common/mixins",
+      "./mixins"
+    ]
+  },
+  "clients": {
+    "dataSource": "db",
+    "public": true
+  },
+  "customers": {
+    "dataSource": "db",
+    "public": true
+  },
+  "energy": {
+    "dataSource": "db",
+    "public": true
+  },
+  "payments": {
+    "dataSource": "db",
+    "public": true
+  },
+  "producers": {
+    "dataSource": "db",
+    "public": true
+  },
+  "ratings": {
+    "dataSource": "db",
+    "public": true
+  },
+  "transactions": {
+    "dataSource": "db",
+    "public": true
+  }
+}
