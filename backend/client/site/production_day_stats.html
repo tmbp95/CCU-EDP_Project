@@ -1,0 +1,148 @@
+<html>
+
+	<head>
+		<title>EDP platform</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="js/jquery.min.js"></script>
+		<link href="style/css/bootstrap-toggle.min.css" rel="stylesheet">
+		<link href="style/css/bootstrap.min.css" rel="stylesheet">
+		<link href="style/style-production_day_stats.css" rel="stylesheet">
+		<link href="style/checkbox.css" rel="stylesheet">
+		<script src="style/js/bootstrap-toggle.min.js"></script>
+
+	</head>
+
+	<body>
+		<script>
+			var queryString = decodeURIComponent(window.location.search);
+				queryString = queryString.substring(1);
+				var queries = queryString.split("=");
+		</script>
+		<div class="top-bar">
+			<div class="settings">
+				<button id="backButton" type="button" class="btn btn-default" aria-label="Left Align">
+					<span class="glyphicon glyphicon-menu-left" aria-hidden="true" style="height: 20px; font-size:20; "></span>
+				</button>
+				<script>
+					$("#backButton").on("click", function(){
+						location.href = 'production_day.html?' + queryString
+					})
+			    </script>
+			</div>
+
+			<div class="title">Production</div>
+
+			<div class="buttons">
+				<button id="homeButton" type="button" class="btn btn-default" aria-label="Left Align">
+					<span class="glyphicon glyphicon-home" aria-hidden="true" style="height: 20px; font-size:20; "></span>
+				</button>
+				<script>
+					$("#homeButton").on("click", function(){
+						location.href = "menu.html";
+					})
+			    </script>
+
+			</div>
+		</div>
+		<div style="clear:both"></div>
+		<br>
+		<div style="margin:0 auto;width:215px;font-family: EDPPreonMedium,sans-serif;">
+			<ul class="nav nav-pills">
+				<li role="presentation" class="active"><a onclick="location.href = 'production_day_stats.html?' + queryString" style="cursor:pointer;"><font style="position:relative;top:-5px">Day</font></a></li>
+				<li role="presentation" style="margin-left:5px;"><a onclick="location.href = 'production_month_stats.html?' + queryString" style="cursor:pointer;"><font style="position:relative;top:-5px">Month</font></a></li>
+				<li role="presentation" style="margin-left:5px;"><a onclick="location.href = 'production_year_stats.html?' + queryString" style="cursor:pointer;"><font style="position:relative;top:-5px">Year</font></a></li>
+			</ul>
+		</div>
+		<div id="linechart"></div>
+		<div style="clear:both"></div>
+		<br>
+		<div class="headingBox">
+			<div class="stroke"></div>
+			<div class="separator"></div>
+			<div class="text">Production Log</div>
+			<div class="separator"></div>
+			<div class="stroke"></div>
+		</div>
+		<br>
+		<div class="panel panel-default">
+			<div style="width:100%;height:5px;"></div>
+			<div class="headingBoxDay">
+				<div class="text textdata">24/11/2017</div>
+			</div>
+			<script>
+				var d = new Date(queries[1]);
+				var day = d.getDate();
+				if(day<10) day =  "0" + day;
+				var month = d.getMonth()+1;
+				if(month<10) month =  "0" + month;
+				var year = d.getFullYear();
+
+				$(".textdata").html(day + '/' + month + '/' + year);
+			</script>
+			<div id="tablediv">
+				<script src="http://d3js.org/d3.v3.min.js"></script>
+
+				<script>
+
+
+							d3.json('dataday.json', function (error,data) {
+
+									function tabulate(data, columns) {
+										var table = d3.select('#tablediv').append('table')
+										table.attr("class", "table table-striped");
+										var	tbody = table.append('tbody');
+
+									
+
+										// create a row for each object in the data
+										var rows = tbody.selectAll('tr')
+											.data(data)
+											.enter()
+											.append('tr');
+
+										// create a cell in each row for each column
+										var cells = rows.selectAll('td')
+											.data(function (row) {
+												return columns.map(function (column) {
+													return {column: column, value: row[column]};
+												});
+											})
+											.enter()
+											.append('td')
+												.text(function (d) { 
+													if(d.column == "close"){
+														return d.value + " kW"; 
+													}else{
+														return d.value; 
+													}
+												})
+												.style("text-align", function(d){
+													if(d.column == "close"){
+														return "right";
+													}else{
+														return "left";
+													}
+												})
+												.attr("class", "lbl5");
+
+
+										return table;
+						}
+
+						// render the table(s)
+						tabulate(data, ['date','close']); // 2 column table
+					});
+
+				</script>
+			</div>
+		</div>
+		<div style="clear:both;width:100%;height:25px;"></div>
+		<div class="footer2">
+			<label class="lbl4" style="margin-top:3px;">Help</label>
+			<label class="lbl4" style="margin-left:5px;margin-top:3px;">Contact</label>
+			<label class="lbl4" style="margin-left:5px;margin-top:3px;">T&C</label>
+		</div>
+	</body>
+
+</html>
