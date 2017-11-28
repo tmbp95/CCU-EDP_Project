@@ -27,6 +27,11 @@
     "when_rated": {
       "type": "date",
       "required": true
+    },
+    "rating_id": {
+      "type": "number",
+      "id" : true,
+      "required": true
     }
   },
   "validations": [],

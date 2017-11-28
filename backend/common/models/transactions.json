@@ -8,6 +8,7 @@
   "properties": {
     "transaction_id": {
       "type": "number",
+      "id": true,
       "required": true
     },
     "client_id": {

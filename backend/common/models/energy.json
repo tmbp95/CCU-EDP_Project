@@ -8,6 +8,7 @@
   "properties": {
     "energy_id": {
       "type": "number",
+      "id": true,
       "required": true
     },
     "producer_id": {

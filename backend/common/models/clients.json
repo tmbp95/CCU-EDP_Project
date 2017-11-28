@@ -8,6 +8,7 @@
   "properties": {
     "client_id": {
       "type": "number",
+      "id": true,
       "required": true
     },
     "consumption": {

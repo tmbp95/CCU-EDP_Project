@@ -8,6 +8,7 @@
   "properties": {
     "payment_id": {
       "type": "number",
+      "id": true,
       "required": true
     },
     "transaction_id": {
