@@ -19,6 +19,31 @@
 			queryString = queryString.substring(1);
 			var queries = queryString.split("=");
 
+			var customerID = localStorage.getItem("customerIDStorage");
+
+			function loadDoc(content, cFunction) {
+				var xhttp;
+				xhttp=new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						cFunction(this);
+					}
+				};
+				xhttp.open("GET", "http://85.247.219.175:4567/api/" + content, true);
+				xhttp.send();
+			}
+
+			function getProducedEnergy (xhttp) {
+				localStorage.setItem("production", xhttp.responseText);
+			}
+
+			loadDoc('producedenergies', getProducedEnergy);
+			producedEnergy = localStorage.getItem("production");
+			producedEnergy = jQuery.parseJSON(producedEnergy);
+			console.log(producedEnergy);
+
+
+
 		</script>
 		<div class="top-bar">
 			<div class="settings">
@@ -62,14 +87,18 @@
 		<div style="clear:both"></div>
 		<script src="js/d3v4.js"></script>
 		<script>
+
+
 			var widthCSS = $("#barchart").width();
 			var margin = {top: 20, right: 0, bottom: 70, left: 25},
 			    width = widthCSS - margin.left - margin.right,
 			    height = 250 - margin.top - margin.bottom;
 
 
+			var parseDate = d3.timeParse("%Y-%m-%dT%H:%M:%S.%LZ");
+
 			// set the ranges
-			var x = d3.scaleBand().rangeRound([0, width]);
+			var x = d3.scaleTime().range([0, width]);
 
 			var y = d3.scaleLinear().range([height, 0]);
 
@@ -103,6 +132,7 @@
 			// define the axis
 			var xAxis = d3.axisBottom()
 			    .scale(x)
+			  	.tickFormat(d3.timeFormat("%Y"));
 
 
 			var yAxis = d3.axisLeft()
@@ -110,16 +140,23 @@
 			    .ticks(10);
 
 			// get the data
-			d3.json("dataday.json", function(error, data) {
 
-			    data.forEach(function(d) {
-			        d.date = d.date;
-			        d.close = +d.close;
+				var data = [];
+
+			    producedEnergy.forEach(function(d) {
+			    	if(d.producer_id==customerID){
+			    		data.push(d);
+			    	}
+			    });
+
+			    data.forEach(function(d){
+			    	d.posted_time = parseDate(d.posted_time);
+			        d.quantity = +d.quantity;
 			    });
 				
 			  // scale the range of the data
-			  x.domain(data.map(function(d) { return d.date; }));
-			  y.domain([0, d3.max(data, function(d) { return d.close; })]);
+			  x.domain(data.map(function(d) { return d.posted_time; }));
+			  y.domain([0, d3.max(data, function(d) { return d.quantity; })]);
 
 			  // add axis
 			  svg.append("g")
@@ -151,21 +188,20 @@
 			      .data(data)
 			    .enter().append("rect")
 			      .attr("class", "bar")
-			      .attr("title", function(d) { return d.date; })
-			      .attr("x", function(d) { return x(d.date)+1; })
+			      .attr("title", function(d) { return d.posted_time; })
+			      .attr("x", function(d) { return x(d.posted_time)+1; })
 			      .attr("width", 18)
-			      .attr("y", function(d) { return y(d.close); })
-			      .attr("height", function(d) { return height - y(d.close); })
+			      .attr("y", function(d) { return y(d.quantity); })
+			      .attr("height", function(d) { return height - y(d.quantity); })
 			      .on("click", function(d){
 		            div.transition()
 		               .duration(100)
 		               .style("opacity", 1);
-		            div.html("<strong style='color:white'>" + d.close + " kW</span>")
+		            div.html("<strong style='color:white'>" + d.quantity + " kW</span>")
 		               .style("left", (d3.event.pageX) + "px")
 		               .style("top", (d3.event.pageY) + "px");
 		          })
 
-			});
 
 			if(queries[0]==""){
 				var d = new Date();
