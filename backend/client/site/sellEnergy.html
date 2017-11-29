@@ -13,7 +13,36 @@
 
 	</head>
 
-	<body>
+	<body>	
+		<script>
+			var energies;
+			energies = localStorage.getItem("energies");
+			energies = jQuery.parseJSON(energies);
+			localStorage.clear();
+
+			function loadDoc(content, cFunction) {
+				var xhttp;
+				xhttp=new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						cFunction(this);
+					}
+				};
+				xhttp.open("GET", "http://localhost:3000/api/" + content, true);
+				xhttp.send();
+			}
+
+			function getEnergy (xhttp) {
+				localStorage.setItem("energies", xhttp.responseText);
+			}
+
+			loadDoc('energies', getEnergy);
+			console.log(energies);
+			
+			
+		</script>
+
+		
 		<script src="js/d3v4.js"></script>
 		<script>
 
@@ -221,7 +250,7 @@
 				</table>	
 			</div>
 			<div class="panel panel-default" style="margin-top:-10px;">
-				<form name="myForm" onsubmit="validateForm()" method="post">
+				<form name="myForm" method="post">
 					<div class="panel-body">Amount
 				  		<div class="input-group" style="width: 40%; float: right;">
 					  		<input type="text" name="quantity" class="form-control kW">
@@ -236,14 +265,14 @@
 					</div>	
 					<span class="earn" style="font-size:.9em;position:relative;left:15px;color:#333;top:-15px;opacity:0.9;visibility:hidden;">You will earn: <font class="amountEarn">_</font> €</span> 
 					<div style="clear:both;"></div>
-					<button type="submit" value="submit" class="btn btn-danger buttonRow" style="position:relative;top: 15px;height:30px;margin-left:-40px;left:50%;">
+					<button id="formSell" type="submit" value="submit" class="btn btn-danger buttonRow" style="position:relative;top: 15px;height:30px;margin-left:-40px;left:50%;">
 							<label class="lbl3" style="position:relative;top:-2px;left:-2px;">Sell</label>
 					</button>
 				</form>
 				<div style="width:100%;height:30px;clear:both;"></div>
 			</div>
-			<script>
-				$(document).ready(function(){
+			<!--<script>
+				/*$(document).ready(function(){
 					$(".euros").val("");
 					$(".kW").val("");
 				})
@@ -279,17 +308,44 @@
 				$( ".euros " ).keyup(function() {
 			  		$(".earn").css("visibility", "visible"); 
 			  		$(".amountEarn").html($(".euros").val()*$(".kW").val());
-				});
-			</script>
+				});*/
+			</script>-->
+
+			<script>
+					$("#myForm").on("submit",function(e) {
+					    e.preventDefault(); // cancel submission
+					    var quantity = document.forms["myForm"]["quantity"].value;
+					    var price = document.forms["myForm"]["price"].value;
+					    console.log('ola maltinha');
+					    if( quantity != "" && price != "" ){
+						console.log('ola maltinha');
+					    }
+					});
+				</script>
+
 
 			<div class="panel panel-default" style="margin-top:-10px;">
 				<div class="sellTitle">Currently selling:</div>
-				<table id="currentlySelling" class="table table-striped" style="margin-top:10px;">
+				<table id="currentlySelling" class="table table-striped" style="margin-top:10px;margin-left:17px;">
 					<tr></tr>
 					
 				</table>
 				<br>					
 			</div>
+
+			<script>
+					$(document).ready(function(){
+					    energies.forEach(function(d){
+					    	console.log("energy_id" + " - " + d.energy_id);
+					    	console.log("quantity" + " - " + d.quantity);
+						document.getElementById("currentlySelling").innerHTML += "<tr style='border:none;'>" + d.quantity + " for " + d.KWhPrice + "€" + "<button type='button' class='btn btn-danger' style='margin-top: 0px;margin-right: 10%;height:30px;width:100px;float: right;'><label class='lbl4' style='position:relative;top:0px;left:-4px;'>Change Price</label></button>" + "<button type='button' class='btn btn-default' aria-label='Left Align' style='float:right;background-color:#d9534f;'><span class='glyphicon glyphicon-trash' aria-hidden='true' style='height: 17px; font-size:15; color:white;'></span></button>" + "</tr>";
+					    	})
+					});
+
+			</script>
+			
+
+
 		</div>
 
 		<br><br>

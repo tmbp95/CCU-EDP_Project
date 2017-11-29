@@ -255,6 +255,10 @@
 		margin-top:-5px;
 		opacity:0.95;
 	}
+
+	.table > tbody + tbody {
+	    border-top: none;
+	}
 }
 
 /* Larger than phablet */
