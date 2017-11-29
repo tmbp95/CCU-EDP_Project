@@ -10,15 +10,20 @@
 		<link href="style/template.css" rel="stylesheet">
 		<link href="style/checkbox.css" rel="stylesheet">
 		<script src="style/js/bootstrap-toggle.min.js"></script>
+		<script>
+
+		</script>
 
 	</head>
 
 	<body>
 		<script>
-			var customers;
+			var customers, usernameStorage;
 			customers = localStorage.getItem("customers");
+			usernameStorage = localStorage.getItem("usernameStorage");
+			console.log(usernameStorage);
 			customers = jQuery.parseJSON(customers);
-			localStorage.clear();
+			//localStorage.clear();
 			function loadDoc(content, cFunction) {
 				var xhttp;
 				xhttp=new XMLHttpRequest();
@@ -98,7 +103,8 @@
 				</form>
 
 				<script>
-					$("#formLogin").on("submit",function(e) {
+ 
+				$("#formLogin").on("submit",function(e) {
 					    e.preventDefault(); // cancel submission
 					    var username = document.forms["formLogin"]["username"].value;
 						var password = document.forms["formLogin"]["password"].value;
@@ -118,10 +124,11 @@
 					    	//console.log(password + " - " + d.password);
 					    	if(username==d.login){
 					    		if(password==d.password){
+					    			localStorage.setItem("usernameStorage", username);
 					    			$(".successAlert").fadeIn();
 					        		$(".success").html("You are going to be redirected");
 					    			setTimeout(function(){
-									    window.location.replace("menu.html");
+									    window.location = "menu.html";
 									}, 2000);
 					    		}else{
 					    			$(".errorAlert").fadeIn();

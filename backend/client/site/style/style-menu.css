@@ -18,6 +18,36 @@
   	cursor: default;
   	font-weight:normal;
 }
+
+#popupDiv-back {
+	    position   : absolute;
+	    top        : 0;
+	    left       : 0;
+	    width      : 100%;
+	    height     : 100%;
+	    background : #000;
+	    opacity    : 0.6;
+	    filter     : alpha(opacity=60);
+	    z-index    : 5;
+	    display    : none;
+	}
+
+	#popupDiv{
+		position:absolute;
+	    width:150px;
+	    height:150px;
+	    top: 50%;
+	    left: 50%;
+	    margin-left: -75px;
+	    margin-top: -75px; 
+		z-index:999;
+		background-color: #f6f4f4;
+		opacity:0.95;
+		border-radius:10px;
+		box-shadow: 0 0 2px black;
+		display:none;
+	}
+
 /* Using this one when the screen has height ~ 480 and the user opens the keyboard */
 @media (min-height: 280px){ 
 	
@@ -132,7 +162,6 @@
 		margin-left: 20px;
 		margin-top: -8px;
 	}
-
 }
 
 @media (min-width: 360px) {

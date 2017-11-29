@@ -14,11 +14,57 @@
 	</head>
 
 	<body>
+		<script>
+			//localStorage.clear();
+			var username = localStorage.getItem("usernameStorage");
+			console.log(username);
+			if(username==null){
+				window.location.replace("index.html");
+			}
+
+			$('body').click(function(e) {
+			    if (!$(e.target).closest('#popupDiv').length){
+			        $("#popupDiv").hide();
+			        $("#popupDiv-back").hide();
+			    }
+			});
+
+			function someFunc(){
+				$("html, body").animate({ scrollTop: 0 });
+				$("#popupDiv-back").delay( 100 ).fadeIn(100);
+				$("#popupDiv").delay( 100 ).fadeIn(100);
+			}
+		</script>
+
+		<div id="popupDiv-back"></div>
+		<div id="popupDiv">
+			<div class="list-group">
+
+			  <a href="#" class="list-group-item" style="font-size: 24px;height: 40px;line-height: 40px;"></a>
+			  <a href="#" class="list-group-item" style="font-size: 24px;height: 40px;line-height: 40px;"></a>
+			  <a href="#" class="list-group-item" style="font-size: 24px;height: 40px;line-height: 40px;"></a>
+			  <a href="#" id="logout" class="list-group-item" style="font-size: 24px;height: 33px;line-height: 10px;font-size:14px;text-align:center;color:#d52b1e;">Logout</a>
+			</div>
+				
+				<script>
+					$("#logout").on("click", function(){
+						localStorage.setItem("usernameStorage", null);
+						window.location.replace("index.html");
+					})
+				</script>
+		</div>
+
 		<div class="top-bar">
 		<div class="settings">
-			<button type="button" class="btn btn-default" aria-label="Left Align">
+			<button type="button" id="settings" class="btn btn-default" aria-label="Left Align">
 				<span class="glyphicon glyphicon-cog" aria-hidden="true" style="height: 20px; font-size:20; "></span>
 			</button>
+			
+			<script>
+				$("#settings").on("click", function(){
+					someFunc();
+				})
+			</script>
 		</div>
 			
 		<div class="title">Home</div>
