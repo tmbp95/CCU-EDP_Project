@@ -35,7 +35,23 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "transactions": {
+      "type": "hasMany",
+      "model": "transactions",
+      "foreignKey": "client_id"
+    },
+    "creditCards": {
+      "type": "hasMany",
+      "model": "creditCards",
+      "foreignKey": "holder"
+    },
+    "energy": {
+      "type": "hasMany",
+      "model": "energy",
+      "foreignKey": "holder"
+    }
+  },
   "acls": [],
   "methods": {}
 }

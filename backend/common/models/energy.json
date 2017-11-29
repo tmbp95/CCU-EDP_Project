@@ -27,6 +27,12 @@
     "posted_time": {
       "type": "date",
       "required": true
+    },
+    "KWhPrice": {
+      "type": "number"
+    },
+    "holder": {
+      "type": "number"
     }
   },
   "validations": [],

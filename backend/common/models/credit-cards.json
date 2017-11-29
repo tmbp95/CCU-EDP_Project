@@ -1,30 +1,30 @@
 {
-  "name": "transactions",
+  "name": "creditCards",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "transaction_id": {
+    "creditcard_id": {
       "type": "number",
       "id": true,
       "required": true
     },
-    "client_id": {
-      "type": "number",
-      "required": true
-    },
-    "energy_id": {
-      "type": "number",
-      "required": true
-    },
-    "production": {
+    "creditcard_number": {
       "type": "string"
     },
-    "transaction_time": {
-      "type": "date",
-      "required": true
+    "card_holder": {
+      "type": "string"
+    },
+    "ccv": {
+      "type": "string"
+    },
+    "expires": {
+      "type": "date"
+    },
+    "holder": {
+      "type": "number"
     }
   },
   "validations": [],
