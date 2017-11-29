@@ -145,6 +145,7 @@
 			  if (error) throw error;
 			  var data = [];
 			  dados.forEach(function(d){
+			  	console.log(d);
 			  	if(d.date.getMonth()+1 == monthReceived){
 			  		data.push(d);
 			  	}

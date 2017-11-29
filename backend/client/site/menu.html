@@ -29,7 +29,7 @@
 			    }
 			});
 
-			function someFunc(){
+			function openSettings(){
 				$("html, body").animate({ scrollTop: 0 });
 				$("#popupDiv-back").delay( 100 ).fadeIn(100);
 				$("#popupDiv").delay( 100 ).fadeIn(100);
@@ -38,18 +38,22 @@
 
 		<div id="popupDiv-back"></div>
 		<div id="popupDiv">
-			<div class="list-group">
+			<div class="list-group" style="font-size:14px;text-align:center;line-height: 10px;">
 
-			  <a href="#" class="list-group-item" style="font-size: 24px;height: 40px;line-height: 40px;"></a>
-			  <a href="#" class="list-group-item" style="font-size: 24px;height: 40px;line-height: 40px;"></a>
-			  <a href="#" class="list-group-item" style="font-size: 24px;height: 40px;line-height: 40px;"></a>
-			  <a href="#" id="logout" class="list-group-item" style="font-size: 24px;height: 33px;line-height: 10px;font-size:14px;text-align:center;color:#d52b1e;">Logout</a>
+			  <a href="#" class="list-group-item disabled" style="cursor:default;height: 40px;"><label style="cursor: pointer;position:relative;top:6px;font-weight: 100;cursor:default;">v1.0.1</label></a>
+			  <a href="#" id="accountInformations" class="list-group-item" style="height: 40px;"><label style="cursor: pointer;position:relative;top:6px;font-weight: 100;">Account Informations</label></a>
+			  <a href="#" class="list-group-item" style="height: 40px;"><label style="cursor: pointer;position:relative;top:6px;font-weight: 100;">terms & conditions</label></a>
+			  <a href="#" id="logout" class="list-group-item" style="height: 33px;color:#d52b1e;">Logout</a>
 			</div>
 				
 				<script>
 					$("#logout").on("click", function(){
 						localStorage.setItem("usernameStorage", null);
 						window.location.replace("index.html");
+					})
+
+					$("#accountInformations").on("click", function(){
+						window.location.replace("accountInformations.html");
 					})
 				</script>
 		</div>
@@ -62,7 +66,7 @@
 			
 			<script>
 				$("#settings").on("click", function(){
-					someFunc();
+					openSettings();
 				})
 			</script>
 		</div>

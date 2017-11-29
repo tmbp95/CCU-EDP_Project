@@ -20,6 +20,7 @@
 		<script>
 			var customers, usernameStorage;
 			customers = localStorage.getItem("customers");
+			customerID = localStorage.getItem("customerIDStorage");
 			usernameStorage = localStorage.getItem("usernameStorage");
 			console.log(usernameStorage);
 			customers = jQuery.parseJSON(customers);
@@ -125,6 +126,7 @@
 					    	if(username==d.login){
 					    		if(password==d.password){
 					    			localStorage.setItem("usernameStorage", username);
+					    			localStorage.setItem("customerIDStorage", d.customer_id);
 					    			$(".successAlert").fadeIn();
 					        		$(".success").html("You are going to be redirected");
 					    			setTimeout(function(){
@@ -149,12 +151,13 @@
 				</script>
 				<div style="width:100%;height:10px;"></div>
 				<a href=""><label class="lbl2">Forgot your password?</label></a>
+				<label class="lbl3" style="margin-top:12px;">New user? <a href=""><label class="lbl2" style="margin-left:5px;color:#d52b1e">Register</label></a></label>
 			</div>
 		</div>
-		<div class="headingLoginBox">
+		<!--<div class="headingLoginBox">
 			<div class="stroke"></div>
 			<div class="separator"></div>
-			<div class="headingText">&nbspOr&nbsp&nbsp</div> <!-- OR -->
+			<div class="headingText">&nbspOr&nbsp&nbsp</div> 
 			<div class="separator"></div>
 			<div class="stroke"></div>
 		</div>
@@ -171,9 +174,9 @@
 					<label class="lbl3" style="margin-top:2px;color: #4169E1;">Facebook</label>
 				</button>
 			</div>
-			<label class="lbl3" style="margin-top:12px;">New user? <a href=""><label class="lbl2" style="margin-left:5px;color:#d52b1e">Register</label></a></label>
+			
 			<br>
-		</div>
+		</div>-->
 		<div class="footer2">
 			<label class="lbl4" style="margin-top:3px;">Help</label>
 			<label class="lbl4" style="margin-left:5px;margin-top:3px;">Contact</label>

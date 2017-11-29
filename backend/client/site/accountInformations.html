@@ -1,0 +1,59 @@
+<html>
+
+	<head>
+		<title>EDP platform</title>
+		<meta charset="utf-8" />   
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="js/jquery.min.js"></script>   
+		<link href="style/css/bootstrap-toggle.min.css" rel="stylesheet">
+		<link href="style/css/bootstrap.min.css" rel="stylesheet">
+		<link href="style/style-accountinfo.css" rel="stylesheet">
+		<link href="style/checkbox.css" rel="stylesheet">
+		<script src="style/js/bootstrap-toggle.min.js"></script>
+
+	</head>
+
+	<body>
+		<script>
+			//localStorage.clear();
+			var username = localStorage.getItem("usernameStorage");
+			console.log(username);
+			if(username==null){
+				window.location.replace("index.html");
+			}
+		</script>
+
+		<div class="top-bar">
+		<div class="settings">
+				<a href="./menu.html">
+				<button type="button" class="btn btn-default" aria-label="Left Align">
+					<span class="glyphicon glyphicon-menu-left" aria-hidden="true" style="height: 20px; font-size:20; "></span>
+				</button>
+				</a>
+			</div>
+
+			<div class="title">Account Informations</div>
+
+			<div class="buttons">
+				<a href="./menu.html">
+				<button type="button" class="btn btn-default" aria-label="Left Align">
+					<span class="glyphicon glyphicon-home" aria-hidden="true" style="height: 20px; font-size:20; "></span>
+				</button>
+				</a>
+			</div>
+
+		</div>
+		<div style="clear:both"></div>
+		
+		
+		
+		
+		<div class="footer2">
+			<label class="lbl4" style="margin-top:3px;">Help</label>
+			<label class="lbl4" style="margin-left:5px;margin-top:3px;">Contact</label>
+			<label class="lbl4" style="margin-left:5px;margin-top:3px;">T&C</label>
+		</div>
+
+	</body>
+
+</html>
