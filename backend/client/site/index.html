@@ -39,6 +39,18 @@
 			
 			
 		</script>
+		<div class="alert alert-danger errorAlert" role="alert" style="display:none;position:absolute;width:100%;top:1px;height:50px;">
+		  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+		  <span class="sr-only">Error:</span>
+		  <label class="error"></label>
+		  <span class="glyphicon glyphicon-remove" aria-hidden="true" style="float:right;padding:4px;"></span>
+		</div>
+		<div class="alert alert-success successAlert" role="alert" style="display:none;position:absolute;width:100%;top:1px;height:50px;">
+		  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+		  <span class="sr-only">Success:</span>
+		  <label class="success"></label>
+		  <span class="glyphicon glyphicon-remove" aria-hidden="true" style="float:right;padding:4px;"></span>
+		</div>
 		<div class="edpLogoBox">
 			<a class="edpLogo" href="">
 				<span class="lettering-edp">edp</span>
@@ -84,33 +96,48 @@
 						<button type="submit" id="loginButton" class="btn btn-danger" style="width:218px;">Login</button>
 					</div>
 				</form>
-				<script>
-					$("#formLogin").submit(function(){
-						console.log(customers);
-						var username = document.forms["formLogin"]["username"].value;
-						var password = document.forms["formLogin"]["password"].value;
-					    /*
-					    if (username == 0) {
-					        alert("Price field must be filled out");
-					        return false;
-					    }
-					    if (password == 0) {
-					        alert("Price field must be filled out");
-					        return false;
-					    }
-					    */
 
+				<script>
+					$("#formLogin").on("submit",function(e) {
+					    e.preventDefault(); // cancel submission
+					    var username = document.forms["formLogin"]["username"].value;
+						var password = document.forms["formLogin"]["password"].value;
+					    if (username == 0) {
+					    	$(".errorAlert").fadeIn();
+					        $(".error").html("You have to insert a username");
+					        return false;
+					    }else{
+					    	if (password == 0) {
+					        	$(".errorAlert").fadeIn();
+					        	$(".error").html("You have to insert a password");
+					        	return false;
+					    	}
+					    }
 					    customers.forEach(function(d){
-					    	console.log(username + " - " + d.login);
-					    	console.log(password + " - " + d.password);
+					    	//console.log(username + " - " + d.login);
+					    	//console.log(password + " - " + d.password);
 					    	if(username==d.login){
 					    		if(password==d.password){
-					    			window.location.href = "menu.html" ;
-    								return false;
+					    			$(".successAlert").fadeIn();
+					        		$(".success").html("You are going to be redirected");
+					    			setTimeout(function(){
+									    window.location.replace("menu.html");
+									}, 2000);
+					    		}else{
+					    			$(".errorAlert").fadeIn();
+					        		$(".error").html("The password is not correct");
+					        		return false;
 					    		}
+					    	}else{
+					    		$(".errorAlert").fadeIn();
+					        	$(".error").html("The username is not correct");
+					        	return false;
 					    	}
 					    })
-				    
+					   
+					});
+					$(".errorAlert").on("click",function(e) {
+						$(".errorAlert").fadeOut();
 					});
 				</script>
 				<div style="width:100%;height:10px;"></div>
