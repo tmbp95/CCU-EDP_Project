@@ -28,10 +28,7 @@
     "fk1_producedenergy": {
       "type": "belongsTo",
       "model": "producers",
-      "foreignKey": "producer_id",
-      "options": {
-        "nestRemoting": true
-      }
+      "foreignKey": "producer_id"
     }
   },
   "acls": [],

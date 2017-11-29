@@ -28,41 +28,91 @@ module.exports = function(Customers) {
 		}
 	);
 
-	// Customers.transactions = function(customer_id, cb){
-	// 	var filter = { include : [ 'transactions'] };
-	// 	Customers.findById(customer_id, filter, function(err, instance) {
-	// 		if(err) {
- //        console.log(err);
-	// 	} else {
-	// 		var capp = Customers.app;
-	// 		var t = capp.models.Transactions;
-	// 		t.find({where: {client_id: customer_id}}, function(err, trans){
-	// 			if(err) {
-	// 				console.log(err);
-	// 			}
-	// 			else {
-	// 				var response = trans;
-	// 				cb(null, response);
- //        			console.log(response);
-	// 			}
-	// 		});
-	// 	}
-	// 	});
-	// }
+	Customers.login = function(email, password ,cb){
+		Customers.find({where: {and: [{email: email}, {password: password}]} }, function (err, instance){
+			var response = instance;
+			cb(null, response);
+        	console.log(response);
+		})
+	}
 
-	// Customers.remoteMethod(
-	// 	'transactions',
-	// 	{
-	// 		http: {path: '/transactions', verb: 'get'},
-	// 		accepts: {arg: 'customer_id', type: 'number', http: {source: 'query'}},
-	// 		returns: [
-	// 		{arg: 'transaction_id', type: 'number'},
-	// 		{arg: 'client_id', type: 'number'},
-	// 		{arg: 'energy_id', type: 'number'},
-	// 		{arg: 'production', type: 'string'},
-	// 		{arg: 'transaction_time', type: 'date'}
-	// 		]
-	// 	}
-	// 	);
+	Customers.remoteMethod (
+		'login' ,
+		{
+			http: {path: '/login', verb: 'get'},
+			accepts: [
+				{arg: 'email', type: 'string', required: true,http: {source: 'query'}},
+				{arg: 'password', type: 'string', required: true , http: {source: 'query'}},
+				],
+			returns: [
+			{arg: 'customer_id', type: 'number'},
+			{arg: 'login', type: 'string'},
+			{arg: 'password', type: 'string'},
+			{arg: 'email', type: 'string'},
+			{arg: 'customer_name', type: 'string'},
+			{arg: 'customer_address', type: 'string'},
+			{arg: 'creditcard', type: 'string'},
+			{arg: 'lastlogin', type: 'date'}
+			]
+		}
+	);
+
+	Customers.packsForSale = function(cb){
+		var filter = { include : [ 'energy'] };
+		var capp = Customers.app;
+		var e = capp.models.Energy;
+		e.find({where: {holder: null}}, function(err, instance) {
+			var response = instance;
+			cb(null, response);
+			console.log(response);
+		})
+		
+	}
+
+	Customers.remoteMethod(
+		'packsForSale',
+		{
+			http: {path: '/packsForSale', verb: 'get'},
+			// accepts: {arg: 'customer_id', type: 'number', http: {source: 'query'}},
+			returns: [
+			{arg: 'energy_id', type: 'number'},
+			{arg: 'producer_id', type: 'number'},
+			{arg: 'quatity', type: 'string'},
+			{arg: 'packName', type: 'string'},
+			{arg: 'packDescript', type: 'string'},
+			{arg: 'posted_time', type: 'date'},
+			{arg: 'holder', type: 'number'}
+			]
+		}
+		);
+
+	Customers.activePack = function(customer_id, cb){
+		var filter = { include : [ 'energy'] };
+		var capp = Customers.app;
+		var e = capp.models.Energy;
+		e.find({where: {and: [{holder: customer_id}, {active : 1}]}}, function(err, instance) {
+			var response = instance;
+			cb(null, response);
+			console.log(response);
+		})
+		
+	}
+
+	Customers.remoteMethod(
+		'activePack',
+		{
+			http: {path: '/activePack', verb: 'get'},
+			accepts: {arg: 'customer_id', type: 'number', http: {source: 'query'}},
+			returns: [
+			{arg: 'energy_id', type: 'number'},
+			{arg: 'producer_id', type: 'number'},
+			{arg: 'quatity', type: 'string'},
+			{arg: 'packName', type: 'string'},
+			{arg: 'packDescript', type: 'string'},
+			{arg: 'posted_time', type: 'date'},
+			{arg: 'holder', type: 'number'}
+			]
+		}
+		);
 
 };
