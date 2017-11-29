@@ -40,5 +40,9 @@
   "transactions": {
     "dataSource": "db",
     "public": true
+  },
+  "producedenergy": {
+    "dataSource": "db",
+    "public": true
   }
 }

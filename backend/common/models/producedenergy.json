@@ -1,0 +1,39 @@
+{
+  "name": "producedenergy",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "producer_id": {
+      "type": "number",
+      "required": true
+    },
+    "increment_id": {
+      "type": "number",
+      "required": true
+    },
+    "quantity": {
+      "type": "number",
+      "required": true
+    },
+    "posted_time": {
+      "type": "date",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "fk1_producedenergy": {
+      "type": "belongsTo",
+      "model": "producers",
+      "foreignKey": "producer_id",
+      "options": {
+        "nestRemoting": true
+      }
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
