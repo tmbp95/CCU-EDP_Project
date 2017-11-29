@@ -16,7 +16,7 @@
       "required": true
     },
     "quantity": {
-      "type": "string"
+      "type": "number"
     },
     "packName": {
       "type": "string"
