@@ -16,11 +16,22 @@
 	<body>
 		<script>
 			//localStorage.clear();
+			/*
+			localStorage.setItem("usernameStorage", username);
+			localStorage.setItem("customerIDStorage", d.customer_id);
+			localStorage.setItem("customerNameStorage", d.customer_name);
+			localStorage.setItem("customerAddressStorage", d.customer_address);
+			localStorage.setItem("customerCreditCardStorage", d.creditcard);
+			*/
 			var username = localStorage.getItem("usernameStorage");
 			console.log(username);
 			if(username==null){
 				window.location.replace("index.html");
 			}
+			var cName = localStorage.getItem("customerNameStorage");
+			console.log(cName);
+			var cMorada = localStorage.getItem("customerAddressStorage");
+			var cCartao = localStorage.getItem("customerCreditCardStorage");
 		</script>
 
 		<div class="top-bar">
@@ -44,8 +55,46 @@
 
 		</div>
 		<div style="clear:both"></div>
-		
-		
+		<br><br>
+		<div class="balance2">
+			<div class="panel panel-default" style="margin-top:-10px;">
+				<form name="myForm" method="post">
+					<div class="panel-body">Username
+				  		<div class="input-group" style="width: 40%; float: right;color:#333">
+					  		<script>document.write(username)</script>
+						</div>
+					</div>
+					<div class="panel-body">Name
+				  		<div class="input-group" style="width: 40%; float: right;color:#333">
+					  		<script>document.write(cName)</script>
+						</div>
+					</div>			
+					<div class="panel-body">Address
+				  		<div class="input-group" style="width: 40%; float: right;color:#333">
+					  		<script>document.write(cMorada)</script>
+						</div>
+					</div>	
+					<div class="panel-body">Credit Card
+				  		<div class="input-group" style="width: 40%; float: right;color:#333">
+					  		<script>document.write(cCartao)</script>
+						</div>
+					</div>		  
+				  	<!--<div class="panel-body">Price <label class="lbl4" style="color:#333;font-size:0.6em"> (per kW)</label>
+				  		<div class="input-group" style="width: 40%; float: right;">
+					  		<input type="text" name="price" class="form-control euros">
+					 		<span class="input-group-addon">€</span>
+						</div>
+					</div>	
+					<span class="earn" style="font-size:.9em;position:relative;left:15px;color:#333;top:-15px;opacity:0.9;visibility:hidden;">You will earn: <font class="amountEarn">_</font> €</span> 
+					<div style="clear:both;"></div>
+					<button id="formSell" type="submit" value="submit" class="btn btn-danger buttonRow" style="position:relative;top: 15px;height:30px;margin-left:-40px;left:50%;">
+							<label class="lbl3" style="position:relative;top:-2px;left:-2px;">Sell</label>
+					</button>-->
+				</form>
+			
+			</div>
+		</div>
+		<script></script>
 		
 		
 		<div class="footer2">
