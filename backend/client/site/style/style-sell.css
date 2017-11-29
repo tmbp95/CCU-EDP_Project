@@ -25,8 +25,8 @@
   	font-weight:normal;
 }
 /* Using this one when the screen has height ~ 480 and the user opens the keyboard */
-@media (min-height: 280px){ 
-	
+@media (min-height: 280px){
+
 }
 /* Using this one when the screen has height ~ 480 */
 @media (min-height: 480px){
@@ -37,6 +37,7 @@
 		left: 0;
 		right: 0;
 		margin: auto;
+    visibility: hidden;
 	}
 	.balance{
 		font-family: EDPPreonMedium,sans-serif;
@@ -61,6 +62,7 @@
 		left: 0;
 		right: 0;
 		margin: auto;
+    visibility: hidden;
 
 	}
 	.balance{
@@ -121,7 +123,7 @@
 	a.list-group-item, button{
 		font-family: EDPPreonMedium,sans-serif;
 	}
-	
+
 
 	div.panel-body{
 		height: 60px;
@@ -143,7 +145,7 @@
 		margin-top: 15px;
 		margin-left:5%;
 	}
-	
+
 
 	.help{
 		float: left;
@@ -178,7 +180,7 @@
 	    top: 50%;
 	    left: 50%;
 	    margin-left: -150px;
-	    margin-top: -100px; 
+	    margin-top: -100px;
 		z-index:999;
 		background-color: #f6f4f4;
 		opacity:0.95;
@@ -209,7 +211,7 @@
 		margin-left:30px;
 		top: -0.6em;
 		font-weight: normal !important;
-	} 
+	}
 	div.confirm{
 		margin:0 auto;
 		margin-top:5px;

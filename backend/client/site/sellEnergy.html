@@ -2,9 +2,9 @@
 
 	<head>
 		<title>EDP platform</title>
-		<meta charset="utf-8" />   
+		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<script src="js/jquery.min.js"></script>   
+		<script src="js/jquery.min.js"></script>
 		<link href="style/css/bootstrap-toggle.min.css" rel="stylesheet">
 		<link href="style/css/bootstrap.min.css" rel="stylesheet">
 		<link href="style/style-sell.css" rel="stylesheet">
@@ -13,7 +13,7 @@
 
 	</head>
 
-	<body>	
+	<body>
 		<script>
 			var energies;
 			energies = localStorage.getItem("energies");
@@ -27,7 +27,7 @@
 						cFunction(this);
 					}
 				};
-				xhttp.open("GET", "http://localhost:3000/api/" + content, true);
+				xhttp.open("GET", "http://85.247.219.175:4567/api/" + content, true);
 				xhttp.send();
 			}
 
@@ -37,16 +37,16 @@
 
 			loadDoc('energies', getEnergy);
 			console.log(energies);
-			
-			
+
+
 		</script>
 
-		
+
 		<script src="js/d3v4.js"></script>
 		<script>
 
-			
-			
+
+
 			var storage = [];
 			var value;
 			var date = new Date();
@@ -82,7 +82,7 @@
 				console.log("ola");
 				var price = document.forms["myForm"]["price"].value;
 			    var quantity = document.forms["myForm"]["quantity"].value;
-			  	
+
 			    if (quantity == "") {
 			        alert("Amount field must be filled out");
 			        return false;
@@ -98,7 +98,7 @@
 			    localStorage.setItem("storage", storage);
 			    counter++;
 			    localStorage.setItem("counterstorage", counter);
-			} 
+			}
 
 			function validateFormPopup() {
 				var price = document.forms["myFormPopup"]["newPrice"].value;
@@ -124,7 +124,7 @@
 			    storage.unshift(value);
 
 			    localStorage.setItem("storage", storage);
-			} 
+			}
 
 			function someFunc(value, price, quantity){
 				$("#priceChange" + value).ready(function(){
@@ -140,7 +140,7 @@
 
 
 
-								
+
 		</script>
 		<div id="popupDiv-back"></div>
 		<div class="popupDiv">
@@ -159,14 +159,14 @@
 					</div>
 					<br><br>
 					<p class="description">Current Price: <label class="oldPrice" style="margin-left:18px;"></label> €/kW</p>
-					
+
 					<div style="margin-top:10px">
-						
+
 						<label class="description">New Price: </label>
 						<input class="box oldPriceInput" name="newPrice" type="number" step="0.1" value="0" min="0" style="text-align:right;width: 50px; position:relative;right:-5px; top:-10px;">
 						<label class="description" style="margin-left:5px;">€/kW</label>
 						<br>
-						<label class="description earn2" style="font-size:.9em;position:relative;left:0px;color:#333;top:-10px;opacity:0.9;visibility:hidden;">You will earn: <font class="amountEarn2">_</font> €</span> 
+						<label class="description earn2" style="font-size:.9em;position:relative;left:0px;color:#333;top:-10px;opacity:0.9;visibility:hidden;">You will earn: <font class="amountEarn2">_</font> €</span>
 
 					</div>
 <script>
@@ -174,19 +174,19 @@
 					$(".oldPriceInput").val($(".oldPrice").val());
 				})
 				$( ".oldPriceInput " ).change(function() {
-			  		$(".earn2").css("visibility", "visible"); 
+			  		$(".earn2").css("visibility", "visible");
 			  		$(".amountEarn2").html($(".oldPriceInput").val()*$(".quantity").val());
 				});
 				$( ".oldPriceInput " ).click(function() {
-			  		$(".earn2").css("visibility", "visible"); 
+			  		$(".earn2").css("visibility", "visible");
 			  		$(".amountEarn2").html($(".oldPriceInput").val()*$(".quantity").val());
 				});
 				$( ".oldPriceInput " ).keyup(function() {
-			  		$(".earn2").css("visibility", "visible"); 
+			  		$(".earn2").css("visibility", "visible");
 			  		$(".amountEarn2").html($(".oldPriceInput").val()*$(".quantity").val());
 				});
 			</script>
-					
+
 				</div>
 				<div class="confirm" style="">
 						<button type="submit" class="btn btn-danger" style="width:150px;">Confirm</button>
@@ -246,7 +246,7 @@
 							</button>
 						</td>
 					</tr>
-				</table>	
+				</table>
 			</div>
 			<div class="panel panel-default" style="margin-top:-10px;">
 				<form name="myForm" method="post">
@@ -255,14 +255,14 @@
 					  		<input type="text" name="quantity" class="form-control kW">
 					  		<span class="input-group-addon"  style="font-size:.6em;width:10px;max-width:10px;"><font style="position:relative;left:-3px;">kW</font></span>
 						</div>
-					</div>			  
+					</div>
 				  	<div class="panel-body">Price <label class="lbl4" style="color:#333;font-size:0.6em"> (per kW)</label>
 				  		<div class="input-group" style="width: 40%; float: right;">
 					  		<input type="text" name="price" class="form-control euros">
 					 		<span class="input-group-addon">€</span>
 						</div>
-					</div>	
-					<span class="earn" style="font-size:.9em;position:relative;left:15px;color:#333;top:-15px;opacity:0.9;visibility:hidden;">You will earn: <font class="amountEarn">_</font> €</span> 
+					</div>
+					<span class="earn" style="font-size:.9em;position:relative;left:15px;color:#333;top:-15px;opacity:0.9;visibility:hidden;">You will earn: <font class="amountEarn">_</font> €</span>
 					<div style="clear:both;"></div>
 					<button id="formSell" type="submit" value="submit" class="btn btn-danger buttonRow" style="position:relative;top: 15px;height:30px;margin-left:-40px;left:50%;">
 							<label class="lbl3" style="position:relative;top:-2px;left:-2px;">Sell</label>
@@ -270,8 +270,8 @@
 				</form>
 				<div style="width:100%;height:30px;clear:both;"></div>
 			</div>
-			<!--<script>
-				/*$(document).ready(function(){
+			<script>
+				$(document).ready(function(){
 					$(".euros").val("");
 					$(".kW").val("");
 				})
@@ -279,45 +279,70 @@
 					if($(".euros").val()==1 || $(".euros").val()==0){
 			  			$(".euros").val(1);
 			  		}
-			  		$(".earn").css("visibility", "visible"); 
+			  		$(".earn").css("visibility", "visible");
 			  		$(".amountEarn").html($(".euros").val()*$(".kW").val());
 				});
 				$( ".kW " ).click(function() {
 					if($(".euros").val()==1 || $(".euros").val()==0){
 			  			$(".euros").val(1);
 			  		}
-			  		$(".earn").css("visibility", "visible"); 
+			  		$(".earn").css("visibility", "visible");
 			  		$(".amountEarn").html($(".euros").val()*$(".kW").val());
 				});
 				$( ".kW " ).keyup(function() {
 					if($(".euros").val()==1 || $(".euros").val()==0){
 			  			$(".euros").val(1);
 			  		}
-			  		$(".earn").css("visibility", "visible"); 
+			  		$(".earn").css("visibility", "visible");
 			  		$(".amountEarn").html($(".euros").val()*$(".kW").val());
 				});
 				$( ".euros " ).change(function() {
-			  		$(".earn").css("visibility", "visible"); 
+			  		$(".earn").css("visibility", "visible");
 			  		$(".amountEarn").html($(".euros").val()*$(".kW").val());
 				});
 				$( ".euros " ).click(function() {
-			  		$(".earn").css("visibility", "visible"); 
+			  		$(".earn").css("visibility", "visible");
 			  		$(".amountEarn").html($(".euros").val()*$(".kW").val());
 				});
 				$( ".euros " ).keyup(function() {
-			  		$(".earn").css("visibility", "visible"); 
+			  		$(".earn").css("visibility", "visible");
 			  		$(".amountEarn").html($(".euros").val()*$(".kW").val());
-				});*/
-			</script>-->
+				});
+			</script>
 
 			<script>
-					$("#myForm").on("submit",function(e) {
+					$("#formSell").on("click",function(e) {
 					    e.preventDefault(); // cancel submission
 					    var quantity = document.forms["myForm"]["quantity"].value;
 					    var price = document.forms["myForm"]["price"].value;
 					    console.log('ola maltinha');
 					    if( quantity != "" && price != "" ){
-						console.log('ola maltinha');
+
+								var energy = JSON.stringify({ KWhPrice: parseInt(price),
+																							active: 1,
+																							energy_id: energies.length+5,
+																							holder: 40,
+																							packDescript: "hello",
+																							packName: "hello",
+																							percentage: 100,
+																							posted_time: new Date(),
+																							producer_id: 1,
+																							quantity: quantity });
+
+								console.log(energy);
+
+								var xhr = new XMLHttpRequest();
+								xhr.open('POST', 'http://85.247.219.175:4567/api/energies' , true);
+								xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+								xhr.onload = function () {
+								    console.log(this.responseText);
+								};
+								xhr.send(energy);
+
+								document.getElementById("currentlySelling").innerHTML += "<tr style='border:none;'>" + quantity + " for " + price + "€" + "<button type='button' class='btn btn-danger' style='margin-top: 0px;margin-right: 10%;height:30px;width:100px;float: right;'><label class='lbl4' style='position:relative;top:0px;left:-4px;'>Change Price</label></button>" + "<button type='button' class='btn btn-default' aria-label='Left Align' style='float:right;background-color:#d9534f;'><span class='glyphicon glyphicon-trash' aria-hidden='true' style='height: 17px; font-size:15; color:white;'></span></button>" + "</tr>";
+
+
+
 					    }
 					});
 				</script>
@@ -327,22 +352,20 @@
 				<div class="sellTitle">Currently selling:</div>
 				<table id="currentlySelling" class="table table-striped" style="margin-top:10px;margin-left:17px;">
 					<tr></tr>
-					
+
 				</table>
-				<br>					
+				<br>
 			</div>
 
 			<script>
 					$(document).ready(function(){
 					    energies.forEach(function(d){
-					    	console.log("energy_id" + " - " + d.energy_id);
-					    	console.log("quantity" + " - " + d.quantity);
-						document.getElementById("currentlySelling").innerHTML += "<tr style='border:none;'>" + d.quantity + " for " + d.KWhPrice + "€" + "<button type='button' class='btn btn-danger' style='margin-top: 0px;margin-right: 10%;height:30px;width:100px;float: right;'><label class='lbl4' style='position:relative;top:0px;left:-4px;'>Change Price</label></button>" + "<button type='button' class='btn btn-default' aria-label='Left Align' style='float:right;background-color:#d9534f;'><span class='glyphicon glyphicon-trash' aria-hidden='true' style='height: 17px; font-size:15; color:white;'></span></button>" + "</tr>";
+								document.getElementById("currentlySelling").innerHTML += "<tr style='border:none;'>" + d.quantity + " for " + d.KWhPrice + "€" + "<button type='button' class='btn btn-danger' style='margin-top: 0px;margin-right: 10%;height:30px;width:100px;float: right;'><label class='lbl4' style='position:relative;top:0px;left:-4px;'>Change Price</label></button>" + "<button type='button' class='btn btn-default' aria-label='Left Align' style='float:right;background-color:#d9534f;'><span class='glyphicon glyphicon-trash' aria-hidden='true' style='height: 17px; font-size:15; color:white;'></span></button>" + "</tr>";
 					    	})
 					});
 
 			</script>
-			
+
 
 
 		</div>
