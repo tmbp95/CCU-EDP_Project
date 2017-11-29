@@ -12,6 +12,7 @@
     },
     "increment_id": {
       "type": "number",
+      "id": true,
       "required": true
     },
     "quantity": {
