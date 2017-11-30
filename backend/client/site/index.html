@@ -11,21 +11,6 @@
 		<link href="style/checkbox.css" rel="stylesheet">
 		<script src="style/js/bootstrap-toggle.min.js"></script>
 		<script>
-
-		</script>
-
-	</head>
-
-	<body>
-		<script>
-			var customers, usernameStorage;
-			customers = localStorage.getItem("customers");
-
-			customerID = localStorage.getItem("customerIDStorage");
-			usernameStorage = localStorage.getItem("usernameStorage");
-			console.log(usernameStorage);
-			customers = jQuery.parseJSON(customers);
-			//localStorage.clear();
 			function loadDoc(content, cFunction) {
 				var xhttp;
 				xhttp=new XMLHttpRequest();
@@ -42,10 +27,37 @@
 				localStorage.setItem("customers", xhttp.responseText);
 			}
 
-			loadDoc('customers', getCustomers);
+			 window.onload = function(){
+			 	loadDoc('customers', getCustomers);
+			 }
+
+			var customers, usernameStorage;
+			function getStuff(){
+				customers = localStorage.getItem("customers");
+				console.log(customers);
+				customerID = localStorage.getItem("customerIDStorage");
+				usernameStorage = localStorage.getItem("usernameStorage");
+				console.log(usernameStorage);
+				customers = jQuery.parseJSON(customers);	
+			}	
 			
-			
+			function execute(){
+				customers = localStorage.getItem("customers");
+				if(customers!=null){
+					getStuff();
+				}else{
+					setTimeout(function () {
+				        execute();
+				    }, 1);
+				}
+			}
+
+			execute();	
 		</script>
+
+	</head>
+
+	<body>
 		<div class="alert alert-danger errorAlert" role="alert" style="display:none;position:absolute;width:100%;top:1px;height:50px;">
 		  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
 		  <span class="sr-only">Error:</span>
@@ -105,6 +117,8 @@
 				</form>
 
 				<script>
+
+				$('#loginButton').trigger('submit');
  
 				$("#formLogin").on("submit",function(e) {
 					    e.preventDefault(); // cancel submission

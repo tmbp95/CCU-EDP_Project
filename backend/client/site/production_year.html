@@ -100,7 +100,7 @@
 				var year = d.getFullYear();
 			}
 
-			var ThisDate = day-1 + "-" + month + "-" + year; // AQUI
+			var ThisDate =  year; // AQUI
 
 			var widthCSS = $("#barchart").width();
 			var margin = {top: 15, right: 0, bottom: 70, left: 30},
@@ -142,6 +142,13 @@
 			    .scale(y)
 			    .ticks(10);
 
+
+			function drawChart(datereceived){
+			// add the SVG element
+
+			if(datereceived==null){
+				datereceived = ThisDate;
+			}
 
 			// add the SVG element
 			var svg = d3.select("#barchart").append("svg")
@@ -232,7 +239,8 @@
 			    	if(d.producer_id==customerID){
 			    		var OldDate = new Date(d.posted_time.split("T")[0]);
  						var NewDate = OldDate.getDate() + '-' + (OldDate.getMonth() + 1) + '-' + OldDate.getFullYear();
- 						if(NewDate == ThisDate){
+ 						NewDate = NewDate.split("-")[2];
+ 						if(NewDate == datereceived){
  							var month = parseInt(d.posted_time.split("T")[0].split("-")[1]);
  							if(month-1 == 0){
  								data[0].close += d.quantity; 
@@ -278,7 +286,11 @@
 				
 			  // scale the range of the data
 			  x.domain(data.map(function(d) { return d.mindate; }));
-			  y.domain([0, d3.max(data, function(d) { return d.close+40; })]);
+			  data.forEach(function(d){
+			    	if(d.close != 0 ){ y.domain([0, d3.max(data, function(d) { return d.close; })+40]); }else{
+			    		y.domain([0, d3.max(data, function(d) { return d.close; })]);
+			    	}
+			    });
 
 			  // add axis
 			  svg.append("g")
@@ -323,17 +335,21 @@
 		               .style("top", (d3.event.pageY) + "px");
 		          })
 
-
-			
+			}
+				
 			function updateDate(){
 				var day = d.getDate();
 				if(day<10) day =  "0" + day;
 				var month = d.getMonth()+1;
 				if(month<10) month =  "0" + month;
 				var year = d.getFullYear();
+				var ThisDate = year; // AQUI
 				$(".day").html(day);
 				$(".month").html(month);
 				$(".year").html(year);
+				d3.select("#barchart").selectAll("svg").remove();
+				drawChart(ThisDate);
+				console.log(ThisDate);
 			}
 
 		</script>

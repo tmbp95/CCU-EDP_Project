@@ -10,15 +10,7 @@
 		<link href="style/style-sell.css" rel="stylesheet">
 		<link href="style/checkbox.css" rel="stylesheet">
 		<script src="style/js/bootstrap-toggle.min.js"></script>
-
-	</head>
-
-	<body>
 		<script>
-			var energies;
-			energies = localStorage.getItem("energies");
-			energies = jQuery.parseJSON(energies);
-
 			function loadDoc(content, cFunction) {
 				var xhttp;
 				xhttp=new XMLHttpRequest();
@@ -35,13 +27,36 @@
 				localStorage.setItem("energies", xhttp.responseText);
 			}
 
-			loadDoc('energies', getEnergy);
-			console.log(energies);
+			window.onload = function(){
+				loadDoc('energies', getEnergy);
+			}
+
+			var energies;
+			function getStuff(){
+				energies = localStorage.getItem("energies");
+				console.log(energies);
+				energies = jQuery.parseJSON(energies);
+				parseData();
+			}
+
+			function execute(){
+				energies = localStorage.getItem("energies");
+				if(energies!=null){
+					getStuff();
+				}else{
+					setTimeout(function () {
+				        execute();
+				    }, 1);
+				}
+			}
+
+			execute();
 
 
 		</script>
+	</head>
 
-
+	<body>
 		<script src="js/d3v4.js"></script>
 		<script>
 
@@ -65,11 +80,11 @@
 				storage.unshift(record);
 			}
 
-			$(document).ready(function(){
+			/*$(document).ready(function(){
 				storage.forEach(function(d){
 					$('#currentlySelling').append(d);
 				})
-			})
+			})*/
 
 			$('body').click(function(e) {
 			    if (!$(e.target).closest('.popupDiv').length){
@@ -78,7 +93,7 @@
 			    }
 			});
 
-			function validateForm() {
+			/*function validateForm() {
 				console.log("ola");
 				var price = document.forms["myForm"]["price"].value;
 			    var quantity = document.forms["myForm"]["quantity"].value;
@@ -124,7 +139,7 @@
 			    storage.unshift(value);
 
 			    localStorage.setItem("storage", storage);
-			}
+			}*/
 
 			function someFunc(value, price, quantity){
 				$("#priceChange" + value).ready(function(){
@@ -411,12 +426,16 @@
 			<script>
 
 				var i = 0;
-					$(document).ready(function(){
-					    energies.forEach(function(d){
-					    	i++;
+						function parseData () {
+				
+
+					    	energies.forEach(function(d){
+					    		i++;
 								document.getElementById("currentlySelling").innerHTML += '<tr style="border:none;">' + d.quantity + ' for ' + d.KWhPrice + '€' + '<button type="button" class="btn btn-danger" id="priceChange' + d.energy_id + '" onclick="someFunc(' + d.energy_id + ',' + d.KWhPrice + ',' + d.quantity + ')" style="margin-top: 0px;margin-right: 10%;height:30px;width:100px;float: right;"><label class="lbl4" style="position:relative;top:0px;left:-4px;">Change Price</label></button>' + /* '<button type="button" class="btn btn-default" aria-label="Left Align" style="float:right;background-color:#d9534f;"><span class="glyphicon glyphicon-trash" aria-hidden="true" style="height: 17px; font-size:15; color:white;"></span></button>'  +*/ '</tr>';
 					    	})
-					});
+						}
+						
+
 
 			</script>
 

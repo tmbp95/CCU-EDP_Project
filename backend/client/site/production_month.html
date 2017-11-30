@@ -248,7 +248,7 @@
 				var year = date.getFullYear();
 				$(".month").html(monthNames[month-1]);
 				$(".year").html(year);
-				d3.select("#linechart").selectAll("svg").remove();;
+				d3.select("#linechart").selectAll("svg").remove();
 				drawLineChart(month);
 			}
 
