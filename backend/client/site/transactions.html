@@ -1,18 +1,58 @@
 <html>
 	<head>
 		<title>EDP platform</title>
-		<meta charset="utf-8" />   
+		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<script src="js/jquery.min.js"></script>   
+		<script src="js/jquery.min.js"></script>
 		<link href="style/css/bootstrap-toggle.min.css" rel="stylesheet">
 		<link href="style/css/bootstrap.min.css" rel="stylesheet">
 		<link href="style/style-history.css" rel="stylesheet">
 		<script src="style/js/bootstrap-toggle.min.js"></script>
 
 	</head>
-	
+
 	<body>
-		
+		<script>
+			var customerID;
+			customerID = localStorage.getItem("customerIDStorage");
+			customerID = jQuery.parseJSON(customerID);
+			console.log(customerID);
+
+			var transactions;
+			transactions = localStorage.getItem("transactions");
+			transactions = jQuery.parseJSON(transactions);
+
+			var energy;
+			energy = localStorage.getItem("energies");
+			energy = jQuery.parseJSON(energy);
+
+
+			function loadDoc(content, cFunction) {
+				var xhttp;
+				xhttp=new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						cFunction(this);
+					}
+				};
+				xhttp.open("GET", "http://85.247.219.175:4567/api/" + content, true);
+				xhttp.send();
+			}
+
+			function getTransactions (xhttp) {
+				localStorage.setItem("transactions", xhttp.responseText);
+			}
+			function getEnergy (xhttp) {
+				localStorage.setItem("energy", xhttp.responseText);
+			}
+
+			loadDoc('transactions', getTransactions);
+			console.log(transactions);
+
+			loadDoc('energies', getEnergy);
+			console.log(energy);
+		</script>
+
 		<div class="top-bar">
 
 			<div class="settings">
@@ -42,7 +82,7 @@
 		</div>
 		<div style="clear:both;width:100%;height:10px;"></div>
 		<div class="balance2">
-				<div class="panel panel-default" style="margin-top:-10px;">
+				<!--<div class="panel panel-default" style="margin-top:-10px;">
 					<div class="sellTitle">Sold:</div>
 					<table class="table table-striped" style="margin-top:10px;">
 						<tr></tr>
@@ -71,9 +111,9 @@
 								</button>
 							</td>
 						</tr>
-					</table>	
+					</table>
 				</div>
-				<div class="panel panel-default" style="margin-top:-10px;">
+				<div class="panel panel-default" style="margin-top:-10px;">tt
 					<div class="sellTitle">Bought:</div>
 					<table class="table table-striped" style="margin-top:10px;">
 						<tr></tr>
@@ -90,7 +130,7 @@
 							<td class="lbl5">40 kW</td>
 							<td class="lbl5">30 €</td>
 							<td class="lbl5">20-11-2017</td>
-							
+
 						</tr>
 						<tr>
                             <td class="spaceTD"></td>
@@ -103,15 +143,69 @@
 								</button>
 							</td>
 						</tr>
-					</table>	
-			
+					</table>
+
+				</div>-->
+				<div class="panel panel-default" style="margin-top:30px;">
+					<div class="headingText">SOLD</div>
+					<table id="soldTable" class="table table-striped" style="margin-top:10px;margin-left:17px;">
+						<tr></tr>
+
+					</table>
+					<br>
 				</div>
+				<script>
+						function tableSold(){
+							var count = 1;
+							var quantity, price, date;
+								transactions.forEach(function(d){
+									energy.forEach(function(i){
+										console.log(i);
+										if(d.energy_id==i.energy_id){
+											console.log("entrei", i.KWhPrice);
+											if(i.producer_id==1){
+												quantity=i.quantity;
+												price = i.KWhPrice*quantity;
+												date = new Date(d.transaction_time);
+												document.getElementById("soldTable").innerHTML += "<tr style='border:none;'>" + count + ". " + quantity + "  "+ price + "€" + "   " + date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+											}
+											count ++;
+										}
+									})
+								})
+							}
+						tableSold();
+				</script>
 		</div>
-		<br><br>
-		<div class="footer2">
-			<label class="lbl4" style="margin-top:3px;">Help</label>
-			<label class="lbl4" style="margin-left:5px;margin-top:3px;">Contact</label>
-			<label class="lbl4" style="margin-left:5px;margin-top:3px;">T&C</label>
+
+		<div class="panel panel-default" style="margin-top:30px;">
+			<div class="headingText">BOUGHT</div>
+			<table id="soldTable" class="table table-striped" style="margin-top:10px;margin-left:17px;">
+				<tr></tr>
+
+			</table>
+			<br>
 		</div>
-	</body>
+			<script>
+					function tableBought(){
+						var count = 1;
+						var quantity, price, date;
+							transactions.forEach(function(d){
+								if(d.client_id == customerID){
+									energy.forEach(function(i){
+										if(d.energy_id==i.energy_id){
+											console.log("swq");
+											quantity=i.quantity;
+											price = i.KWhPrice*quantity;
+											date = new Date(d.transaction_time);
+											document.getElementById("boughtTable").innerHTML += "<tr style='border:none;'>" + count + "." + quantity + "   " + price + "€" + "   " + date.getDay() + "/" + date.getMonth() + "/" + date.getYear();
+										}
+									})
+								}
+								count ++;
+							})
+						}
+					tableBought();
+			</script>
+		</div>
 </html>
