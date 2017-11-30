@@ -286,12 +286,14 @@
 				
 			  // scale the range of the data
 			  x.domain(data.map(function(d) { return d.mindate; }));
-			  data.forEach(function(d){
-			    	if(d.close != 0 ){ y.domain([0, d3.max(data, function(d) { return d.close; })+40]); }else{
-			    		y.domain([0, d3.max(data, function(d) { return d.close; })]);
-			    	}
-			    });
-
+			  for(i=0;i<data.length;i++){
+			  	if(data[i].close == 0 ){ 
+			    	y.domain([0, d3.max(data, function(x) { return x.close; })]);
+			  	}else{
+			  		y.domain([0, d3.max(data, function(x) { return x.close; })+40]);
+			  		break;
+			  	}
+			  }
 			  // add axis
 			  svg.append("g")
 			      .attr("class", "x axis")
