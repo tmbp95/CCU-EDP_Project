@@ -24,6 +24,10 @@
   	vertical-align: middle !important;
   	font-weight:normal;
 }
+
+#currentlySelling{
+	width:95%;
+}
 /* Using this one when the screen has height ~ 480 and the user opens the keyboard */
 @media (min-height: 280px){
 

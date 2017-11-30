@@ -40,7 +40,7 @@
 			loadDoc('producedenergies', getProducedEnergy);
 			producedEnergy = localStorage.getItem("production");
 			producedEnergy = jQuery.parseJSON(producedEnergy);
-			console.log(producedEnergy);
+			//console.log(producedEnergy);
 
 
 
@@ -87,7 +87,23 @@
 		<div style="clear:both"></div>
 		<script src="js/d3v4.js"></script>
 		<script>
+			if(queries[0]==""){
+				var d = new Date();
+				var day = d.getDate();
+				if(day<10) day =  "0" + day;
+				var month = d.getMonth()+1;
+				if(month<10) month =  "0" + month;
+				var year = d.getFullYear();
+			}else{
+				var d = new Date(queries[1]);
+				var day = d.getDate();
+				if(day<10) day =  "0" + day;
+				var month = d.getMonth()+1;
+				if(month<10) month =  "0" + month;
+				var year = d.getFullYear();
+			}
 
+			var ThisDate = day-1 + "-" + month + "-" + year; // AQUI
 
 			var widthCSS = $("#barchart").width();
 			var margin = {top: 20, right: 0, bottom: 70, left: 25},
@@ -95,10 +111,8 @@
 			    height = 250 - margin.top - margin.bottom;
 
 
-			var parseDate = d3.timeParse("%Y-%m-%dT%H:%M:%S.%LZ");
-
 			// set the ranges
-			var x = d3.scaleTime().range([0, width]);
+			var x = d3.scaleBand().rangeRound([0, width]);
 
 			var y = d3.scaleLinear().range([height, 0]);
 
@@ -132,7 +146,7 @@
 			// define the axis
 			var xAxis = d3.axisBottom()
 			    .scale(x)
-			  	.tickFormat(d3.timeFormat("%Y"));
+			  //.tickFormat(parseDate.getDate());
 
 
 			var yAxis = d3.axisLeft()
@@ -141,22 +155,78 @@
 
 			// get the data
 
-				var data = [];
 
+				var data = [
+							  { "date" : "00h-02h","close" : 0},
+							  { "date" : "02h-04h","close" : 0},
+							  { "date" : "04h-06h" ,"close" :0 },
+							  { "date" : "06h-08h", "close" : 0},
+							  { "date" : "08h-10h","close" : 0},
+							  { "date" : "10h-12h","close" : 0},
+							  { "date" : "12h-14h","close" : 0},
+							  { "date" : "14h-16h","close" : 0},
+							  { "date" : "15h-18h","close" : 0},
+							  { "date" : "18h-20h","close" : 0},
+							  { "date" : "20h-22h","close" : 0},
+							  { "date" : "22h-24h","close" : 0}
+							]
+
+				console.log(data[0].close);
 			    producedEnergy.forEach(function(d) {
 			    	if(d.producer_id==customerID){
-			    		data.push(d);
+			    		var OldDate = new Date(d.posted_time.split("T")[0]);
+ 						var NewDate = OldDate.getDate() + '-' + (OldDate.getMonth() + 1) + '-' + OldDate.getFullYear();
+ 						if(NewDate == ThisDate){
+ 							var hours = parseInt(d.posted_time.split("T")[1].split(".")[0].split(":")[0]);
+ 							if(0 <= hours && hours < 2){
+ 								data[0].close += d.quantity; 
+ 							}
+ 							if(2 <= hours && hours < 4){
+ 								data[1].close += d.quantity; 
+ 							}
+ 							if(4 <= hours && hours < 6){
+ 								data[2].close += d.quantity; 
+ 							}
+ 							if(6 <= hours && hours < 8){
+ 								data[3].close += d.quantity; 
+ 							}
+ 							if(8 <= hours && hours < 10){
+ 								data[4].close += d.quantity; 
+ 							}
+ 							if(10 <= hours && hours < 12){
+ 								data[5].close += d.quantity; 
+ 							}
+ 							if(12 <= hours && hours < 14){
+ 								data[6].close += d.quantity; 
+ 							}
+ 							if(14 <= hours && hours < 16){
+ 								data[7].close += d.quantity; 
+ 							}
+ 							if(16 <= hours && hours < 18){
+ 								data[8].close += d.quantity; 
+ 							}
+ 							if(18 <= hours && hours < 20){
+ 								data[9].close += d.quantity; 
+ 							}
+ 							if(20 <= hours && hours < 22){
+ 								data[10].close += d.quantity; 
+ 							}
+ 							if(22 <= hours && hours < 24){
+ 								data[11].close += d.quantity; 
+ 							}
+
+ 						}
 			    	}
 			    });
 
 			    data.forEach(function(d){
-			    	d.posted_time = parseDate(d.posted_time);
-			        d.quantity = +d.quantity;
+			    	d.date = d.date;
+			        d.close = +d.close;
 			    });
 				
 			  // scale the range of the data
-			  x.domain(data.map(function(d) { return d.posted_time; }));
-			  y.domain([0, d3.max(data, function(d) { return d.quantity; })]);
+			  x.domain(data.map(function(d) { return d.date; }));
+			  y.domain([0, d3.max(data, function(d) { return d.close; })+20]);
 
 			  // add axis
 			  svg.append("g")
@@ -188,26 +258,23 @@
 			      .data(data)
 			    .enter().append("rect")
 			      .attr("class", "bar")
-			      .attr("title", function(d) { return d.posted_time; })
-			      .attr("x", function(d) { return x(d.posted_time)+1; })
+			      .attr("title", function(d) { return d.date; })
+			      .attr("x", function(d) { return x(d.date)+1; })
 			      .attr("width", 18)
-			      .attr("y", function(d) { return y(d.quantity); })
-			      .attr("height", function(d) { return height - y(d.quantity); })
+			      .attr("y", function(d) { return y(d.close); })
+			      .attr("height", function(d) { return height - y(d.close); })
 			      .on("click", function(d){
 		            div.transition()
 		               .duration(100)
 		               .style("opacity", 1);
-		            div.html("<strong style='color:white'>" + d.quantity + " kW</span>")
+		            div.html("<strong style='color:white'>" + d.close + " kW</span>")
 		               .style("left", (d3.event.pageX) + "px")
 		               .style("top", (d3.event.pageY) + "px");
 		          })
 
 
-			if(queries[0]==""){
-				var d = new Date();
-			}else{
-				var d = new Date(queries[1]);
-			}
+			
+
 
 			function updateDate(){
 				var day = d.getDate();
@@ -219,6 +286,9 @@
 				$(".month").html(month);
 				$(".year").html(year);
 			}
+
+
+
 
 
 		</script>

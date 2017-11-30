@@ -146,7 +146,7 @@
 		<div class="popupDiv">
 			<div class="pricesBox">
 				<br>
-				<form name="myFormPopup" onsubmit="validateFormPopup()" method="post">
+				<form name="formnew" method="post">
 					<input type="hidden" class="id" name="id">
 					<input type="hidden" class="quantity" name="quantity">
 				<div class=changeBox>
@@ -189,9 +189,60 @@
 
 				</div>
 				<div class="confirm" style="">
-						<button type="submit" class="btn btn-danger" style="width:150px;">Confirm</button>
+						<button id="formSellupdate" type="submit" class="btn btn-danger" style="width:150px;">Confirm</button>
 				</div>
 				</form>
+				<script>
+					$("#formSellupdate").on("click",function(e) {
+					    e.preventDefault(); // cancel submission
+					    var price = document.forms["formnew"]["newPrice"].value;
+						var id = document.forms["formnew"]["id"].value;
+						var quantity = document.forms["formnew"]["quantity"].value;
+					    console.log('ola maltinha');
+					    if( quantity != "" && price != "" ){
+
+					    	var xhr = new XMLHttpRequest();
+									xhr.open('DELETE', 'http://85.247.219.175:4567/api/energies/' + id , true);
+									xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+									xhr.onload = function () {
+									    console.log(this.responseText);
+									};
+									xhr.send(null);
+
+
+								var energy = JSON.stringify({ KWhPrice: parseInt(price),
+																							active: 1,
+																							energy_id: id,
+																							holder: 40,
+																							packDescript: "hello",
+																							packName: "hello",
+																							percentage: 100,
+																							posted_time: new Date(),
+																							producer_id: 1,
+																							quantity: quantity });
+
+								
+	 								
+								
+								console.log(energy);
+
+								var xhr = new XMLHttpRequest();
+								xhr.open('POST', 'http://85.247.219.175:4567/api/energies' , true);
+								xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+								xhr.onload = function () {
+								    console.log(this.responseText);
+								};
+								xhr.send(energy);
+
+								document.getElementById("currentlySelling").innerHTML += "<tr style='border:none;'>" + quantity + " for " + price + "€" + "<button type='button' class='btn btn-danger' style='margin-top: 0px;margin-right: 10%;height:30px;width:100px;float: right;'><label class='lbl4' style='position:relative;top:0px;left:-4px;'>Change Price</label></button>" + /* "<button type='button' class='btn btn-default' aria-label='Left Align' style='float:right;background-color:#d9534f;'><span class='glyphicon glyphicon-trash' aria-hidden='true' style='height: 17px; font-size:15; color:white;'></span></button>" + */ "</tr>";
+
+
+
+
+
+					    }
+					});
+				</script>
 			</div>
 		</div>
 		<div class="top-bar">
@@ -339,7 +390,7 @@
 								};
 								xhr.send(energy);
 
-								document.getElementById("currentlySelling").innerHTML += "<tr style='border:none;'>" + quantity + " for " + price + "€" + "<button type='button' class='btn btn-danger' style='margin-top: 0px;margin-right: 10%;height:30px;width:100px;float: right;'><label class='lbl4' style='position:relative;top:0px;left:-4px;'>Change Price</label></button>" + "<button type='button' class='btn btn-default' aria-label='Left Align' style='float:right;background-color:#d9534f;'><span class='glyphicon glyphicon-trash' aria-hidden='true' style='height: 17px; font-size:15; color:white;'></span></button>" + "</tr>";
+								document.getElementById("currentlySelling").innerHTML += "<tr style='border:none;'>" + quantity + " for " + price + "€" + "<button type='button' class='btn btn-danger' style='margin-top: 0px;margin-right: 10%;height:30px;width:100px;float: right;'><label class='lbl4' style='position:relative;top:0px;left:-4px;'>Change Price</label></button>" + /* "<button type='button' class='btn btn-default' aria-label='Left Align' style='float:right;background-color:#d9534f;'><span class='glyphicon glyphicon-trash' aria-hidden='true' style='height: 17px; font-size:15; color:white;'></span></button>" + */ "</tr>";
 
 
 
@@ -358,9 +409,12 @@
 			</div>
 
 			<script>
+
+				var i = 0;
 					$(document).ready(function(){
 					    energies.forEach(function(d){
-								document.getElementById("currentlySelling").innerHTML += "<tr style='border:none;'>" + d.quantity + " for " + d.KWhPrice + "€" + "<button type='button' class='btn btn-danger' style='margin-top: 0px;margin-right: 10%;height:30px;width:100px;float: right;'><label class='lbl4' style='position:relative;top:0px;left:-4px;'>Change Price</label></button>" + "<button type='button' class='btn btn-default' aria-label='Left Align' style='float:right;background-color:#d9534f;'><span class='glyphicon glyphicon-trash' aria-hidden='true' style='height: 17px; font-size:15; color:white;'></span></button>" + "</tr>";
+					    	i++;
+								document.getElementById("currentlySelling").innerHTML += '<tr style="border:none;">' + d.quantity + ' for ' + d.KWhPrice + '€' + '<button type="button" class="btn btn-danger" id="priceChange' + d.energy_id + '" onclick="someFunc(' + d.energy_id + ',' + d.KWhPrice + ',' + d.quantity + ')" style="margin-top: 0px;margin-right: 10%;height:30px;width:100px;float: right;"><label class="lbl4" style="position:relative;top:0px;left:-4px;">Change Price</label></button>' + /* '<button type="button" class="btn btn-default" aria-label="Left Align" style="float:right;background-color:#d9534f;"><span class="glyphicon glyphicon-trash" aria-hidden="true" style="height: 17px; font-size:15; color:white;"></span></button>'  +*/ '</tr>';
 					    	})
 					});
 
