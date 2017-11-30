@@ -160,16 +160,14 @@
 							var quantity, price, date;
 								transactions.forEach(function(d){
 									energy.forEach(function(i){
-										console.log(i);
 										if(d.energy_id==i.energy_id){
-											console.log("entrei", i.KWhPrice);
-											if(i.producer_id==1){
+											if(i.producer_id==customerID){
 												quantity=i.quantity;
 												price = i.KWhPrice*quantity;
 												date = new Date(d.transaction_time);
-												document.getElementById("soldTable").innerHTML += "<tr style='border:none;'>" + count + ". " + quantity + "  "+ price + "€" + "   " + date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+												document.getElementById("soldTable").innerHTML += "<tr style='border:none;'>" + count + ". " + "Qty: "+quantity + "  "+ price + "€" + "   " + date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+												count ++;
 											}
-											count ++;
 										}
 									})
 								})
@@ -180,7 +178,7 @@
 
 		<div class="panel panel-default" style="margin-top:30px;">
 			<div class="headingText">BOUGHT</div>
-			<table id="soldTable" class="table table-striped" style="margin-top:10px;margin-left:17px;">
+			<table id="boughtTable" class="table table-striped" style="margin-top:10px;margin-left:17px;">
 				<tr></tr>
 
 			</table>
@@ -194,15 +192,14 @@
 								if(d.client_id == customerID){
 									energy.forEach(function(i){
 										if(d.energy_id==i.energy_id){
-											console.log("swq");
 											quantity=i.quantity;
 											price = i.KWhPrice*quantity;
 											date = new Date(d.transaction_time);
-											document.getElementById("boughtTable").innerHTML += "<tr style='border:none;'>" + count + "." + quantity + "   " + price + "€" + "   " + date.getDay() + "/" + date.getMonth() + "/" + date.getYear();
+											document.getElementById("boughtTable").innerHTML += "<tr class='headingText;' style='border:none;'>" + count + "." +"Qty: "+ quantity + "   " + price + "€" + "   " + date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+											count ++;
 										}
 									})
 								}
-								count ++;
 							})
 						}
 					tableBought();
