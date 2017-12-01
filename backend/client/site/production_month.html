@@ -10,16 +10,39 @@
 		<link href="style/style-production_month.css" rel="stylesheet">
 		<link href="style/checkbox.css" rel="stylesheet">
 		<script src="style/js/bootstrap-toggle.min.js"></script>
-
-	</head>
-
-	<body>
 		<script>
 			var queryString = decodeURIComponent(window.location.search);
 			queryString = queryString.substring(1);
 			var queries = queryString.split("=");
 
+			var customerID = localStorage.getItem("customerIDStorage");
+
+			function loadDoc(content, cFunction) {
+				var xhttp;
+				xhttp=new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						cFunction(this);
+					}
+				};
+				xhttp.open("GET", "http://85.247.219.175:4567/api/" + content, true);
+				xhttp.send();
+			}
+
+			function getProducedEnergy (xhttp) {
+				localStorage.setItem("production", xhttp.responseText);
+			}
+
+			loadDoc('producedenergies', getProducedEnergy);
+			producedEnergy = localStorage.getItem("production");
+			producedEnergy = jQuery.parseJSON(producedEnergy);
+			//console.log(producedEnergy);
+
 		</script>
+
+	</head>
+
+	<body>
 		<div class="top-bar">
 			<div class="settings">
 				<button id="backButton" type="button" class="btn btn-default" aria-label="Left Align">
@@ -66,15 +89,19 @@
 
  			if(queries[0]==""){
 				var date = new Date();
+				var day = date.getDate();
+				if(day<10) day =  "0" + day;
+				var month = date.getMonth()+1;
+				if(month<10) month =  "0" + month;
+				var year = date.getFullYear();
 			}else{
 				var date = new Date(queries[1]);
-			}
-			var day = date.getDate();
-			if(day<10) day =  "0" + day;
-			var month = date.getMonth()+1;
-			if(month<10) month = "0" + month;
-			var year = date.getFullYear();
-				
+				var day = date.getDate();
+				if(day<10) day =  "0" + day;
+				var month = date.getMonth()+1;
+				if(month<10) month =  "0" + month;
+				var year = date.getFullYear();
+			}	
 
 			var widthCSS = $("#linechart").width();
 
@@ -86,157 +113,165 @@
 
 			function drawLineChart(monthReceived){
 				
-			if(monthReceived==null){
-				monthReceived = month;
-			}
+				if(monthReceived==null){
+					monthReceived = month;
+				}
 
-			var svg = d3.select("#linechart")
-			      .append("svg")
-			          .attr("width", width + margin.left + margin.right + 20)
-			          .attr("height", height + margin.top + margin.bottom)
-			      .append("g")
-			          .attr("transform", 
-			                "translate(" + margin.left + "," + margin.top + ")");
+				var svg = d3.select("#linechart")
+				      .append("svg")
+				          .attr("width", width + margin.left + margin.right + 20)
+				          .attr("height", height + margin.top + margin.bottom)
+				      .append("g")
+				          .attr("transform", 
+				                "translate(" + margin.left + "," + margin.top + ")");
 
-			var parseDate = d3.timeParse("%d-%b-%y");
+				var div = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
 
-			var x = d3.scaleTime().range([0, width]),
-			    x2 = d3.scaleTime().range([0, width]),
-			    y = d3.scaleLinear().range([height, 0]),
-			    y2 = d3.scaleLinear().range([height2, 0]);
+				var parseDate = d3.timeParse("%d-%b-%y");
 
-			var xAxis = d3.axisBottom(x),
-			    xAxis2 = d3.axisBottom(x2),
-			    yAxis = d3.axisLeft(y);
+				var x = d3.scaleTime().range([0, width]),
+				    x2 = d3.scaleTime().range([0, width]),
+				    y = d3.scaleLinear().range([height, 0]),
+				    y2 = d3.scaleLinear().range([height2, 0]);
 
-			var brush = d3.brushX()
-			    .extent([[0, 0], [width, height2]])
-			    .on("brush end", brushed);
+				var xAxis = d3.axisBottom(x),
+				    xAxis2 = d3.axisBottom(x2),
+				    yAxis = d3.axisLeft(y);
 
-			var zoom = d3.zoom()
-			    .scaleExtent([1, 4])
-			    .translateExtent([[0, 0], [width, height]])
-			    .extent([[0, 0], [width, height]])
-			    .on("zoom", zoomed);
+				var brush = d3.brushX()
+				    .extent([[0, 0], [width, height2]])
+				    .on("brush end", brushed);
 
-			var area = d3.line()
-			    .x(function(d) { return x(d.date); })
-			    .y(function(d) { return y(d.close); });
+				var zoom = d3.zoom()
+				    .scaleExtent([1, 4])
+				    .translateExtent([[0, 0], [width, height]])
+				    .extent([[0, 0], [width, height]])
+				    .on("zoom", zoomed);
 
-			var area2 = d3.line()
-			    .x(function(d) { return x2(d.date); })
-			    .y(function(d) { return y2(d.close); });
+				var area = d3.line()
+				    .x(function(d) { return x(d.posted_time); })
+				    .y(function(d) { return y(d.quantity); });
 
-			svg.append("defs").append("clipPath")
-			    .attr("id", "clip")
-			  .append("rect")
-			    .attr("width", width)
-			    .attr("height", height);
+				var area2 = d3.line()
+				    .x(function(d) { return x2(d.posted_time); })
+				    .y(function(d) { return y2(d.quantity); });
 
-			var focus = svg.append("g")
-			    .attr("class", "focus")
-			    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+				svg.append("defs").append("clipPath")
+				    .attr("id", "clip")
+				  .append("rect")
+				    .attr("width", width)
+				    .attr("height", height);
 
-			var context = svg.append("g")
-			    .attr("class", "context")
-			    .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
+				var focus = svg.append("g")
+				    .attr("class", "focus")
+				    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-			d3.csv("data.csv", type, function(error, dados) {
-			  if (error) throw error;
-			  var data = [];
-			  dados.forEach(function(d){
-			  	console.log(d);
-			  	if(d.date.getMonth()+1 == monthReceived){
-			  		data.push(d);
-			  	}
-			  })
+				var context = svg.append("g")
+				    .attr("class", "context")
+				    .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
+				var data = [];
+				producedEnergy.forEach(function(d) {
+					var calendario = new Date(d.posted_time);
+					d.posted_time = calendario;
+					console.log(d);
+					//console.log(calendario.getMonth()+1);
+					//console.log(monthReceived);
+					if(calendario.getMonth()+1 == monthReceived){
+						
+				  		data.push(d);
+				  	}
+				});
+				//console.log(data);
+				  x.domain(d3.extent(data, function(d) { return d.posted_time; }));
+				  y.domain([0, d3.max(data, function(d) { return d.quantity; })]);
+				  x2.domain(x.domain());
+				  y2.domain(y.domain());
 
-			  x.domain(d3.extent(data, function(d) { return d.date; }));
-			  y.domain([0, d3.max(data, function(d) { return d.close; })]);
-			  x2.domain(x.domain());
-			  y2.domain(y.domain());
-
-			  focus.append("path")
-			      .datum(data)
-			      .attr("class", "area")
-			      .attr("d", area(data));
-
-			  focus.append("g")
-			      .attr("class", "axis axis--x")
-			      .attr("transform", "translate(0," + height + ")")
-			      .call(xAxis)
-			   	.selectAll("text")
-						      .style("text-anchor", "end")
-						      .attr("dx", "-.8em")
-						      .attr("dy", "-.55em")
-						      .attr("transform", "rotate(-90)" );
-
-			    focus.append("g")
-					.attr("class", "y axis")
-					.call(yAxis)
-				focus.append("text")
-					.attr("transform", "rotate(-90)")
-					.attr("y", -3)
-					.attr("x", 5)
-					.attr("font-size", "0.7em")
-					.style("text-anchor", "end")
-					.text("KW");
-
-			  context.append("path")
-			      .datum(data)
-			      .attr("class", "area")
-			      .attr("d", area2(data));
+				  focus.append("path")
+				      .datum(data)
+				      .attr("class", "area")
+				      .attr("d", area(data));
+				      
 
 
-			  context.append("g")
-			      .attr("class", "brush")
-			      .call(brush)
-			      .call(brush.move, x.range());
+				  focus.append("g")
+				      .attr("class", "axis axis--x")
+				      .attr("transform", "translate(0," + height + ")")
+				      .call(xAxis)
+				   	.selectAll("text")
+							      .style("text-anchor", "end")
+							      .attr("dx", "-.8em")
+							      .attr("dy", "-.55em")
+							      .attr("transform", "rotate(-90)" );
 
-			  svg.append("rect")
-			      .attr("class", "zoom")
-			      .attr("width", width)
-			      .attr("height", height)
-			      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-			      .call(zoom);
-			});
+				    focus.append("g")
+						.attr("class", "y axis")
+						.call(yAxis)
+					focus.append("text")
+						.attr("transform", "rotate(-90)")
+						.attr("y", -3)
+						.attr("x", 5)
+						.attr("font-size", "0.7em")
+						.style("text-anchor", "end")
+						.text("KW");
 
-			function brushed() {
-			  if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return; // ignore brush-by-zoom
-			  var s = d3.event.selection || x2.range();
-			  x.domain(s.map(x2.invert, x2));
-			  focus.select(".area").attr("d", area);
-			  focus.select(".axis--x").call(xAxis);
-			  focus.selectAll("text")
-						      .style("text-anchor", "end")
-						      .attr("dx", "-.8em")
-						      .attr("dy", "-.55em")
-						      .attr("transform", "rotate(-90)" );
-			  svg.select(".zoom").call(zoom.transform, d3.zoomIdentity
-			      .scale(width / (s[1] - s[0]))
-			      .translate(-s[0], 0));
-			}
+				  context.append("path")
+				      .datum(data)
+				      .attr("class", "area")
+				      .attr("d", area2(data));
 
-			function zoomed() {
-			  if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") return; // ignore zoom-by-brush
-			  var t = d3.event.transform;
-			  x.domain(t.rescaleX(x2).domain());
-			  focus.select(".area").attr("d", area);
-			  focus.select(".axis--x").call(xAxis);
-			  focus.selectAll("text")
-						      .style("text-anchor", "end")
-						      .attr("dx", "-.8em")
-						      .attr("dy", "-.55em")
-						      .attr("transform", "rotate(-90)" );
-			  context.select(".brush").call(brush.move, x.range().map(t.invertX, t));
-			}
 
-			function type(d) {
-			  d.date = parseDate(d.date);
-			  d.close = +d.close;
-			  return d;
-			}
+				  context.append("g")
+				      .attr("class", "brush")
+				      .call(brush)
+				      .call(brush.move, x.range());
+
+				  svg.append("rect")
+				      .attr("class", "zoom")
+				      .attr("width", width)
+				      .attr("height", height)
+				      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+				      .call(zoom);
+
+				function brushed() {
+				  if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return; // ignore brush-by-zoom
+				  var s = d3.event.selection || x2.range();
+				  x.domain(s.map(x2.invert, x2));
+				  focus.select(".area").attr("d", area);
+				  focus.select(".axis--x").call(xAxis);
+				  focus.selectAll("text")
+							      .style("text-anchor", "end")
+							      .attr("dx", "-.8em")
+							      .attr("dy", "-.55em")
+							      .attr("transform", "rotate(-90)" );
+				  svg.select(".zoom").call(zoom.transform, d3.zoomIdentity
+				      .scale(width / (s[1] - s[0]))
+				      .translate(-s[0], 0));
+				}
+
+				function zoomed() {
+				  if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") return; // ignore zoom-by-brush
+				  var t = d3.event.transform;
+				  x.domain(t.rescaleX(x2).domain());
+				  focus.select(".area").attr("d", area);
+				  focus.select(".axis--x").call(xAxis);
+				  focus.selectAll("text")
+							      .style("text-anchor", "end")
+							      .attr("dx", "-.8em")
+							      .attr("dy", "-.55em")
+							      .attr("transform", "rotate(-90)" );
+				  context.select(".brush").call(brush.move, x.range().map(t.invertX, t));
+				}
+
+				function type(d) {
+				  d.posted_time = parseDate(d.posted_time);
+				  d.quantity = +d.quantity;
+				  return d;
+				}
+
 			}
 
 	
