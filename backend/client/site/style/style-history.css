@@ -27,13 +27,13 @@
 
 
 #boughtTable, #soldTable{
-	width:95%;
+	width:100%;
 }
 
 @media (min-height: 480px){
 	.footer2{
 		width:102px;
-		position: relative;
+		position: absolute;
 		bottom: 10px;
 		left: 0;
 		right: 0;
@@ -181,6 +181,6 @@
 /* Larger than phablet */
 @media (min-width: 360px) {
 	.spaceTD{
-		width:10px;
+		width:0px;
 	}
 }

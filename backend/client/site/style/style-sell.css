@@ -25,13 +25,19 @@
   	font-weight:normal;
 }
 
+.alert{
+	font-family: EDPPreonMedium,sans-serif;
+}
+
 #currentlySelling{
-	width:95%;
+	width:100%;
 }
 /* Using this one when the screen has height ~ 480 and the user opens the keyboard */
 @media (min-height: 280px){
 
 }
+
+
 /* Using this one when the screen has height ~ 480 */
 @media (min-height: 480px){
 	.footer2{
@@ -41,7 +47,6 @@
 		left: 0;
 		right: 0;
 		margin: auto;
-    visibility: hidden;
 	}
 	.balance{
 		font-family: EDPPreonMedium,sans-serif;
@@ -61,13 +66,18 @@
 @media (min-height: 640px) {
 	.footer2{
 		width:102px;
-		position: absolute;
+		position: relative;
 		bottom: 10px;
 		left: 0;
 		right: 0;
 		margin: auto;
-    visibility: hidden;
 
+	}
+	.heightspace{
+		width:100%;
+		height:420px;
+		clear:both;
+		margin-top:3px;
 	}
 	.balance{
 		height: 93px;
@@ -166,8 +176,6 @@
 
 	#popupDiv-back {
 	    position   : absolute;
-	    top        : 0;
-	    left       : 0;
 	    width      : 100%;
 	    height     : 100%;
 	    background : #000;
