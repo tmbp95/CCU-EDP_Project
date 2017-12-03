@@ -15,8 +15,6 @@
 			queryString = queryString.substring(1);
 			var queries = queryString.split("=");
 
-			var customerID = localStorage.getItem("customerIDStorage");
-
 			function loadDoc(content, cFunction) {
 				var xhttp;
 				xhttp=new XMLHttpRequest();
@@ -33,10 +31,29 @@
 				localStorage.setItem("production", xhttp.responseText);
 			}
 
-			loadDoc('producedenergies', getProducedEnergy);
-			producedEnergy = localStorage.getItem("production");
-			producedEnergy = jQuery.parseJSON(producedEnergy);
-			//console.log(producedEnergy);
+			window.onload = function(){
+			 	loadDoc('producedenergies', getProducedEnergy);
+			 }
+
+			var customerID, producedEnergy;
+			function getStuff(){
+				customerID = localStorage.getItem("customerIDStorage");
+				producedEnergy = localStorage.getItem("production");
+				producedEnergy = jQuery.parseJSON(producedEnergy);
+			}
+
+			function waitForElement(){
+				$('#loading').show();
+				producedEnergy = localStorage.getItem("production");
+			    if(producedEnergy!=null){
+			    	getStuff();
+			    }
+			    else{
+			        setTimeout(waitForElement, 250);
+			    }
+			}
+			waitForElement();
+
 
 		</script>
 	</head>
@@ -76,7 +93,9 @@
 			</ul>
 		</div>
 		<div class="panel panel-default" style="margin-top:10px;">
-			<div id="barchart"></div>
+			<div id="barchart">
+				<div id="empty"></div>
+			</div>
 		</div>
 		<div style="clear:both"></div>
 		<script src="js/d3v4.js"></script>
@@ -99,9 +118,9 @@
 			}
 
 			var ThisDate =  year; // AQUI
-
+			$("#empty").html("There's no production in " + ThisDate);
 			var widthCSS = $("#barchart").width();
-			var margin = {top: 15, right: 0, bottom: 70, left: 30},
+			var margin = {top: 15, right: 0, bottom: 70, left: 40},
 			    width = widthCSS - margin.left - margin.right,
 			    height = 270 - margin.top - margin.bottom;
 
@@ -281,6 +300,27 @@
 			    	}
 			    });
 
+			    for(i=0;i<data.length;i++){
+			    	if(i==data.length-1){
+			    		if(data[i].close!=0){
+				    		$("#empty").hide();	
+				    		break;
+				    	}else{
+				    		$("#empty").show();	
+				    		d3.select("#barchart").selectAll("svg").remove();
+				    	}
+			    	}else{
+				    	if(data[i].close!=0){
+				    		$("#empty").hide();	
+				    		break;
+				    	}else{
+				    		$("#empty").show();	
+				    		continue;
+				    	}
+				    }
+			    	
+			    }
+
 				
 			  // scale the range of the data
 			  x.domain(data.map(function(d) { return d.mindate; }));
@@ -288,7 +328,7 @@
 			  	if(data[i].close == 0 ){ 
 			    	y.domain([0, d3.max(data, function(x) { return x.close; })]);
 			  	}else{
-			  		y.domain([0, d3.max(data, function(x) { return x.close; })+40]);
+			  		y.domain([0, d3.max(data, function(x) { return x.close; })+100]);
 			  		break;
 			  	}
 			  }
@@ -347,9 +387,19 @@
 				$(".day").html(day);
 				$(".month").html(month);
 				$(".year").html(year);
+				$("#empty").html("There's no production in " + year);
 				d3.select("#barchart").selectAll("svg").remove();
 				drawChart(ThisDate);
 				console.log(ThisDate);
+			}
+
+			function waiting(){
+			    if(producedEnergy!=null){
+			        updateDate();
+			    }
+			    else{
+			        setTimeout(waiting, 250);
+			    }
 			}
 
 		</script>
@@ -367,7 +417,7 @@
 				<div class="text"><label class="year"></label></div>
 			</div>
 			<script>
-				updateDate();
+				waiting();
 			</script>
 			<div style="clear:both;width:100%;height:10px;"></div>
 			<div class="otherBox">
@@ -405,7 +455,6 @@
 			</div>
 			<br>
 		</div>
-		<br>
 		<div class="footer2">
 			<label class="lbl4" style="margin-top:3px;">Help</label>
 			<label class="lbl4" style="margin-left:5px;margin-top:3px;">Contact</label>

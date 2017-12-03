@@ -60,14 +60,12 @@
 	<body>
 		<div class="alert alert-danger errorAlert" role="alert" style="display:none;position:absolute;width:100%;top:1px;height:50px;">
 		  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-		  <span class="sr-only">Error:</span>
-		  <label class="error"></label>
+		  <label class="error" style="margin-left:5px;"></label>
 		  <span class="glyphicon glyphicon-remove" aria-hidden="true" style="float:right;padding:4px;"></span>
 		</div>
 		<div class="alert alert-success successAlert" role="alert" style="display:none;position:absolute;width:100%;top:1px;height:50px;">
-		  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-		  <span class="sr-only">Success:</span>
-		  <label class="success"></label>
+		  <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+		  <label class="success" style="margin-left:5px;"></label>
 		  <span class="glyphicon glyphicon-remove" aria-hidden="true" style="float:right;padding:4px;"></span>
 		</div>
 		<div class="edpLogoBox">
@@ -93,7 +91,7 @@
 								<span class="glyphicon glyphicon-user" aria-hidden="true" style="height:17px;margin-top:3px;"></span>
 							</button>
 						</span>
-						<input type="text" class="form-control" class="username" name="username" placeholder="Email">
+						<input type="text" class="form-control" class="username" name="username" value="myLogin" placeholder="Email">
 					</div>
 					<div style="width:100%;height:10px;"></div>
 					<div class="input-group">
@@ -102,7 +100,7 @@
 								<span class="glyphicon glyphicon-lock" aria-hidden="true" style="height:17px;margin-top:3px;"></span>
 							</button>
 						</span>
-						<input type="password" class="form-control" class="password" name="password" placeholder="Password">
+						<input type="password" class="form-control" class="password" name="password" value="myPass" placeholder="Password">
 					</div>
 					<div style="width:100%;height:10px;"></div>
 					<div class="cntr" style="margin-left:-48px;">
@@ -125,13 +123,13 @@
 					    var username = document.forms["formLogin"]["username"].value;
 						var password = document.forms["formLogin"]["password"].value;
 					    if (username == 0) {
-					    	$(".errorAlert").fadeIn();
-					        $(".error").html("You have to insert a username");
+					    	$(".errorAlert").fadeIn("slow");
+					        $(".error").html("You have to insert a username.");
 					        return false;
 					    }else{
 					    	if (password == 0) {
-					        	$(".errorAlert").fadeIn();
-					        	$(".error").html("You have to insert a password");
+					        	$(".errorAlert").fadeIn("slow");
+					        	$(".error").html("You have to insert a password.");
 					        	return false;
 					    	}
 					    }
@@ -145,19 +143,17 @@
 					    			localStorage.setItem("customerNameStorage", d.customer_name);
 					    			localStorage.setItem("customerAddressStorage", d.customer_address);
 					    			localStorage.setItem("customerCreditCardStorage", d.creditcard);
-					    			$(".successAlert").fadeIn();
-					        		$(".success").html("You are going to be redirected");
+					    			$(".successAlert").fadeIn("slow");
+					        		$(".success").html("You are going to be redirected.");
 					    			setTimeout(function(){
 									    window.location = "menu.html";
 									}, 2000);
 					    		}else{
-					    			$(".errorAlert").fadeIn();
-					        		$(".error").html("The password is not correct");
 					        		return false;
 					    		}
 					    	}else{
-					    		$(".errorAlert").fadeIn();
-					        	$(".error").html("The username is not correct");
+					    		$(".errorAlert").fadeIn("slow");
+					        	$(".error").html("Invalid username or password.");
 					        	return false;
 					    	}
 					    })

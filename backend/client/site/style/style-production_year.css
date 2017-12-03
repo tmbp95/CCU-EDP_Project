@@ -195,11 +195,23 @@ div.tooltip {
 	}
 
 	#barchart{
+		min-height: 270px;
 		width:260px;
 		margin:0 auto;
 		position:relative;
 		top:30px;
 	}
+	#empty{
+  position:absolute;
+  z-index:999;
+  width:210px;
+  height:40px;
+  font-family: EDPPreonMedium,sans-serif;
+  left:50%;
+  margin-left:-105px;
+  top:32.8%; 
+  text-align:center;
+}
 	div.otherBox{
 		width:203px;
 		margin:0 auto;

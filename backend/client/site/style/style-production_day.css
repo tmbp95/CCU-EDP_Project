@@ -204,11 +204,23 @@ a{
 	}
 
 	#barchart{
+		min-height: 250px;
 		width:260px;
 		margin:0 auto;
 		position:relative;
 		top:30px;
 	}
+	#empty{
+  position:absolute;
+  z-index:999;
+  width:210px;
+  height:40px;
+  font-family: EDPPreonMedium,sans-serif;
+  left:50%;
+  margin-left:-105px;
+  top:35.5%; 
+  text-align:center;
+}
 	div.otherBox{
 		width:203px;
 		margin:0 auto;

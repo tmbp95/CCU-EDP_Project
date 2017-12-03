@@ -19,8 +19,6 @@
 			queryString = queryString.substring(1);
 			var queries = queryString.split("=");
 
-			var customerID = localStorage.getItem("customerIDStorage");
-
 			function loadDoc(content, cFunction) {
 				var xhttp;
 				xhttp=new XMLHttpRequest();
@@ -37,11 +35,28 @@
 				localStorage.setItem("production", xhttp.responseText);
 			}
 
-			loadDoc('producedenergies', getProducedEnergy);
-			producedEnergy = localStorage.getItem("production");
-			producedEnergy = jQuery.parseJSON(producedEnergy);
-			//console.log(producedEnergy);
+			window.onload = function(){
+			 	loadDoc('producedenergies', getProducedEnergy);
+			 }
 
+			var customerID, producedEnergy;
+			function getStuff(){
+				customerID = localStorage.getItem("customerIDStorage");
+				producedEnergy = localStorage.getItem("production");
+				producedEnergy = jQuery.parseJSON(producedEnergy);
+			}
+
+			function waitForElement(){
+				$('#loading').show();
+				producedEnergy = localStorage.getItem("production");
+			    if(producedEnergy!=null){
+			    	getStuff();
+			    }
+			    else{
+			        setTimeout(waitForElement, 250);
+			    }
+			}
+			waitForElement();
 
 
 		</script>
@@ -109,6 +124,7 @@
 				var ThisDate = day + "-" + month + "-" + year; // AQUI
 			</script>
 			<div id="tablediv">
+				<img id="loading" src="images/loading.gif" width="200" style="display:none;position:relative;left:50%;margin-left:-100px;"/>
 				<script src="http://d3js.org/d3.v3.min.js"></script>
 
 				<script>
@@ -129,52 +145,54 @@
 							]
 
 							console.log(data[0].close);
-			    producedEnergy.forEach(function(d) {
-			    	if(d.producer_id==customerID){
-			    		var OldDate = new Date(d.posted_time.split("T")[0]);
- 						var NewDate = OldDate.getDate() + '-' + (OldDate.getMonth() + 1) + '-' + OldDate.getFullYear();
- 						if(NewDate == ThisDate){
- 							var hours = parseInt(d.posted_time.split("T")[1].split(".")[0].split(":")[0]);
- 							if(0 <= hours && hours < 2){
- 								data[0].close += d.quantity; 
- 							}
- 							if(2 <= hours && hours < 4){
- 								data[1].close += d.quantity; 
- 							}
- 							if(4 <= hours && hours < 6){
- 								data[2].close += d.quantity; 
- 							}
- 							if(6 <= hours && hours < 8){
- 								data[3].close += d.quantity; 
- 							}
- 							if(8 <= hours && hours < 10){
- 								data[4].close += d.quantity; 
- 							}
- 							if(10 <= hours && hours < 12){
- 								data[5].close += d.quantity; 
- 							}
- 							if(12 <= hours && hours < 14){
- 								data[6].close += d.quantity; 
- 							}
- 							if(14 <= hours && hours < 16){
- 								data[7].close += d.quantity; 
- 							}
- 							if(16 <= hours && hours < 18){
- 								data[8].close += d.quantity; 
- 							}
- 							if(18 <= hours && hours < 20){
- 								data[9].close += d.quantity; 
- 							}
- 							if(20 <= hours && hours < 22){
- 								data[10].close += d.quantity; 
- 							}
- 							if(22 <= hours && hours < 24){
- 								data[11].close += d.quantity; 
- 							}
+				function drawTable(){
+				    producedEnergy.forEach(function(d) {
+				    	if(d.producer_id==customerID){
+				    		var OldDate = new Date(d.posted_time.split("T")[0]);
+	 						var NewDate = OldDate.getDate() + '-' + (OldDate.getMonth() + 1) + '-' + OldDate.getFullYear();
+	 						if(NewDate == ThisDate){
+	 							var hours = parseInt(d.posted_time.split("T")[1].split(".")[0].split(":")[0]);
+	 							if(0 <= hours && hours < 2){
+	 								data[0].close += d.quantity; 
+	 							}
+	 							if(2 <= hours && hours < 4){
+	 								data[1].close += d.quantity; 
+	 							}
+	 							if(4 <= hours && hours < 6){
+	 								data[2].close += d.quantity; 
+	 							}
+	 							if(6 <= hours && hours < 8){
+	 								data[3].close += d.quantity; 
+	 							}
+	 							if(8 <= hours && hours < 10){
+	 								data[4].close += d.quantity; 
+	 							}
+	 							if(10 <= hours && hours < 12){
+	 								data[5].close += d.quantity; 
+	 							}
+	 							if(12 <= hours && hours < 14){
+	 								data[6].close += d.quantity; 
+	 							}
+	 							if(14 <= hours && hours < 16){
+	 								data[7].close += d.quantity; 
+	 							}
+	 							if(16 <= hours && hours < 18){
+	 								data[8].close += d.quantity; 
+	 							}
+	 							if(18 <= hours && hours < 20){
+	 								data[9].close += d.quantity; 
+	 							}
+	 							if(20 <= hours && hours < 22){
+	 								data[10].close += d.quantity; 
+	 							}
+	 							if(22 <= hours && hours < 24){
+	 								data[11].close += d.quantity; 
+	 							}
 
- 						}
-			    	}
-			    });
+	 						}
+				    	}
+				    });
+				    console.log(data);
 									function tabulate(data, columns) {
 										var table = d3.select('#tablediv').append('table')
 										table.attr("class", "table table-striped");
@@ -219,7 +237,17 @@
 
 						// render the table(s)
 						tabulate(data, ['date','close']); // 2 column table
+					}
 
+					function waiting(){
+					    if(producedEnergy!=null){
+					        drawTable();
+					    }
+					    else{
+					        setTimeout(waiting, 250);
+					    }
+					}
+					waiting();
 				</script>
 			</div>
 		</div>

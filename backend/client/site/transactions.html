@@ -6,7 +6,7 @@
 		<script src="js/jquery.min.js"></script>
 		<link href="style/css/bootstrap-toggle.min.css" rel="stylesheet">
 		<link href="style/css/bootstrap.min.css" rel="stylesheet">
-		<link href="style/style-history.css" rel="stylesheet">
+		<link href="style/style-transactions.css" rel="stylesheet">
 		<script src="style/js/bootstrap-toggle.min.js"></script>
 
 	</head>
@@ -26,13 +26,13 @@
 			}
 
 			function getTransactions (xhttp) {
-				localStorage.setItem("transactions", xhttp.responseText);
+				localStorage.setItem("transactionsOther", xhttp.responseText);
 			}
 			function getEnergy (xhttp) {
 				localStorage.setItem("energies", xhttp.responseText);
 			}
 
-			var customerID, transactions, energies;
+			var customerID, transactionsOther, energies;
 
 			window.onload = function(){
 				customerID = localStorage.getItem("customerIDStorage");
@@ -42,28 +42,29 @@
 
 			function getStuff(){
 				energies = localStorage.getItem("energies");
-				transactions = localStorage.getItem("transactions");
+				transactionsOther = localStorage.getItem("transactionsOther");
 				console.log(energies);
-				console.log(transactions);
+				console.log(transactionsOther);
 				energies = jQuery.parseJSON(energies);
-				transactions = jQuery.parseJSON(transactions);
+				transactionsOther = jQuery.parseJSON(transactionsOther);
 				setTimeout(function () {
 				        parseData();
 				    }, 1000);
 			}
 
-			function execute(){
+			function waitForElement(){
+				$('#loading1').show();
+				$('#loading2').show();
 				energies = localStorage.getItem("energies");
-				transactions = localStorage.getItem("transactions");
-				if(energies!=null && transactions!=null){
-					getStuff();
-				}else{
-					setTimeout(function () {
-				        execute();
-				    }, 1);
-				}
+				transactionsOther = localStorage.getItem("transactionsOther");
+			    if(energies!=null && transactionsOther!=null){
+			    	getStuff();
+			    }
+			    else{
+			        setTimeout(waitForElement, 350);
+			    }
 			}
-			execute();
+			waitForElement();
 
 		</script>
 
@@ -80,7 +81,7 @@
 				    </script>
 			</div>
 
-				<div class="title">History</div>
+				<div class="title">Transactions</div>
 
 			<div class="buttons">
 					<button id="homeButton" type="button" class="btn btn-default" aria-label="Left Align">
@@ -98,32 +99,45 @@
 		<div class="balance2">
 				<div class="panel panel-default" style="margin-top:30px;">
 					<div class="headingText">SOLD</div>
-					<table id="soldTable" class="table table-striped" style="margin-top:10px;">
-						<tr></tr>
-
+					<div style="clear:both"></div>
+					
+					<table id="soldTable" class="table table-striped">
+						<tr>
+							<td class="lbl5" style="color:#8a8a8a;">Name</td>
+							<td class="lbl5" style="color:#8a8a8a;">kW</td>
+							<td class="lbl5" style="color:#8a8a8a;">€/kW</td>
+							<td class="lbl5" style="color:#8a8a8a;">€</td>
+							<td class="lbl5" style="color:#8a8a8a;">Date</td>
+						</tr>
+						
 					</table>
+					<img id="loading1" src="images/loading.gif" style="width:200px;display:hidden;position:relative;left:50%;margin-left:-100px;"/>
 					<br>
 				</div>
 				<script>
 					function parseData() {
 						var count = 1;
-						var quantity, price, date;
-						transactions.forEach(function(d){
+						var quantity, price, date, name;
+						transactionsOther.forEach(function(d){
 							energies.forEach(function(i){
 								if(d.energy_id==i.energy_id){
 									if(i.producer_id==customerID){
 										quantity=i.quantity;
-										price = i.KWhPrice*quantity;
+										price= i.KWhPrice;
+										if(price>=1000) price = price/1000 + "k"
+										value = price*quantity;
+										if(value>=1000) value = value/1000 + "k"
 										date = new Date(d.transaction_time);
+										name = i.packName;
 										var day = date.getDate();
 										if(day<10) day = '0' + day;
 										var month = date.getMonth()+1;
 										if(month<10) month = '0' + month;
 										var year = date.getFullYear();
 										date = day+"-"+month+"-"+year;
-
-										$("#soldTable").append('<tr><td class="lbl5">' + count + '.</td><td class="lbl5">' + quantity + ' kW</td><td class="lbl5">' + price + ' €</td><td class="lbl5">' + day + '-' + month + '-' + year + '</td></tr>');
+										$("#soldTable").append('<tr><td class="lbl5">' + name + '</td><td class="lbl5">' + quantity + '</td><td class="lbl5">' + price + '</td><td class="lbl5">' + value + '</td><td class="lbl5" style="font-size:0.6em;">' + day + '-' + month + '-' + year + '</td></tr>');
 										count ++;
+										$("#loading1").hide();
 									}
 								}
 							})
@@ -136,31 +150,45 @@
 		<div class="balance2">
 			<div class="panel panel-default" style="margin-top:30px;">
 				<div class="headingText">BOUGHT</div>
-				<table  id="boughtTable" class="table table-striped" style="margin-top:10px;">
-					<tr></tr>
+				<div style="clear:both"></div>
+				<table  id="boughtTable" class="table table-striped">
+					
+					<tr>
+							<td class="lbl5" style="color:#8a8a8a;">Name</td>
+							<td class="lbl5" style="color:#8a8a8a;">kW</td>
+							<td class="lbl5" style="color:#8a8a8a;">€/kW</td>
+							<td class="lbl5" style="color:#8a8a8a;">€</td>
+							<td class="lbl5" style="color:#8a8a8a;">Date</td>
+						</tr>
 
 				</table>
+				<img id="loading2" src="images/loading.gif" width="200" style="display:hidden;position:relative;left:50%;margin-left:-100px;"/>
 				<br>
 			</div>
 				<script>
 					function parseData2() {
 						var count = 1;
-						var quantity, price, date;
-						transactions.forEach(function(d){
+						var quantity, price, date, name;
+						transactionsOther.forEach(function(d){
 							if(d.client_id == customerID){
 								energies.forEach(function(i){
 									if(d.energy_id==i.energy_id){
 										quantity=i.quantity;
 										price = i.KWhPrice*quantity;
+										if(price>=1000) price = price/1000 + "k"
+										value = price*quantity;
+										if(value>=1000) value = value/1000 + "k"
 										date = new Date(d.transaction_time);
+										name = i.packName;
 										var day = date.getDate();
 										if(day<10) day = '0' + day;
 										var month = date.getMonth()+1;
 										if(month<10) month = '0' + month;
 										var year = date.getFullYear();
 										date = day+"-"+month+"-"+year;
-										$("#boughtTable").append('<tr><td class="lbl5">' + count + '.</td><td class="lbl5">' + quantity + ' kW</td><td class="lbl5">' + price + ' €</td><td class="lbl5">' + day + '-' + month + '-' + year + '</td></tr>');
+										$("#boughtTable").append('<tr><td class="lbl5">' + name + '</td><td class="lbl5">' + quantity + '</td><td class="lbl5">' + price + '</td><td class="lbl5">' + value + '</td><td class="lbl5" style="font-size:0.6em;">' + day + '-' + month + '-' + year + '</td></tr>');
 										count ++;
+										$("#loading2").hide();
 									}
 								})
 							}
@@ -168,9 +196,10 @@
 					}
 				</script>
 			</div>
+			<br>
 			<div class="footer2">
-			<label class="lbl4" style="margin-top:3px;">Help</label>
-			<label class="lbl4" style="margin-left:5px;margin-top:3px;">Contact</label>
-			<label class="lbl4" style="margin-left:5px;margin-top:3px;">T&C</label>
-		</div>
+				<label class="lbl4" style="margin-top:3px;">Help</label>
+				<label class="lbl4" style="margin-left:5px;margin-top:3px;">Contact</label>
+				<label class="lbl4" style="margin-left:5px;margin-top:3px;">T&C</label>
+			</div>
 </html>

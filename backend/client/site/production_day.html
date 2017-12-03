@@ -43,18 +43,17 @@
 				producedEnergy = jQuery.parseJSON(producedEnergy);
 			}
 
-			function execute(){
+			function waitForElement(){
+				$('#loading').show();
 				producedEnergy = localStorage.getItem("production");
-				if(producedEnergy!=null){
-					getStuff();
-				}else{
-					setTimeout(function () {
-				        execute();
-				    }, 1);
-				}
+			    if(producedEnergy!=null){
+			    	getStuff();
+			    }
+			    else{
+			        setTimeout(waitForElement, 250);
+			    }
 			}
-
-			execute();	
+			waitForElement();
 		</script>
 	</head>
 
@@ -95,12 +94,17 @@
 			</ul>
 		</div>
 		<div class="panel panel-default" style="margin-top:10px;">
-			<div id="barchart"></div>
+			<img id="loading" src="images/loading.gif" width="200" style="display:none;position:relative;left:50%;margin-left:-100px;"/>
+			<div id="barchart">
+				<div id="empty"></div>
+			</div>
 			<br>
 		</div>
 		<div style="clear:both"></div>
 		<script src="js/d3v4.js"></script>
 		<script>
+
+
 			if(queries[0]==""){
 				var d = new Date();
 				var day = d.getDate();
@@ -118,9 +122,12 @@
 			}
 
 			var ThisDate = day + "-" + month + "-" + year; // AQUI
+			var SepDate = day + "/" + month + "/" + year; // AQUI
+
+			$("#empty").html("There's no production in " + SepDate);
 
 			var widthCSS = $("#barchart").width();
-			var margin = {top: 20, right: 0, bottom: 70, left: 25},
+			var margin = {top: 20, right: 0, bottom: 70, left: 30},
 			    width = widthCSS - margin.left - margin.right,
 			    height = 250 - margin.top - margin.bottom;
 
@@ -243,6 +250,27 @@
 			    	d.date = d.date;
 			        d.close = +d.close;
 			    });
+
+			    for(i=0;i<data.length;i++){
+			    	if(i==data.length-1){
+			    		if(data[i].close!=0){
+				    		$("#empty").hide();	
+				    		break;
+				    	}else{
+				    		$("#empty").show();	
+				    		d3.select("#barchart").selectAll("svg").remove();
+				    	}
+			    	}else{
+				    	if(data[i].close!=0){
+				    		$("#empty").hide();	
+				    		break;
+				    	}else{
+				    		$("#empty").show();	
+				    		continue;
+				    	}
+				    }
+			    	
+			    }
 				
 			  // scale the range of the data
 			  x.domain(data.map(function(d) { return d.date; }));
@@ -311,13 +339,22 @@
 				$(".day").html(day);
 				$(".month").html(month);
 				$(".year").html(year);
+				var SepDate = day + "/" + month + "/" + year; // AQUI
+				$("#empty").html("There's no production in " + SepDate);
 				d3.select("#barchart").selectAll("svg").remove();
 				drawChart(ThisDate);
+				$("#loading").hide();
 				console.log(ThisDate);
 			}
 
-
-
+			function waiting(){
+			    if(producedEnergy!=null){
+			        updateDate();
+			    }
+			    else{
+			        setTimeout(waiting, 250);
+			    }
+			}
 
 
 		</script>
@@ -335,7 +372,7 @@
 				<div class="text"><label class="day"></label>/<label class="month"></label>/<label class="year"></label></div>
 			</div>
 			<script>
-				updateDate();
+				waiting();
 			</script>
 			<div style="clear:both;width:100%;height:10px;"></div>
 			<div class="otherBox">
@@ -373,7 +410,6 @@
 			</div>
 			<br>
 		</div>
-		<br>
 		<div class="footer2">
 			<label class="lbl4" style="margin-top:3px;">Help</label>
 			<label class="lbl4" style="margin-left:5px;margin-top:3px;">Contact</label>

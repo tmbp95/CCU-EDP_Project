@@ -69,18 +69,19 @@
 				    }, 250);
 			}
 
-			function execute(){
+
+			function waitForElement(){
+				$('#loading').show();
 				energies = localStorage.getItem("energies");
 				transactions = localStorage.getItem("transactions");
-				if(energies!=null && transactions!=null){
-					getStuff();
-				}else{
-					setTimeout(function () {
-				        execute();
-				    }, 1);
-				}
+			    if(energies!=null && transactions!=null){
+			    	getStuff();
+			    }
+			    else{
+			        setTimeout(waitForElement, 250);
+			    }
 			}
-			execute();
+			waitForElement();
 
 
 		</script>
@@ -103,9 +104,11 @@
 					$(".popupDiv").show(40);
 					$(".popupDiv").css('top', $(document).scrollTop()+(screen.height/2));
 					$(".oldPrice").html(price);
+					$(".originalQty").html(quantity);
 					$(".oldPriceInput").val(price);
 					$(".id").val(value);
 					$(".quantity").val(quantity);
+					$(".amountEarn2").html($(".oldPriceInput").val()*$(".quantity").val());
 				})
 			}
 
@@ -140,17 +143,25 @@
 						<div class="separator"></div>
 						<div class="stroke"></div>
 					</div>
-					<br><br>
-					<p class="description">Current Price: <label class="oldPrice" style="margin-left:18px;"></label> €/kW</p>
-
+					<div style="width:100%;height:1px;clear:both;"></div>
+					<table style="width:100%;position:relative;top:0px;">
+						<tr>
+							<td><span class="description">Selling:</span></td>
+							<td><span class="description" style="font-size:0.9em;"><label class="originalQty"></label> kW</span></td>
+						</tr>
+						<tr>
+							<td><span class="description">Current Price:</span></td>
+							<td><span class="description" style="font-size:0.9em;"><label class="oldPrice"></label> €/kW</span></td>
+						</tr>
 					<div style="margin-top:10px">
-
-						<label class="description">New Price: </label>
-						<input class="box oldPriceInput" name="newPrice" type="number" step="0.1" value="0" min="0" style="text-align:right;width: 50px; position:relative;right:-5px; top:-10px;">
-						<label class="description" style="margin-left:5px;">€/kW</label>
-						<br>
-						<label class="description earn2" style="font-size:.9em;position:relative;left:0px;color:#333;top:-10px;opacity:0.9;visibility:hidden;">You will earn: <font class="amountEarn2">_</font> €</span>
-
+						<tr>
+							<td><label class="description">New Price: </label></td>
+							<td align="center">
+								<input class="box oldPriceInput" name="newPrice" type="number" step="1" value="0" min="0" style="font-size:0.9em;border-radius:5px;border:1px solid #333;text-align:center;width: 60px; position:relative;top:-10px;">
+							</td>
+						</tr>
+					</table>
+						<label class="description earn2" style="font-size:0.8em;position:relative;left:0px;color:#333;top:-10px;opacity:0.9;">You will earn: <font class="amountEarn2">_</font> €</span>	
 					</div>
 <script>
 				$(document).ready(function(){
@@ -171,7 +182,7 @@
 			</script>
 
 				</div>
-				<div class="confirm" style="">
+				<div class="confirm" style="margin-top:-20px;">
 						<button id="formSellupdate" type="submit" class="btn btn-danger" style="width:150px;">Confirm</button>
 				</div>
 				</form>
@@ -387,8 +398,15 @@
 
 			<div class="panel panel-default" style="margin-top:-10px;">
 				<div class="sellTitle">Currently selling:</div>
+				<img id="loading" src="images/loading.gif" width="200" style="display:none;position:relative;left:50%;margin-left:-100px;"/>
 				<table id="currentlySelling" class="table table-striped" style="margin-top:10px;">
-					<tr></tr>
+					<tr>
+						<td class="lbl5" style="color:#8a8a8a;">Name</td>
+						<td class="lbl5" style="color:#8a8a8a;">kW</td>
+						<td class="lbl5" style="color:#8a8a8a;">€</td>
+						<td class="lbl5" style="color:#8a8a8a;">Date</td>
+						<td class="lbl5" style="color:#8a8a8a;">Options</td>
+					</tr>
 				</table>
 				<br>
 			</div>
@@ -410,19 +428,19 @@
 						var year = date.getFullYear();
 						date = day+"-"+month+"-"+year;
 
-					   $("#currentlySelling").append('<tr><td class="lbl5">' + energies[i].quantity + ' kW</td><td class="lbl5">' + energies[i].KWhPrice + ' €/kW</td><td class="lbl5">' + date + '</td><td align="right"><button type="button" id="priceChange' + energies[i].energy_id + '" onclick="someFunc(' + energies[i].energy_id + ',' + energies[i].KWhPrice + ',' + energies[i].quantity + ')" class="btn btn-danger" style="margin-top: 0px;margin-left: 0%;height:25px;width:85px;"><label class="lbl5" style="position:relative;top:0px;left:-5px;">Change Price</label></button></td>' + /* '<button type="button" class="btn btn-default" aria-label="Left Align" style="float:right;background-color:#d9534f;"><span class="glyphicon glyphicon-trash" aria-hidden="true" style="height: 17px; font-size:15; color:white;"></span></button>'  +*/ '</tr>');
+					   $("#currentlySelling").append('<tr><td class="lbl5">' + energies[i].packName + '</td><td class="lbl5">' + energies[i].quantity + '</td><td class="lbl5">' + energies[i].KWhPrice + '</td><td class="lbl5" style="font-size:0.6em">' + date + '</td><td align="right"><button type="button" id="priceChange' + energies[i].energy_id + '" onclick="someFunc(' + energies[i].energy_id + ',' + energies[i].KWhPrice + ',' + energies[i].quantity + ')" class="btn btn-danger" style="height:25px;width:55px;"><label class="lbl7" style="position:relative;top:0px;left:-5px;"><span class="glyphicon glyphicon-pencil" style="margin-right:5px;aria-hidden="true"></span>Price</label></button></td>' + /* '<button type="button" class="btn btn-default" aria-label="Left Align" style="float:right;background-color:#d9534f;"><span class="glyphicon glyphicon-trash" aria-hidden="true" style="height: 17px; font-size:15; color:white;"></span></button>'  +*/ '</tr>');
+					   $('#loading').hide();
 
 					}
 				}
 			</script>
 		</div>
-		<br><br>
-		<!--<div class="heightspace"></div>
+		<div class="heightspace"></div>
 		<div class="footer2">
 			<label class="lbl4" style="margin-top:3px;">Help</label>
 			<label class="lbl4" style="margin-left:5px;margin-top:3px;">Contact</label>
 			<label class="lbl4" style="margin-left:5px;margin-top:3px;">T&C</label>
-		</div>-->
+		</div>
 
 	</body>
 
