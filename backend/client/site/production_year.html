@@ -98,6 +98,7 @@
 			</div>
 		</div>
 		<div style="clear:both"></div>
+		<input class="inputQty" type="hidden" value=""/>
 		<script src="js/d3v4.js"></script>
 		<script>
 
@@ -249,7 +250,8 @@
 	"numberMonth": 11,
 	"close" : 0
 }
-]
+];
+var fullQty = -1;
 
 				console.log(data[0].close);
 			    producedEnergy.forEach(function(d) {
@@ -258,6 +260,7 @@
  						var NewDate = OldDate.getDate() + '-' + (OldDate.getMonth() + 1) + '-' + OldDate.getFullYear();
  						NewDate = NewDate.split("-")[2];
  						if(NewDate == datereceived){
+ 							fullQty += d.quantity;
  							var month = parseInt(d.posted_time.split("T")[0].split("-")[1]);
  							if(month-1 == 0){
  								data[0].close += d.quantity; 
@@ -299,6 +302,13 @@
  						}
 			    	}
 			    });
+
+			    if(fullQty==-1){
+			    	fullQty = 0;
+			    }else{
+			    	fullQty++;
+			    }
+			    $(".inputQty").val(fullQty);
 
 			    for(i=0;i<data.length;i++){
 			    	if(i==data.length-1){
@@ -391,6 +401,11 @@
 				d3.select("#barchart").selectAll("svg").remove();
 				drawChart(ThisDate);
 				console.log(ThisDate);
+				setTimeout(function() {
+						$("#fullQtys").html("Production: " +  $(".inputQty").val() + "<font style='font-size:0.8em'>kW</font>");
+						var widthBox = parseFloat($("#fullQtys").css("width"));
+						$("#fullQtys").css("margin-left", -(widthBox/2));
+					}, 1);
 			}
 
 			function waiting(){
@@ -419,7 +434,10 @@
 			<script>
 				waiting();
 			</script>
-			<div style="clear:both;width:100%;height:10px;"></div>
+			<div style="clear:both;width:100%;height:10px;">
+				<label class="text" style="position:relative;left:50%;" id="fullQtys"></label>
+			</div>
+			<div style="clear:both;width:100%;height:20px;"></div>
 			<div class="otherBox">
 				<button type="button" id="leftbutton" class="btn btn-default" style="background-color: #333;width:40px;height:34px;">
 					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true" style="color:#eee;height: 20px; font-size:15;float:left;margin-top:2px;"></span>

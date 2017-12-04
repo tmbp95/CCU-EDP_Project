@@ -18,6 +18,12 @@
   	cursor: default;
   	font-weight:normal;
 }
+.lblfooter {
+	font-size:.758em;
+  	cursor: default;
+  	font-weight:normal;
+  	font-family: Arial, Helvetica, sans-serif !important;
+}
 .lbl6 {
 	font-size:.6em;
   	cursor: default;
@@ -31,6 +37,13 @@
   	font-weight:normal;
   	vertical-align: middle !important;
   	width:77px;
+}
+.lbl8 {
+	font-size:.6em;
+  	cursor: default;
+  	font-weight:normal;
+  	vertical-align: middle !important;
+  	width:50px;
 }
 
 .alert{
@@ -51,7 +64,6 @@
 	.footer2{
 		width:102px;
 		position: relative;
-		bottom: 10px;
 		left: 0;
 		right: 0;
 		margin: auto;
@@ -75,11 +87,9 @@
 	.footer2{
 		width:102px;
 		position: relative;
-		bottom: 10px;
-		left: 0;
-		right: 0;
-		margin: auto;
-
+		left: 50%;
+		margin-left:-51px;
+		
 	}
 	.heightspace{
 		width:100%;
@@ -205,11 +215,11 @@
 	.popupDiv{
 		position:absolute;
 	    width:300px;
-	    height:200px;
+	    height:210px;
 	    top: 50%;
 	    left: 50%;
 	    margin-left: -150px;
-	    margin-top: -100px;
+	    margin-top: -105px;
 		z-index:999;
 		background-color: #f6f4f4;
 		opacity:0.95;
@@ -261,7 +271,7 @@
 		white-space: nowrap;
 	}
 	div.headingBox{
-		width:188px;
+		width:126px;
 		margin:0 auto;
 		margin-top:-10px;
 	}

@@ -97,13 +97,14 @@
 			    }
 			});
 
-			function someFunc(value, price, quantity){
+			function someFunc(value, price, quantity, name){
 				$("#priceChange" + value).ready(function(){
 					$("#popupDiv-back").delay( 100 ).fadeIn(100);
 					$("#popupDiv-back").css("height", document.body.scrollHeight);
 					$(".popupDiv").show(40);
 					$(".popupDiv").css('top', $(document).scrollTop()+(screen.height/2));
 					$(".oldPrice").html(price);
+					$(".nameOriginal").html(name);
 					$(".originalQty").html(quantity);
 					$(".oldPriceInput").val(price);
 					$(".id").val(value);
@@ -135,29 +136,34 @@
 				<form name="formnew" method="post">
 					<input type="hidden" class="id" name="id">
 					<input type="hidden" class="quantity" name="quantity">
+					<input type="hidden" class="name" name="name">
 				<div class=changeBox>
 					<div class="headingBox">
 						<div class="stroke"></div>
 						<div class="separator"></div>
-						<div class="text">Change Price</div>
+						<div class="text">Edit</div>
 						<div class="separator"></div>
 						<div class="stroke"></div>
 					</div>
 					<div style="width:100%;height:1px;clear:both;"></div>
 					<table style="width:100%;position:relative;top:0px;">
 						<tr>
+							<td><span class="description">Name:</span></td>
+							<td><span class="description" style="font-size:0.7em;"><label class="nameOriginal"></label></span></td>
+						</tr>
+						<tr>
 							<td><span class="description">Selling:</span></td>
-							<td><span class="description" style="font-size:0.9em;"><label class="originalQty"></label> kW</span></td>
+							<td><span class="description" style="font-size:0.7em;"><label class="originalQty"></label> kW</span></td>
 						</tr>
 						<tr>
 							<td><span class="description">Current Price:</span></td>
-							<td><span class="description" style="font-size:0.9em;"><label class="oldPrice"></label> €/kW</span></td>
+							<td><span class="description" style="font-size:0.7em;"><label class="oldPrice"></label> €/kW</span></td>
 						</tr>
 					<div style="margin-top:10px">
 						<tr>
 							<td><label class="description">New Price: </label></td>
 							<td align="center">
-								<input class="box oldPriceInput" name="newPrice" type="number" step="1" value="0" min="0" style="font-size:0.9em;border-radius:5px;border:1px solid #333;text-align:center;width: 60px; position:relative;top:-10px;">
+								<input class="box oldPriceInput" name="newPrice" type="number" step="1" value="0" min="0" style="font-size:0.7em;border-radius:5px;border:1px solid #333;text-align:center;width: 60px; position:relative;top:-10px;">
 							</td>
 						</tr>
 					</table>
@@ -297,25 +303,30 @@
 			</div>
 			<div class="panel panel-default" style="margin-top:-10px;">
 				<form name="myForm" method="post">
-					<div class="panel-body">Amount
+					<div class="panel-body">Name <label class="lbl4" style="color:#333;font-size:0.6em"> (optional)</label>
+				  		<div class="input-group" style="width: 40%; float: right;">
+					  		<input type="text" name="name" class="form-control" style="border-radius:3px;">
+						</div>
+					</div>
+					<div class="panel-body" style="margin-top:-15px;">Amount
 				  		<div class="input-group" style="width: 40%; float: right;">
 					  		<input type="text" name="quantity" class="form-control kW">
 					  		<span class="input-group-addon"  style="font-size:.6em;width:10px;max-width:10px;"><font style="position:relative;left:-3px;">kW</font></span>
 						</div>
 					</div>
-				  	<div class="panel-body">Price <label class="lbl4" style="color:#333;font-size:0.6em"> (per kW)</label>
+				  	<div class="panel-body" style="margin-top:-15px;">Price <label class="lbl4" style="color:#333;font-size:0.6em"> (per kW)</label>
 				  		<div class="input-group" style="width: 40%; float: right;">
 					  		<input type="text" name="price" class="form-control euros">
 					 		<span class="input-group-addon">€</span>
 						</div>
 					</div>
-					<span class="earn" style="font-size:.9em;position:relative;left:15px;color:#333;top:-15px;opacity:0.9;visibility:hidden;">You will earn: <font class="amountEarn">_</font> €</span>
+					<span class="earn" style="font-size:.9em;position:relative;left:50%;margin-left:-60px;color:#333;top:-5px;opacity:0.9;visibility:hidden;">You will earn: <font class="amountEarn">_</font> €</span>
 					<div style="clear:both;"></div>
-					<button id="formSell" type="submit" value="submit" class="btn btn-danger buttonRow" style="position:relative;top: 5px;height:30px;margin-left:-30px;left:50%;width:60px;">
+					<button id="formSell" type="submit" value="submit" class="btn btn-danger buttonRow" style="margin-top:0px;position:relative;height:30px;margin-left:-30px;left:50%;width:60px;">
 							<label class="lbl3" style="position:relative;top:-2px;left:-2px;">Sell</label>
 					</button>
 				</form>
-				<div style="width:100%;height:10px;clear:both;"></div>
+				<div style="width:100%;height:1px;clear:both;"></div>
 			</div>
 			<script>
 				$(document).ready(function(){
@@ -361,7 +372,11 @@
 					$("#formSell").on("click",function(e) {
 					    e.preventDefault(); // cancel submission
 					    var quantity = document.forms["myForm"]["quantity"].value;
+					    var name = document.forms["myForm"]["name"].value;
 					    var price = document.forms["myForm"]["price"].value;
+					    if(name==""){
+					    	name = "pck" + quantity;
+					    }
 					    if( quantity != "" && price != "" ){
 
 								var energy = JSON.stringify({ KWhPrice: parseInt(price),
@@ -369,7 +384,7 @@
 																							energy_id: 0,
 																							holder: 40,
 																							packDescript: "hello",
-																							packName: "hello",
+																							packName: name,
 																							percentage: 100,
 																							posted_time: new Date(),
 																							producer_id: customerID,
@@ -399,11 +414,29 @@
 			<div class="panel panel-default" style="margin-top:-10px;">
 				<div class="sellTitle">Currently selling:</div>
 				<img id="loading" src="images/loading.gif" width="200" style="display:none;position:relative;left:50%;margin-left:-100px;"/>
-				<table id="currentlySelling" class="table table-striped" style="margin-top:10px;">
+				<table id="currentlySelling" class="table table-striped" style="table-layout: fixed;margin-top:10px;width:100%;">
+					<colgroup id="a">
+				        <script>
+				        	if( $(window).width() == 320){
+				        		var size = 7;
+				        		$("#a").append('<col style="width:73px;">');
+				        			
+				        	}else{
+				        		var size = 12;
+				        		$("#a").append('<col style="width:113px;">');	
+				        	}
+				        	
+				        </script>
+				        <col style="width: 50px;">
+				        <col style="width: 50px;">
+				        <col style="width: 80px;">
+				        <col style="width: 65px;">
+				        <col style="width: auto;">
+				    </colgroup>
 					<tr>
 						<td class="lbl5" style="color:#8a8a8a;">Name</td>
 						<td class="lbl5" style="color:#8a8a8a;">kW</td>
-						<td class="lbl5" style="color:#8a8a8a;">€</td>
+						<td class="lbl5" style="color:#8a8a8a;">€/kW</td>
 						<td class="lbl5" style="color:#8a8a8a;">Date</td>
 						<td class="lbl5" style="color:#8a8a8a;">Options</td>
 					</tr>
@@ -428,19 +461,40 @@
 						var year = date.getFullYear();
 						date = day+"-"+month+"-"+year;
 
-					   $("#currentlySelling").append('<tr><td class="lbl5">' + energies[i].packName + '</td><td class="lbl5">' + energies[i].quantity + '</td><td class="lbl5">' + energies[i].KWhPrice + '</td><td class="lbl5" style="font-size:0.6em">' + date + '</td><td align="right"><button type="button" id="priceChange' + energies[i].energy_id + '" onclick="someFunc(' + energies[i].energy_id + ',' + energies[i].KWhPrice + ',' + energies[i].quantity + ')" class="btn btn-danger" style="height:25px;width:55px;"><label class="lbl7" style="position:relative;top:0px;left:-5px;"><span class="glyphicon glyphicon-pencil" style="margin-right:5px;aria-hidden="true"></span>Price</label></button></td>' + /* '<button type="button" class="btn btn-default" aria-label="Left Align" style="float:right;background-color:#d9534f;"><span class="glyphicon glyphicon-trash" aria-hidden="true" style="height: 17px; font-size:15; color:white;"></span></button>'  +*/ '</tr>');
+						if((energies[i].packName.length > 7 && size == 7) || (energies[i].packName.length > 12 && size == 12)){
+							var extra = "..";
+						}else{
+							var extra = "";
+						}
+
+					   $("#currentlySelling").append(
+					   	'<tr>' + 
+					   		'<td class="lbl5">' + energies[i].packName.substring(0,size) + extra + '</td>' + 
+					   		'<td class="lbl5">' + energies[i].quantity + '</td>' + 
+					   		'<td class="lbl5">' + energies[i].KWhPrice + '</td>' + 
+					   		'<td class="lbl5" style="font-size:0.6em">' + date + '</td>' +
+					   		'<td class="lbl5">' + 
+					   			'<button type="button" id="priceChange' + energies[i].energy_id + '" onclick="someFunc(' + energies[i].energy_id + ',' + energies[i].KWhPrice + ',' + energies[i].quantity + ',\'' + energies[i].packName.substring(0,size) + extra + '\')" class="btn btn-danger" style="height:25px;width:55px;">' + 
+					   				'<label class="lbl7" style="position:relative;top:0px;left:-5px;font-size:0.7em"><span class="glyphicon glyphicon-pencil" style="margin-right:5px;aria-hidden="true;"></span>EDIT</label>' +
+					   			'</button>' +
+					   		'</td>' + /* '<button type="button" class="btn btn-default" aria-label="Left Align" style="float:right;background-color:#d9534f;"><span class="glyphicon glyphicon-trash" aria-hidden="true" style="height: 17px; font-size:15; color:white;"></span></button>'  +*/ 
+					   	'</tr>');
+
 					   $('#loading').hide();
 
 					}
 				}
 			</script>
+			<div class="footer2">
+				<label class="lblfooter" style="margin-top:3px;">Help</label>
+				<label class="lblfooter" style="margin-left:5px;margin-top:3px;">Contact</label>
+				<label class="lblfooter" style="margin-left:5px;margin-top:3px;">T&C</label>
+
+			</div>
+			<br>
 		</div>
-		<div class="heightspace"></div>
-		<div class="footer2">
-			<label class="lbl4" style="margin-top:3px;">Help</label>
-			<label class="lbl4" style="margin-left:5px;margin-top:3px;">Contact</label>
-			<label class="lbl4" style="margin-left:5px;margin-top:3px;">T&C</label>
-		</div>
+		
+
 
 	</body>
 

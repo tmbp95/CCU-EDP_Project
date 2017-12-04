@@ -100,6 +100,7 @@
 			</div>
 			<br>
 		</div>
+		<input class="inputQty" type="hidden" value=""/>
 		<div style="clear:both"></div>
 		<script src="js/d3v4.js"></script>
 		<script>
@@ -199,11 +200,13 @@
 							]
 
 				console.log(data[0].close);
+				var fullQty = -1;
 			    producedEnergy.forEach(function(d) {
 			    	if(d.producer_id==customerID){
 			    		var OldDate = new Date(d.posted_time.split("T")[0]);
  						var NewDate = OldDate.getDate() + '-' + (OldDate.getMonth() + 1) + '-' + OldDate.getFullYear();
  						if(NewDate == datereceived){
+ 							fullQty += d.quantity;
  							var hours = parseInt(d.posted_time.split("T")[1].split(".")[0].split(":")[0]);
  							if(0 <= hours && hours < 2){
  								data[0].close += d.quantity; 
@@ -245,6 +248,13 @@
  						}
 			    	}
 			    });
+			    if(fullQty==-1){
+			    	fullQty = 0;
+			    }else{
+			    	fullQty++;
+			    }
+			    $(".inputQty").val(fullQty);
+			    console.log($(".inputQty").val());
 
 			    data.forEach(function(d){
 			    	d.date = d.date;
@@ -345,11 +355,16 @@
 				drawChart(ThisDate);
 				$("#loading").hide();
 				console.log(ThisDate);
+				setTimeout(function() {
+						$("#fullQtys").html("Production: " +  $(".inputQty").val() + "<font style='font-size:0.8em'>kW</font>");
+						var widthBox = parseFloat($("#fullQtys").css("width"));
+						$("#fullQtys").css("margin-left", -(widthBox/2));
+					}, 1);
 			}
 
 			function waiting(){
 			    if(producedEnergy!=null){
-			        updateDate();
+			        updateDate();			        
 			    }
 			    else{
 			        setTimeout(waiting, 250);
@@ -374,7 +389,10 @@
 			<script>
 				waiting();
 			</script>
-			<div style="clear:both;width:100%;height:10px;"></div>
+			<div style="clear:both;width:100%;height:10px;">
+				<label class="text" style="position:relative;left:50%;" id="fullQtys"></label>
+			</div>
+			<div style="clear:both;width:100%;height:20px;"></div>
 			<div class="otherBox">
 				<button type="button" id="leftbutton" class="btn btn-default" style="background-color: #333;width:40px;height:34px;">
 					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true" style="color:#eee;height: 20px; font-size:15;float:left;margin-top:2px;"></span>

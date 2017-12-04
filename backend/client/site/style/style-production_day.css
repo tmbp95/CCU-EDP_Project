@@ -155,6 +155,13 @@ a{
 		margin-top:-5px;
 		opacity:0.8;
 	}
+	label.text{
+		font-family: EDPPreonMedium,sans-serif;
+		color: #333;
+		-webkit-font-smoothing: antialiased;
+		font-size:90%;
+		opacity:0.8;
+	}
 	div.headingBoxDay{
 		min-width:75px;
 		width:auto;
