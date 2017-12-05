@@ -1,0 +1,455 @@
+<html>
+
+	<head>
+		<title>EDP platform</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="js/jquery.min.js"></script>
+		<link href="style/css/bootstrap-toggle.min.css" rel="stylesheet">
+		<link href="style/css/bootstrap.min.css" rel="stylesheet">
+		<link href="style/style-market.css" rel="stylesheet">
+		<link href="style/checkbox.css" rel="stylesheet">
+		<script src="style/js/bootstrap-toggle.min.js"></script>
+		<script>
+			function loadDoc(content, cFunction) {
+				var xhttp;
+				xhttp=new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						cFunction(this);
+					}
+				};
+
+				xhttp.open("GET", 'http://85.247.219.175:4567/api/' + content, true);
+				xhttp.send();
+			}									
+
+
+			function getEnergy (xhttp) {
+				localStorage.setItem("energies", xhttp.responseText);
+			}
+
+			function getTransactions (xhttp) {
+				localStorage.setItem("transactions", xhttp.responseText);
+			}
+
+			
+			var energies, customerID, transactions;
+
+			window.onload = function(){
+				customerID = localStorage.getItem("customerIDStorage");
+				loadDoc('energies?filter=%7B%22order%22%3A%22posted_time%20Asc%22%2C%22where%22%3A%7B%22producer_id%22%3A%7B%22neq%22%3A' + customerID + '%7D%7D%7D', getEnergy);
+				loadDoc('transactions', getTransactions);
+			}
+
+			function getStuff(){
+				energies = localStorage.getItem("energies");
+				transactions = localStorage.getItem("transactions");
+				console.log(energies);
+				console.log(transactions);
+				energies = jQuery.parseJSON(energies);
+				energies.reverse();
+				transactions = jQuery.parseJSON(transactions);
+				setTimeout(function () {
+				        parseData();
+				    }, 250);
+			}
+
+
+			function waitForElement(){
+				$('#loading').show();
+				energies = localStorage.getItem("energies");
+				transactions = localStorage.getItem("transactions");
+			    if(energies!=null && transactions!=null){
+			    	getStuff();
+			    }
+			    else{
+			        setTimeout(waitForElement, 250);
+			    }
+			}
+			waitForElement();
+
+
+		</script>
+	</head>
+
+	<body>
+		<div class="top-bar">
+		<div class="settings">
+				<a href="./menu.html">
+				<button type="button" class="btn btn-default" aria-label="Left Align">
+					<span class="glyphicon glyphicon-menu-left" aria-hidden="true" style="height: 20px; font-size:20; "></span>
+				</button>
+				</a>
+			</div>
+
+			<div class="title">Check Market</div>
+
+			<div class="buttons">
+				<a href="./menu.html">
+				<button type="button" class="btn btn-default" aria-label="Left Align">
+					<span class="glyphicon glyphicon-home" aria-hidden="true" style="height: 20px; font-size:20; "></span>
+				</button>
+				</a>
+			</div>
+
+		</div>
+
+		<div class="balance2">
+			<div class="panel panel-default">
+				<table style="margin-left:10px;margin:10px;width:95%;">
+					<tr>
+						<th class="firstRow" style="width:50%;"></th>
+						<th style="width:50%;"></th>
+					</tr>
+					<tr>
+						<td class="lbl4" >Average Price Today: </td>
+						<td class="lbl4" style="text-align:right;"><label id="mean">1</label> €/Kw</td>
+						
+					</tr>
+				</table>
+			</div>
+			<div class="panel panel-default" style="margin-top:-10px;">
+				<div id="linechart"></div>
+				<div style="width:100%;height:1px;clear:both;"></div>
+			</div>	
+			<input class="inputMean" type="hidden" value=""/>
+			<script src="js/d3v4.js"></script>
+			<script>
+				var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+ 									 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+				var date = new Date();
+				var day = date.getDate();
+				var month = date.getMonth()+1;
+				var year = date.getFullYear();
+
+
+			var widthCSS = $("#linechart").width();
+
+			var margin = {top: 10, right: 5, bottom: 120, left: 10},
+	     	 width = widthCSS - margin.left - margin.right,
+	     	 height = 270 - margin.top - margin.bottom
+	     	 margin2 = {top: 210, right: 5, bottom: 35, left: 10},
+	     	 height2 = 270 - margin2.top - margin2.bottom;
+
+			function drawLineChart(){
+				
+					monthReceived = month;
+					dayReceived = day;
+
+				var svg = d3.select("#linechart")
+				      .append("svg")
+				          .attr("width", width + margin.left + margin.right + 20)
+				          .attr("height", height + margin.top + margin.bottom)
+				      .append("g")
+				          .attr("transform", 
+				                "translate(" + margin.left + "," + margin.top + ")");
+
+				var div = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+
+				var parseDate = d3.timeParse("%d-%b-%y");
+
+				var x = d3.scaleTime().range([0, width]),
+				    x2 = d3.scaleTime().range([0, width]),
+				    y = d3.scaleLinear().range([height, 0]),
+				    y2 = d3.scaleLinear().range([height2, 0]);
+
+				var xAxis = d3.axisBottom(x),
+				    xAxis2 = d3.axisBottom(x2),
+				    yAxis = d3.axisLeft(y)
+				    			.ticks(6)
+
+				var brush = d3.brushX()
+				    .extent([[0, 0], [width, height2]])
+				    .on("brush end", brushed);
+
+				var zoom = d3.zoom()
+				    .scaleExtent([1, 4])
+				    .translateExtent([[0, 0], [width, height]])
+				    .extent([[0, 0], [width, height]])
+				    .on("zoom", zoomed);
+
+				var area = d3.line()
+				    .x(function(d) { return x(d.posted_time); })
+				    .y(function(d) { return y(d.KWhPrice); });
+
+				var area2 = d3.line()
+				    .x(function(d) { return x2(d.posted_time); })
+				    .y(function(d) { return y2(d.KWhPrice); });
+
+				svg.append("defs").append("clipPath")
+				    .attr("id", "clip")
+				  .append("rect")
+				    .attr("width", width)
+				    .attr("height", height);
+
+				var focus = svg.append("g")
+				    .attr("class", "focus")
+				    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+				var context = svg.append("g")
+				    .attr("class", "context")
+				    .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
+
+				var data = [];
+				var sum = 0;
+				var mean = 0;
+				var count = 0;
+
+				top:for(i=0;i<energies.length;i++){	
+					for(t=0;t<transactions.length;t++){	
+						if(energies[i].energy_id==transactions[t].energy_id){		
+							continue top;
+						}
+					}
+					var calendario = new Date(energies[i].posted_time);
+					energies[i].posted_time = calendario;
+					if(calendario.getMonth()+1 == monthReceived){
+				  		data.push(energies[i]);
+				  	}
+				  	if(calendario.getDate() == dayReceived){
+				  		sum += energies[i].KWhPrice;
+				  		count++;
+				  	}	
+				  	console.log(calendario.getDate()+1, dayReceived)
+				}
+
+				if(sum == 0 || count == 0){
+					mean = 0;
+				}else{
+					mean = sum/count;
+				}
+				$(".inputMean").val(mean);
+			    console.log($(".inputMean").val());
+
+				  x.domain(d3.extent(data, function(d) { return d.posted_time; }));
+				  y.domain([0, d3.max(data, function(d) { return d.KWhPrice; })+3]);
+				  x2.domain(x.domain());
+				  y2.domain(y.domain());
+
+				  focus.append("path")
+				      .datum(data)
+				      .attr("class", "area")
+				      .attr("d", area(data));
+				      
+
+
+				  focus.append("g")
+				      .attr("class", "axis axis--x")
+				      .attr("transform", "translate(0," + height + ")")
+				      .call(xAxis)
+				   	.selectAll("text")
+							      .style("text-anchor", "end")
+							      .attr("dx", "-.8em")
+							      .attr("dy", "-.55em")
+							      .attr("transform", "rotate(-90)" );
+
+				    focus.append("g")
+						.attr("class", "y axis")
+						.call(yAxis)
+					.selectAll("text")
+						.attr("y", -2)
+    					.attr("x", 12)
+
+					focus.append("text")
+						.attr("transform", "rotate(-90)")
+						.attr("y", 5)
+						.attr("x", 25)
+						.attr("font-size", "0.7em")
+						.style("text-anchor", "end")
+						.text("KW");
+
+
+				  context.append("path")
+				      .datum(data)
+				      .attr("class", "area")
+				      .attr("d", area2(data));
+
+
+				  context.append("g")
+				      .attr("class", "brush")
+				      .call(brush)
+				      .call(brush.move, x.range());
+
+				  svg.append("rect")
+				      .attr("class", "zoom")
+				      .attr("width", width)
+				      .attr("height", height)
+				      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+				      .call(zoom);
+
+				function brushed() {
+				  if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return; // ignore brush-by-zoom
+				  var s = d3.event.selection || x2.range();
+				  x.domain(s.map(x2.invert, x2));
+				  focus.select(".area").attr("d", area);
+				  focus.select(".axis--x").call(xAxis);
+				  focus.selectAll("text")
+							      .style("text-anchor", "end")
+							      .attr("dx", "-.8em")
+							      .attr("dy", "-.55em")
+							      .attr("transform", "rotate(-90)" );
+				  svg.select(".zoom").call(zoom.transform, d3.zoomIdentity
+				      .scale(width / (s[1] - s[0]))
+				      .translate(-s[0], 0));
+				}
+
+				function zoomed() {
+				  if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") return; // ignore zoom-by-brush
+				  var t = d3.event.transform;
+				  x.domain(t.rescaleX(x2).domain());
+				  focus.select(".area").attr("d", area);
+				  focus.select(".axis--x").call(xAxis);
+				  focus.selectAll("text")
+							      .style("text-anchor", "end")
+							      .attr("dx", "-.8em")
+							      .attr("dy", "-.55em")
+							      .attr("transform", "rotate(-90)" );
+				  context.select(".brush").call(brush.move, x.range().map(t.invertX, t));
+				}
+
+				function type(d) {
+				  d.posted_time = parseDate(d.posted_time);
+				  d.KWhPrice = +d.KWhPrice;
+				  return d;
+				}
+
+			}
+			</script>	
+
+			<script>
+				function waiting(){
+				    if(energies!=null){
+				        drawLineChart();
+				        setTimeout(function() {
+							$("#mean").html($(".inputMean").val());
+						}, 1);
+				    }
+				    else{
+				        setTimeout(waiting, 250);
+				    }
+				}
+				waiting();
+			</script>
+
+			<div class="panel panel-default" style="margin-top:-10px;">
+				<div class="sellTitle">Other Sales:</div>
+				<img id="loading" src="images/loading.gif" width="200" style="display:none;position:relative;left:50%;margin-left:-100px;"/>
+				<table id="sales" class="table table-striped" style="table-layout: fixed;margin-top:10px;width:100%;">
+					<colgroup id="a">
+				        <script>
+				        	if( window.screen.width == 320){
+				        		var size = 7;
+				        		$("#a").append('<col style="width:138px;">');
+				        			
+				        	}else{
+				        		var size = 12;
+				        		$("#a").append('<col style="width:178px;">');	
+				        	}
+				        	
+				        </script>
+				        <col style="width: 50px;">
+				        <col style="width: 50px;">
+				        <col style="width: 80px;">
+				        <col style="width: auto;">
+				    </colgroup>
+				    <thead>
+					<tr>
+						<td class="lbl5" style="color:#8a8a8a;">Name</td>
+						<td class="lbl5" style="color:#8a8a8a;">kW</td>
+						<td class="lbl5" style="color:#8a8a8a;">€/kW</td>
+						<td class="lbl5" style="color:#8a8a8a;">Date</td>
+					</tr>
+					</thead>
+					<tbody>
+				</table>
+				<button id="more" class="btn btn-danger buttonRow" style="display:none;margin-top:8px;position:relative;height:25px;width:50px;float:right;margin-right:10px;">
+					<label class="lbl3" style="position:relative;top:-4px;left:-12px;">More</label>
+				</button>
+				<button id="less" class="btn btn-danger buttonRow" style="display:none;margin-top:8px;position:relative;height:25px;width:50px;float:right;margin-right:10px;">
+					<label class="lbl3" style="position:relative;top:-4px;left:-12px;">Less</label>
+				</button>
+				<br><br>
+
+			</div>
+			<script>
+
+				function parseData() {
+					top:for(i=0;i<energies.length;i++){	
+						for(t=0;t<transactions.length;t++){	
+							if(energies[i].energy_id==transactions[t].energy_id){		
+								continue top;
+							}
+					    }
+
+					    var date = new Date(energies[i].posted_time);
+						var day = date.getDate();
+						if(day<10) day = '0' + day;
+						var month = date.getMonth()+1;
+						if(month<10) month = '0' + month;
+						var year = date.getFullYear();
+						date = day+"-"+month+"-"+year;
+
+						if((energies[i].packName.length > 7 && size == 7) || (energies[i].packName.length > 12 && size == 12)){
+							var extra = "..";
+						}else{
+							var extra = "";
+						}
+
+					   $("#sales").append(
+					   	'<tr>' + 
+					   		'<td class="lbl5">' + energies[i].packName.substring(0,size) + extra + '</td>' + 
+					   		'<td class="lbl5">' + energies[i].quantity + '</td>' + 
+					   		'<td class="lbl5">' + energies[i].KWhPrice + '</td>' + 
+					   		'<td class="lbl5" style="font-size:0.6em">' + date + '</td>' +
+					   	'</tr>');
+
+					   $('#loading').hide();
+
+					}
+					$("#sales").append('</tbody>');
+
+					$("#sales > tbody > tr").hide().slice(0, 3).show();
+					var sizeoftable = $("#sales tr").length-1;
+					if(sizeoftable>3){
+						$("#more").show();
+					}
+
+					function showMore(){
+					$("#more").hide();
+					$("#less").show();
+					$("#sales > tbody > tr").show();
+					}
+					function showLess(){
+						$("#more").show();
+						$("#less").hide();
+						$("#sales > tbody > tr").hide().slice(0, 3).show();
+					}
+
+
+					$("#more").on("click", function(){
+						showMore();
+					})
+
+					$("#less").on("click", function(){
+						showLess();
+					})
+				}
+			</script>
+			<div class="footer2">
+				<label class="lblfooter" style="margin-top:3px;">Help</label>
+				<label class="lblfooter" style="margin-left:5px;margin-top:3px;">Contact</label>
+				<label class="lblfooter" style="margin-left:5px;margin-top:3px;">T&C</label>
+
+			</div>
+			<br>
+		</div>
+		
+
+
+	</body>
+
+</html>
