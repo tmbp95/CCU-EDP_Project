@@ -54,7 +54,10 @@
 				$('#loading').show();
 				producedEnergy = localStorage.getItem("production");
 				consumedEnergy = localStorage.getItem("consumption");
-			    if(producedEnergy!=null && consumedEnergy!=null){
+			    if(producedEnergy!=null){
+			    	getStuff();
+			    }
+			    if(consumedEnergy!=null){
 			    	getStuff();
 			    }
 			    else{
@@ -209,7 +212,6 @@
 							  { "date" : "22h-24h","close" : 0}
 							]
 
-				console.log(data[0].close);
 				var fullQty = -1;
 			    producedEnergy.forEach(function(d) {
 			    	if(d.producer_id==customerID){
@@ -264,7 +266,6 @@
 			    	fullQty++;
 			    }
 			    $(".inputQty").val(fullQty);
-			    console.log($(".inputQty").val());
 
 			    data.forEach(function(d){
 			    	d.date = d.date;
@@ -363,10 +364,14 @@
 				$("#empty").html("There's no balance in " + SepDate);
 				d3.select("#barchart").selectAll("svg").remove();
 				drawChart(ThisDate);
+				var consumed = getConsumedEnergy(ThisDate);
+				console.log("consumed is " + consumed);
+				balance = getNum(parseInt($(".inputQty").val()), consumed);
+				console.log('balance value is ' + balance);
+				localStorage.setItem("balanceValueStorage", balance);
 				$("#loading").hide();
-				console.log(ThisDate);
 				setTimeout(function() {
-						$("#fullQtys").html("Balance: " +  $(".inputQty").val() + "<font style='font-size:0.8em'>kW</font>");
+						$("#fullQtys").html("Balance: " +  balance + "<font style='font-size:0.8em'>kW</font>");
 						var widthBox = parseFloat($("#fullQtys").css("width"));
 						$("#fullQtys").css("margin-left", -(widthBox/2));
 					}, 1);
@@ -379,6 +384,42 @@
 			    else{
 			        setTimeout(waiting, 250);
 			    }
+			}
+
+			function getConsumedEnergy(date){
+				var producedToday, consumedToday, quantity = 0;
+
+				consumedEnergy.forEach(function(d) {
+					if(d.producer_id==customerID){
+			    		var OldDate = new Date(d.posted_time.split("T")[0]);
+
+			    		var day = OldDate.getDate();
+			    		var month = (OldDate.getMonth() + 1);
+
+			    		if (day<10) day = '0' + OldDate.getDate();
+			    		if (month<10) month = '0' + (OldDate.getMonth() + 1);
+
+ 						var NewDate = day + '-' + month + '-' + OldDate.getFullYear();
+
+ 						if(NewDate == date){
+ 							console.log(d.quantity);
+ 							quantity += d.quantity;
+ 						}
+			    	}
+				});
+				return quantity;
+			}
+
+			function getNum(val1, val2) {
+				if(val1 == 0){
+					return -Math.abs(val2);
+				}
+				else if(val2 == 0){
+					return val1;
+				}
+			   	else{
+			   		return val1 - val2;
+			   	}
 			}
 
 
@@ -432,7 +473,7 @@
 				</script>
 			</div>
 			<div class="otherBox2">
-				<button type="button" class="btn btn-danger" id="seeConsumption"style="height:34px;width:156px">
+				<button type="button" class="btn btn-danger" id="seeConsumption" style="height:34px;width:156px">
 						<label class="lbl3" style="margin-top:3px;color: #eee;font-size:11">See consumption</label>
 				</button>
 				<script>

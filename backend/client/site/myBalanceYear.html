@@ -411,8 +411,15 @@ var fullQty = -1;
 				d3.select("#barchart").selectAll("svg").remove();
 				drawChart(ThisDate);
 				console.log(ThisDate);
+				var consumed = getConsumedEnergy(ThisDate);
+				console.log("produced is " + $(".inputQty").val());
+				console.log("consumed is " + consumed);
+				balance = getNum(parseInt($(".inputQty").val()), consumed);
+				console.log('balance value is ' + balance);
+				localStorage.setItem("balanceValueStorageYear", balance);
+
 				setTimeout(function() {
-						$("#fullQtys").html("Balance: " +  $(".inputQty").val() + "<font style='font-size:0.8em'>kW</font>");
+						$("#fullQtys").html("Balance: " +  balance + "<font style='font-size:0.8em'>kW</font>");
 						var widthBox = parseFloat($("#fullQtys").css("width"));
 						$("#fullQtys").css("margin-left", -(widthBox/2));
 					}, 1);
@@ -425,6 +432,37 @@ var fullQty = -1;
 			    else{
 			        setTimeout(waiting, 250);
 			    }
+			}
+
+			function getConsumedEnergy(year){
+				var producedYear, consumedYear, quantity = 0;
+
+				consumedEnergy.forEach(function(d) {
+					if(d.producer_id==customerID){
+
+			    		var OldDate = new Date(d.posted_time.split("T")[0]);
+
+			    		var NewYear = OldDate.getFullYear();
+
+ 						if(NewYear == year){
+ 							quantity += d.quantity;
+ 						}
+			    	}
+				});
+				console.log("Consumed quantity this year is " + quantity);
+				return quantity;
+			}
+
+			function getNum(val1, val2) {
+				if(val1 == 0){
+					return -Math.abs(val2);
+				}
+				else if(val2 == 0){
+					return val1;
+				}
+			   	else{
+			   		return val1 - val2;
+			   	}
 			}
 
 		</script>

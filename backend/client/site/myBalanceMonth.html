@@ -333,12 +333,51 @@
 				$("#empty").html("There's no production in " + monthNames[month-1] + " " + year);
 				d3.select("#linechart").selectAll("svg").remove();
 				drawLineChart(month);
+				var consumed = getConsumedEnergy(month);
+				console.log("consumed is " + consumed);
+				balance = getNum(parseInt($(".inputQty").val()), consumed);
+				console.log('balance value is ' + balance);
+				localStorage.setItem("balanceValueStorageMonth", balance);
 				setTimeout(function() {
-						$("#fullQtys").html("Production: " +  $(".inputQty").val() + "<font style='font-size:0.8em'>kW</font>");
+						$("#fullQtys").html("Balance: " +  balance + "<font style='font-size:0.8em'>kW</font>");
 						var widthBox = parseFloat($("#fullQtys").css("width"));
 						$("#fullQtys").css("margin-left", -(widthBox/2));
 					}, 1);
 			}
+
+			function getConsumedEnergy(month){
+				var producedMonth, consumedMonth, quantity = 0;
+
+				consumedEnergy.forEach(function(d) {
+					if(d.producer_id==customerID){
+
+			    		var OldDate = new Date(d.posted_time.split("T")[0]);
+
+			    		var NewMonth = (OldDate.getMonth() + 1);
+
+			    		if (NewMonth<10) NewMonth = '0' + (OldDate.getMonth() + 1);
+
+ 						if(NewMonth == month){
+ 							quantity += d.quantity;
+ 						}
+			    	}
+				});
+				console.log("Consumed quantity this month is " + quantity);
+				return quantity;
+			}
+
+			function getNum(val1, val2) {
+				if(val1 == 0){
+					return -Math.abs(val2);
+				}
+				else if(val2 == 0){
+					return val1;
+				}
+			   	else{
+			   		return val1 - val2;
+			   	}
+			}
+
 		</script>
 		<div class="headingBox">
 			<div class="stroke"></div>
@@ -356,6 +395,15 @@
 			<script>
 				function waiting(){
 				    if(producedEnergy!=null){
+				        updateDate();			        
+				    }
+				    else{
+				        setTimeout(waiting, 250);
+				    }
+				}
+				/*
+				function waiting(){
+				    if(producedEnergy!=null){
 				        drawLineChart();
 				        setTimeout(function() {
 						$("#fullQtys").html("Balance: " +  $(".inputQty").val() + "<font style='font-size:0.8em'>kW</font>");
@@ -366,7 +414,7 @@
 				    else{
 				        setTimeout(waiting, 250);
 				    }
-				}
+				}*/
 				waiting();
 				$(".month").html(monthNames[month-1]);
 				$(".year").html(year);

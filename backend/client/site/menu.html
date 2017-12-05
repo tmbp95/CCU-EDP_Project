@@ -17,6 +17,12 @@
 		<script>
 			//localStorage.clear();
 			var username = localStorage.getItem("usernameStorage");
+			var balanceDay = localStorage.getItem("balanceValueStorage");
+			var balanceMonth = localStorage.getItem("balanceValueStorageMonth");
+			var balanceYear = localStorage.getItem("balanceValueStorageYear");
+			console.log("balance today - " + balanceDay);
+			console.log("balance this month - " + balanceMonth);
+			console.log("balance this year - " + balanceMonth);
 			console.log(username);
 			if(username==null){
 				window.location.replace("index.html");
