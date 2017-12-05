@@ -120,17 +120,25 @@
 					        <col style="width: 80px;">
 					        <col style="width: auto;">
 					    </colgroup>
-						<tr>
-							<td class="lbl5" style="color:#8a8a8a;">Name</td>
-							<td class="lbl5" style="color:#8a8a8a;">kW</td>
-							<td class="lbl5" style="color:#8a8a8a;">€/kW</td>
-							<td class="lbl5" style="color:#8a8a8a;">€</td>
-							<td class="lbl5" style="color:#8a8a8a;">Date</td>
-						</tr>
-						
+					    <thead>
+							<tr>
+								<td class="lbl5" style="color:#8a8a8a;">Name</td>
+								<td class="lbl5" style="color:#8a8a8a;">kW</td>
+								<td class="lbl5" style="color:#8a8a8a;">€/kW</td>
+								<td class="lbl5" style="color:#8a8a8a;">€</td>
+								<td class="lbl5" style="color:#8a8a8a;">Date</td>
+							</tr>
+						</thead>
+						<tbody>
 					</table>
 					<img id="loading1" src="images/loading.gif" style="width:200px;display:hidden;position:relative;left:50%;margin-left:-100px;"/>
-					<br>
+					<button id="more" class="btn btn-danger buttonRow" style="display:none;margin-top:8px;position:relative;height:25px;width:50px;float:right;margin-right:10px;">
+						<label class="lbl3" style="position:relative;top:-4px;left:-12px;">More</label>
+					</button>
+					<button id="less" class="btn btn-danger buttonRow" style="display:none;margin-top:8px;position:relative;height:25px;width:50px;float:right;margin-right:10px;">
+						<label class="lbl3" style="position:relative;top:-4px;left:-12px;">Less</label>
+					</button>
+					<br><br>
 				</div>
 				<script>
 					function parseData() {
@@ -167,12 +175,13 @@
 								}
 							})
 						})
+						$("#soldTable").append('</tbody>');
 						parseData2();
 					}
 
 				</script>
 		</div>
-		<div class="balance2">
+		<div class="balance2" style="margin-top:-10px;">
 			<div class="panel panel-default" style="margin-top:30px;">
 				<div class="headingText">BOUGHT</div>
 				<div style="clear:both"></div>
@@ -195,17 +204,25 @@
 					        <col style="width: 80px;">
 					        <col style="width: auto;">
 					    </colgroup>
-						<tr>
-							<td class="lbl5" style="color:#8a8a8a;">Name</td>
-							<td class="lbl5" style="color:#8a8a8a;">kW</td>
-							<td class="lbl5" style="color:#8a8a8a;">€/kW</td>
-							<td class="lbl5" style="color:#8a8a8a;">€</td>
-							<td class="lbl5" style="color:#8a8a8a;">Date</td>
-						</tr>
-
+					    <thead>
+							<tr>
+								<td class="lbl5" style="color:#8a8a8a;">Name</td>
+								<td class="lbl5" style="color:#8a8a8a;">kW</td>
+								<td class="lbl5" style="color:#8a8a8a;">€/kW</td>
+								<td class="lbl5" style="color:#8a8a8a;">€</td>
+								<td class="lbl5" style="color:#8a8a8a;">Date</td>
+							</tr>
+						</thead>
+						<tbody>
 				</table>
 				<img id="loading2" src="images/loading.gif" width="200" style="display:hidden;position:relative;left:50%;margin-left:-100px;"/>
-				<br>
+				<button id="more2" class="btn btn-danger buttonRow" style="display:none;margin-top:8px;position:relative;height:25px;width:50px;float:right;margin-right:10px;">
+					<label class="lbl3" style="position:relative;top:-4px;left:-12px;">More</label>
+				</button>
+				<button id="less2" class="btn btn-danger buttonRow" style="display:none;margin-top:8px;position:relative;height:25px;width:50px;float:right;margin-right:10px;">
+					<label class="lbl3" style="position:relative;top:-4px;left:-12px;">Less</label>
+				</button>
+				<br><br>
 			</div>
 				<script>
 					function parseData2() {
@@ -240,6 +257,59 @@
 									}
 								})
 							}
+						})
+						$("#boughtTable").append('</tbody>');
+
+						$("#soldTable > tbody > tr").hide().slice(0, 3).show();
+						var sizeoftable = $("#soldTable tr").length-1;
+						if(sizeoftable>3){
+							$("#more").show();
+						}
+
+						function showMore(){
+						$("#more").hide();
+						$("#less").show();
+						$("#soldTable > tbody > tr").show();
+						}
+						function showLess(){
+							$("#more").show();
+							$("#less").hide();
+							$("#soldTable > tbody > tr").hide().slice(0, 3).show();
+						}
+
+
+						$("#more").on("click", function(){
+							showMore();
+						})
+
+						$("#less").on("click", function(){
+							showLess();
+						})
+
+						$("#boughtTable > tbody > tr").hide().slice(0, 3).show();
+						var sizeoftable = $("#boughtTable tr").length-1;
+						if(sizeoftable>3){
+							$("#more2").show();
+						}
+
+						function showMore2(){
+						$("#more2").hide();
+						$("#less2").show();
+						$("#boughtTable > tbody > tr").show();
+						}
+						function showLess2(){
+							$("#more2").show();
+							$("#less2").hide();
+							$("#boughtTable > tbody > tr").hide().slice(0, 3).show();
+						}
+
+
+						$("#more2").on("click", function(){
+							showMore2();
+						})
+
+						$("#less2").on("click", function(){
+							showLess2();
 						})
 					}
 				</script>

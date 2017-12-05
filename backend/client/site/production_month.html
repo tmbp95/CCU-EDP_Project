@@ -161,7 +161,7 @@
 				var xAxis = d3.axisBottom(x),
 				    xAxis2 = d3.axisBottom(x2),
 				    yAxis = d3.axisLeft(y)
-				    			.ticks(10);
+				    			.ticks(6);
 
 				var brush = d3.brushX()
 				    .extent([[0, 0], [width, height2]])
@@ -223,7 +223,7 @@
 
 				//console.log(data);
 				  x.domain(d3.extent(data, function(d) { return d.posted_time; }));
-				  y.domain([0, d3.max(data, function(d) { return d.quantity; })]);
+				  y.domain([0, d3.max(data, function(d) { return d.quantity; })+50]);
 				  x2.domain(x.domain());
 				  y2.domain(y.domain());
 

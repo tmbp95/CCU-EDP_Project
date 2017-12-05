@@ -11,20 +11,6 @@
 		<link href="style/checkbox.css" rel="stylesheet">
 		<script src="style/js/bootstrap-toggle.min.js"></script>
 		<script>
-
-
-
-			function sleep(milliseconds) {
-			  var start = new Date().getTime();
-			  for (;;) {
-			    if ((new Date().getTime() - start) > milliseconds){
-			      break;
-			    }
-			  }
-			}
-
-
-
 			function loadDoc(content, cFunction) {
 				var xhttp;
 				xhttp=new XMLHttpRequest();
@@ -48,7 +34,7 @@
 			}
 
 			
-			var energies, lastIDEnergy, customerID, transactions;
+			var energies, customerID, transactions;
 
 			window.onload = function(){
 				customerID = localStorage.getItem("customerIDStorage");
@@ -62,8 +48,8 @@
 				console.log(energies);
 				console.log(transactions);
 				energies = jQuery.parseJSON(energies);
+				energies.reverse();
 				transactions = jQuery.parseJSON(transactions);
-				lastIDEnergy = energies[energies.length-1].energy_id;
 				setTimeout(function () {
 				        parseData();
 				    }, 250);
@@ -97,7 +83,7 @@
 			    }
 			});
 
-			function someFunc(value, price, quantity, name){
+			function someFunc(value, price, quantity, name, packDescript){
 				$("#priceChange" + value).ready(function(){
 					$("#popupDiv-back").delay( 100 ).fadeIn(100);
 					$("#popupDiv-back").css("height", document.body.scrollHeight);
@@ -105,6 +91,8 @@
 					$(".popupDiv").css('top', $(document).scrollTop()+(screen.height/2));
 					$(".oldPrice").html(price);
 					$(".nameOriginal").html(name);
+					$(".name").val(name);
+					$(".packDescript").val(packDescript);
 					$(".originalQty").html(quantity);
 					$(".oldPriceInput").val(price);
 					$(".id").val(value);
@@ -137,6 +125,7 @@
 					<input type="hidden" class="id" name="id">
 					<input type="hidden" class="quantity" name="quantity">
 					<input type="hidden" class="name" name="name">
+					<input type="hidden" class="packDescript" name="packDescript">
 				<div class=changeBox>
 					<div class="headingBox">
 						<div class="stroke"></div>
@@ -163,7 +152,7 @@
 						<tr>
 							<td><label class="description">New Price: </label></td>
 							<td align="center">
-								<input class="box oldPriceInput" name="newPrice" type="number" step="1" value="0" min="0" style="font-size:0.7em;border-radius:5px;border:1px solid #333;text-align:center;width: 60px; position:relative;top:-10px;">
+								<input class="box oldPriceInput" name="newPrice" type="text" value="0" style="font-size:0.7em;border-radius:5px;border:1px solid #333;text-align:center;width: 60px; position:relative;top:-10px;">
 							</td>
 						</tr>
 					</table>
@@ -175,15 +164,15 @@
 				})
 				$( ".oldPriceInput " ).change(function() {
 			  		$(".earn2").css("visibility", "visible");
-			  		$(".amountEarn2").html($(".oldPriceInput").val()*$(".quantity").val());
+			  		$(".amountEarn2").html(($(".oldPriceInput").val()*$(".quantity").val()).toFixed(2));
 				});
 				$( ".oldPriceInput " ).click(function() {
 			  		$(".earn2").css("visibility", "visible");
-			  		$(".amountEarn2").html($(".oldPriceInput").val()*$(".quantity").val());
+			  		$(".amountEarn2").html(($(".oldPriceInput").val()*$(".quantity").val()).toFixed(2));
 				});
 				$( ".oldPriceInput " ).keyup(function() {
 			  		$(".earn2").css("visibility", "visible");
-			  		$(".amountEarn2").html($(".oldPriceInput").val()*$(".quantity").val());
+			  		$(".amountEarn2").html(($(".oldPriceInput").val()*$(".quantity").val()).toFixed(2));
 				});
 			</script>
 
@@ -199,7 +188,9 @@
 					    var price = document.forms["formnew"]["newPrice"].value;
 						var id = document.forms["formnew"]["id"].value;
 						var quantity = document.forms["formnew"]["quantity"].value;
-					    if( quantity != "" && price != "" ){
+						var name = document.forms["formnew"]["name"].value;
+						var packDescript = document.forms["formnew"]["packDescript"].value;
+					    if( quantity != "" && price != "" && parseFloat(price)!="NaN"){
 
 					    	var xhr = new XMLHttpRequest();
 									xhr.open('DELETE', 'http://85.247.219.175:4567/api/energies/' + id , true);
@@ -210,12 +201,12 @@
 									xhr.send(null);
 
 
-								var energy = JSON.stringify({ KWhPrice: parseInt(price),
+								var energy = JSON.stringify({ KWhPrice: parseFloat(price),
 																							active: 1,
 																							energy_id: id,
 																							holder: 40,
-																							packDescript: "hello",
-																							packName: "hello",
+																							packDescript: packDescript,
+																							packName: name,
 																							percentage: 100,
 																							posted_time: new Date(),
 																							producer_id: customerID,
@@ -241,7 +232,7 @@
 									}, 500);
 							    });
 								xhr.send(energy);
-								}, 500);
+								}, 1000);
 					    }
 					});
 				</script>
@@ -338,33 +329,33 @@
 			  			$(".euros").val(1);
 			  		}
 			  		$(".earn").css("visibility", "visible");
-			  		$(".amountEarn").html($(".euros").val()*$(".kW").val());
+			  		$(".amountEarn").html(($(".euros").val()*$(".kW").val()).toFixed(2));
 				});
 				$( ".kW " ).click(function() {
 					if($(".euros").val()==1 || $(".euros").val()==0){
 			  			$(".euros").val(1);
 			  		}
 			  		$(".earn").css("visibility", "visible");
-			  		$(".amountEarn").html($(".euros").val()*$(".kW").val());
+			  		$(".amountEarn").html(($(".euros").val()*$(".kW").val()).toFixed(2));
 				});
 				$( ".kW " ).keyup(function() {
 					if($(".euros").val()==1 || $(".euros").val()==0){
 			  			$(".euros").val(1);
 			  		}
 			  		$(".earn").css("visibility", "visible");
-			  		$(".amountEarn").html($(".euros").val()*$(".kW").val());
+			  		$(".amountEarn").html(($(".euros").val()*$(".kW").val()).toFixed(2));
 				});
 				$( ".euros " ).change(function() {
 			  		$(".earn").css("visibility", "visible");
-			  		$(".amountEarn").html($(".euros").val()*$(".kW").val());
+			  		$(".amountEarn").html(($(".euros").val()*$(".kW").val()).toFixed(2));
 				});
 				$( ".euros " ).click(function() {
 			  		$(".earn").css("visibility", "visible");
-			  		$(".amountEarn").html($(".euros").val()*$(".kW").val());
+			  		$(".amountEarn").html(($(".euros").val()*$(".kW").val()).toFixed(2));
 				});
 				$( ".euros " ).keyup(function() {
 			  		$(".earn").css("visibility", "visible");
-			  		$(".amountEarn").html($(".euros").val()*$(".kW").val());
+			  		$(".amountEarn").html(($(".euros").val()*$(".kW").val()).toFixed(2));
 				});
 			</script>
 
@@ -379,11 +370,11 @@
 					    }
 					    if( quantity != "" && price != "" ){
 
-								var energy = JSON.stringify({ KWhPrice: parseInt(price),
+								var energy = JSON.stringify({ KWhPrice: parseFloat(price),
 																							active: 1,
 																							energy_id: 0,
 																							holder: 40,
-																							packDescript: "hello",
+																							packDescript: name,
 																							packName: name,
 																							percentage: 100,
 																							posted_time: new Date(),
@@ -417,7 +408,7 @@
 				<table id="currentlySelling" class="table table-striped" style="table-layout: fixed;margin-top:10px;width:100%;">
 					<colgroup id="a">
 				        <script>
-				        	if( $(window).width() == 320){
+				        	if( window.screen.width == 320){
 				        		var size = 7;
 				        		$("#a").append('<col style="width:73px;">');
 				        			
@@ -433,15 +424,24 @@
 				        <col style="width: 65px;">
 				        <col style="width: auto;">
 				    </colgroup>
-					<tr>
-						<td class="lbl5" style="color:#8a8a8a;">Name</td>
-						<td class="lbl5" style="color:#8a8a8a;">kW</td>
-						<td class="lbl5" style="color:#8a8a8a;">€/kW</td>
-						<td class="lbl5" style="color:#8a8a8a;">Date</td>
-						<td class="lbl5" style="color:#8a8a8a;">Options</td>
-					</tr>
+				    <thead>
+						<tr>
+							<td class="lbl5" style="color:#8a8a8a;">Name</td>
+							<td class="lbl5" style="color:#8a8a8a;">kW</td>
+							<td class="lbl5" style="color:#8a8a8a;">€/kW</td>
+							<td class="lbl5" style="color:#8a8a8a;">Date</td>
+							<td class="lbl5" style="color:#8a8a8a;">Options</td>
+						</tr>
+					</thead>
+					<tbody>
 				</table>
-				<br>
+				<button id="more" class="btn btn-danger buttonRow" style="display:none;margin-top:8px;position:relative;height:25px;width:56px;float:right;margin-right:2px;">
+					<label class="lbl3" style="position:relative;top:-4px;left:-8px;">More</label>
+				</button>
+				<button id="less" class="btn btn-danger buttonRow" style="display:none;margin-top:8px;position:relative;height:25px;width:56px;float:right;margin-right:2px;">
+					<label class="lbl3" style="position:relative;top:-4px;left:-8px;">Less</label>
+				</button>
+				<br><br>
 			</div>
 			<script>
 
@@ -474,7 +474,7 @@
 					   		'<td class="lbl5">' + energies[i].KWhPrice + '</td>' + 
 					   		'<td class="lbl5" style="font-size:0.6em">' + date + '</td>' +
 					   		'<td class="lbl5">' + 
-					   			'<button type="button" id="priceChange' + energies[i].energy_id + '" onclick="someFunc(' + energies[i].energy_id + ',' + energies[i].KWhPrice + ',' + energies[i].quantity + ',\'' + energies[i].packName.substring(0,size) + extra + '\')" class="btn btn-danger" style="height:25px;width:55px;">' + 
+					   			'<button type="button" id="priceChange' + energies[i].energy_id + '" onclick="someFunc(' + energies[i].energy_id + ',' + energies[i].KWhPrice + ',' + energies[i].quantity + ',\'' + energies[i].packName.substring(0,size) + extra + '\',\'' + energies[i].packDescript + '\')" class="btn btn-danger" style="height:25px;width:55px;">' + 
 					   				'<label class="lbl7" style="position:relative;top:0px;left:-5px;font-size:0.7em"><span class="glyphicon glyphicon-pencil" style="margin-right:5px;aria-hidden="true;"></span>EDIT</label>' +
 					   			'</button>' +
 					   		'</td>' + /* '<button type="button" class="btn btn-default" aria-label="Left Align" style="float:right;background-color:#d9534f;"><span class="glyphicon glyphicon-trash" aria-hidden="true" style="height: 17px; font-size:15; color:white;"></span></button>'  +*/ 
@@ -483,6 +483,33 @@
 					   $('#loading').hide();
 
 					}
+					$("#currentlySelling").append('</tbody>');
+
+					$("#currentlySelling > tbody > tr").hide().slice(0, 3).show();
+					var sizeoftable = $("#currentlySelling tr").length-1;
+					if(sizeoftable>3){
+						$("#more").show();
+					}
+
+					function showMore(){
+					$("#more").hide();
+					$("#less").show();
+					$("#currentlySelling > tbody > tr").show();
+					}
+					function showLess(){
+						$("#more").show();
+						$("#less").hide();
+						$("#currentlySelling > tbody > tr").hide().slice(0, 3).show();
+					}
+
+
+					$("#more").on("click", function(){
+						showMore();
+					})
+
+					$("#less").on("click", function(){
+						showLess();
+					})
 				}
 			</script>
 			<div class="footer2">
