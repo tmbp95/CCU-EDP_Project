@@ -1,0 +1,483 @@
+<html>
+
+	<head>
+		<title>EDP platform</title>
+		<meta charset="utf-8" />   
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="js/jquery.min.js"></script>   
+		<link href="style/css/bootstrap-toggle.min.css" rel="stylesheet">
+		<link href="style/css/bootstrap.min.css" rel="stylesheet">
+		<link href="style/style-consumption_year.css" rel="stylesheet">
+		<link href="style/checkbox.css" rel="stylesheet">
+		<script src="style/js/bootstrap-toggle.min.js"></script>
+		<script>
+			var queryString = decodeURIComponent(window.location.search);
+			queryString = queryString.substring(1);
+			var queries = queryString.split("=");
+
+			function loadDoc(content, cFunction) {
+				var xhttp;
+				xhttp=new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						cFunction(this);
+					}
+				};
+				xhttp.open("GET", "http://85.247.219.175:4567/api/" + content, true);
+				xhttp.send();
+			}
+
+			function getConsumedEnergy (xhttp) {
+				localStorage.setItem("consumption", xhttp.responseText);
+			}
+
+			window.onload = function(){
+			 	loadDoc('consumedenergies', getConsumedEnergy);
+			 }
+
+			var customerID, consumedEnergy;
+			function getStuff(){
+				customerID = localStorage.getItem("customerIDStorage");
+				consumedEnergy = localStorage.getItem("consumption");
+				consumedEnergy = jQuery.parseJSON(consumedEnergy);
+			}
+
+			function waitForElement(){
+				$('#loading').show();
+				consumedEnergy = localStorage.getItem("consumption");
+			    if(consumedEnergy!=null){
+			    	getStuff();
+			    }
+			    else{
+			        setTimeout(waitForElement, 250);
+			    }
+			}
+			waitForElement();
+
+
+		</script>
+	</head>
+	<body>
+		<div class="top-bar">
+			<div class="settings">
+				<button id="backButton" type="button" class="btn btn-default" aria-label="Left Align">
+					<span class="glyphicon glyphicon-menu-left" aria-hidden="true" style="height: 20px; font-size:20; "></span>
+				</button>
+				<script>
+					$("#backButton").on("click", function(){
+						location.href = "menu.html";
+					})
+			    </script>
+			</div>
+				
+			<div class="title" style="margin-left:-10px;">Consumption</div>
+
+			<div class="buttons">
+				<button id="homeButton" type="button" class="btn btn-default" aria-label="Left Align">
+					<span  class="glyphicon glyphicon-home" aria-hidden="true" style="height: 20px; font-size:20; "></span>
+				</button>
+				<script>
+					$("#homeButton").on("click", function(){
+						location.href = "menu.html";
+					})
+			    </script>
+			</div>
+		</div>
+		<div style="clear:both"></div>
+		<br>
+		<div style="margin:0 auto;width:215px;font-family: EDPPreonMedium,sans-serif;">
+			<ul class="nav nav-pills">
+				<li role="presentation" ><a href="consumption_day.html"><font style="position:relative;top:-5px">Day</font></a></li>
+				<li role="presentation" style="margin-left:5px;"><a href="consumption_month.html"><font style="position:relative;top:-5px">Month</font></a></li>
+				<li role="presentation" class="active" style="margin-left:5px;"><a href="consumption_year.html"><font style="position:relative;top:-5px">Year</font></a></li>
+			</ul>
+		</div>
+		<div class="panel panel-default" style="margin-top:10px;">
+			<div id="barchart">
+				<div id="empty"></div>
+			</div>
+		</div>
+		<div style="clear:both"></div>
+		<input class="inputQty" type="hidden" value=""/>
+		<script src="js/d3v4.js"></script>
+		<script>
+
+			if(queries[0]==""){
+				var d = new Date();
+				var day = d.getDate();
+				if(day<10) day =  "0" + day;
+				var month = d.getMonth()+1;
+				if(month<10) month =  "0" + month;
+				var year = d.getFullYear();
+			}else{
+				var d = new Date(queries[1]);
+				var day = d.getDate();
+				if(day<10) day =  "0" + day;
+				var month = d.getMonth()+1;
+				if(month<10) month =  "0" + month;
+				var year = d.getFullYear();
+			}
+
+			var ThisDate =  year; // AQUI
+			$("#empty").html("There's no consumption in " + ThisDate);
+			var widthCSS = $("#barchart").width();
+			var margin = {top: 15, right: 0, bottom: 70, left: 40},
+			    width = widthCSS - margin.left - margin.right,
+			    height = 270 - margin.top - margin.bottom;
+
+
+			// set the ranges
+			var x = d3.scaleBand().rangeRound([0, width]);
+
+			var y = d3.scaleLinear().range([height, 0]);
+
+			var div = d3.select("body").append("div")
+					    .attr("class", "tooltip")
+					    .style("opacity", 0);
+
+
+			var tooltip = d3.select(".tooltip");
+			var tooltipWithContent = d3.selectAll(".tooltip, .tooltip *");
+
+			function equalToEventTarget() {
+			    return this == d3.event.target;
+			};
+
+			d3.select("body").on("click",function(){
+			    var outside = tooltipWithContent.filter(equalToEventTarget).empty();
+			    if (outside) {
+			        tooltip.style("opacity", 0);
+			    }
+			});
+
+
+			// define the axis
+			var xAxis = d3.axisBottom()
+			    .scale(x)
+
+
+			var yAxis = d3.axisLeft()
+			    .scale(y)
+			    .ticks(10);
+
+
+			function drawChart(datereceived){
+			// add the SVG element
+
+			if(datereceived==null){
+				datereceived = ThisDate;
+			}
+
+			// add the SVG element
+			var svg = d3.select("#barchart").append("svg")
+			    .attr("width", width + margin.left + margin.right)
+			    .attr("height", height + margin.top + margin.bottom)
+			  .append("g")
+			    .attr("transform", 
+			          "translate(" + margin.left + "," + margin.top + ")");
+
+
+			var data = [
+{
+	"date": "January",
+	"mindate": "Jan",
+	"numberMonth": 0,
+	"close": 0	
+},
+{
+	"date" : "February",
+	"mindate": "Feb",
+	"numberMonth": 1,
+	"close": 0
+},
+{
+	"date" : "March",
+	"mindate": "Mar",
+	"numberMonth": 2,
+	"close": 0
+},
+{
+	"date" : "April",
+	"mindate": "Apr",
+	"numberMonth": 3,
+	"close": 0
+},
+{
+	"date" : "May",
+	"mindate": "May",
+	"numberMonth": 4,
+	"close" : 0
+},
+{
+	"date" : "June",
+	"mindate": "Jun",
+	"numberMonth": 5,
+	"close" : 0
+},
+{
+	"date" : "July",
+	"mindate": "Jul",
+	"numberMonth": 6,
+	"close" : 0
+},
+{
+	"date" : "August",
+	"mindate": "Aug",
+	"numberMonth": 7,
+	"close" : 0
+},
+{
+	"date" : "September",
+	"mindate": "Sep",
+	"numberMonth": 8,
+	"close" : 0
+},
+{
+	"date" : "October",
+	"mindate": "Oct",
+	"numberMonth": 9,
+	"close" : 0
+},
+{
+	"date" : "November",
+	"mindate": "Nov",
+	"numberMonth": 10,
+	"close" : 0
+},
+{
+	"date" : "December",
+	"mindate": "Dec",
+	"numberMonth": 11,
+	"close" : 0
+}
+];
+var fullQty = -1;
+
+				console.log(data[0].close);
+			    consumedEnergy.forEach(function(d) {
+			    	if(d.producer_id==customerID){
+			    		var OldDate = new Date(d.posted_time.split("T")[0]);
+ 						var NewDate = OldDate.getDate() + '-' + (OldDate.getMonth() + 1) + '-' + OldDate.getFullYear();
+ 						NewDate = NewDate.split("-")[2];
+ 						if(NewDate == datereceived){
+ 							fullQty += d.quantity;
+ 							var month = parseInt(d.posted_time.split("T")[0].split("-")[1]);
+ 							if(month-1 == 0){
+ 								data[0].close += d.quantity; 
+ 							}
+ 							if(month-1 == 1){
+ 								data[1].close += d.quantity; 
+ 							}
+ 							if(month-1 == 2){
+ 								data[2].close += d.quantity; 
+ 							}
+ 							if(month-1 == 3){
+ 								data[3].close += d.quantity; 
+ 							}
+ 							if(month-1 == 4){
+ 								data[4].close += d.quantity; 
+ 							}
+ 							if(month-1 == 5){
+ 								data[5].close += d.quantity; 
+ 							}
+ 							if(month-1 == 6){
+ 								data[6].close += d.quantity; 
+ 							}
+ 							if(month-1 == 7){
+ 								data[7].close += d.quantity; 
+ 							}
+ 							if(month-1 == 8){
+ 								data[8].close += d.quantity; 
+ 							}
+ 							if(month-1 == 9){
+ 								data[9].close += d.quantity; 
+ 							}
+ 							if(month-1 == 10){
+ 								data[10].close += d.quantity; 
+ 							}
+ 							if(month-1 == 11){
+ 								data[11].close += d.quantity; 
+ 							}
+
+ 						}
+			    	}
+			    });
+
+			    if(fullQty==-1){
+			    	fullQty = 0;
+			    }else{
+			    	fullQty++;
+			    }
+			    $(".inputQty").val(fullQty);
+
+			    for(i=0;i<data.length;i++){
+			    	if(i==data.length-1){
+			    		if(data[i].close!=0){
+				    		$("#empty").hide();	
+				    		break;
+				    	}else{
+				    		$("#empty").show();	
+				    		d3.select("#barchart").selectAll("svg").remove();
+				    	}
+			    	}else{
+				    	if(data[i].close!=0){
+				    		$("#empty").hide();	
+				    		break;
+				    	}else{
+				    		$("#empty").show();	
+				    		continue;
+				    	}
+				    }
+			    	
+			    }
+
+				
+			  // scale the range of the data
+			  x.domain(data.map(function(d) { return d.mindate; }));
+			  for(i=0;i<data.length;i++){
+			  	if(data[i].close == 0 ){ 
+			    	y.domain([0, d3.max(data, function(x) { return x.close; })]);
+			  	}else{
+			  		y.domain([0, d3.max(data, function(x) { return x.close; })+100]);
+			  		break;
+			  	}
+			  }
+			  // add axis
+			  svg.append("g")
+			      .attr("class", "x axis")
+			      .attr("transform", "translate(0," + height + ")")
+			      .call(xAxis)
+			    .selectAll("text")
+			      .style("text-anchor", "end")
+			      .attr("dx", "-.8em")
+			      .attr("dy", "-.55em")
+			      .attr("transform", "rotate(-90)" );
+
+			   svg.append("g")
+		          .attr("class", "y axis")
+		          .call(yAxis)
+
+		      svg.append("text")
+			      .attr("transform", "rotate(-90)")
+			      .attr("y", -17)
+			      .attr("x", 12)
+			      .attr("dy", ".71em")
+			      .style("text-anchor", "end")
+			      .style("font-size", "0.7em")
+			      .text("kW"); 
+
+
+			  // Add bar chart
+			  svg.selectAll("bar")
+			      .data(data)
+			    .enter().append("rect")
+			      .attr("class", "bar")
+			      .attr("x", function(d) { return x(d.mindate)+1; })
+			      .attr("width", 18)
+			      .attr("y", function(d) { return y(d.close); })
+			      .attr("height", function(d) { return height - y(d.close); })
+			      .on("click", function(d){
+		            div.transition()
+		               .duration(100)
+		               .style("opacity", 1);
+		            div.html("<strong style='color:white'>" + d.close + " kW</span>")
+		               .style("left", (d3.event.pageX) + "px")
+		               .style("top", (d3.event.pageY) + "px");
+		          })
+
+			}
+				
+			function updateDate(){
+				var day = d.getDate();
+				if(day<10) day =  "0" + day;
+				var month = d.getMonth()+1;
+				if(month<10) month =  "0" + month;
+				var year = d.getFullYear();
+				var ThisDate = year; // AQUI
+				$(".day").html(day);
+				$(".month").html(month);
+				$(".year").html(year);
+				$("#empty").html("There's no consumption in " + year);
+				d3.select("#barchart").selectAll("svg").remove();
+				drawChart(ThisDate);
+				console.log(ThisDate);
+				setTimeout(function() {
+						$("#fullQtys").html("Consumption: " +  $(".inputQty").val() + "<font style='font-size:0.8em'>kW</font>");
+						var widthBox = parseFloat($("#fullQtys").css("width"));
+						$("#fullQtys").css("margin-left", -(widthBox/2));
+					}, 1);
+			}
+
+			function waiting(){
+			    if(consumedEnergy!=null){
+			        updateDate();
+			    }
+			    else{
+			        setTimeout(waiting, 250);
+			    }
+			}
+
+		</script>
+		<div class="headingBox" style="float:left; margin-left:70px;">		
+			<div class="stroke" ></div>
+			<div class="separator"></div>
+			<div class="text"> Consumption Log </div>				
+			<div class="separator"></div>
+			<div class="stroke" style="float:right; margin-right:-10px; margin-top: -1px;"></div>
+		</div>
+		<br>
+		<div class="panel panel-default">
+			<div style="width:100%;height:5px;"></div>
+			<div class="headingBoxYear">
+				<div class="text"><label class="year"></label></div>
+			</div>
+			<script>
+				waiting();
+			</script>
+			<div style="clear:both;width:100%;height:10px;">
+				<label class="text" style="position:relative;left:50%;" id="fullQtys"></label>
+			</div>
+			<div style="clear:both;width:100%;height:20px;"></div>
+			<div class="otherBox">
+				<button type="button" id="leftbutton" class="btn btn-default" style="background-color: #333;width:40px;height:34px;">
+					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true" style="color:#eee;height: 20px; font-size:15;float:left;margin-top:2px;"></span>
+				</button>
+				<script>
+						$("#leftbutton").on("click", function(){
+							d.setYear(d.getFullYear()-1);
+							updateDate();
+						});
+				</script>
+				<button type="button" id="seeDetails" class="btn btn-default" style="width:115px;height:34px;">
+					<label class="lbl3" style="margin-top:0px;color: #333;font-size:12">See Details</label>
+				</button>
+				<script>
+						$("#seeDetails").on("click", function(){
+							location.href = "consumption_year_stats.html?date=" + d;
+						})
+				</script>
+				<button type="button" id="rightbutton" class="btn btn-default" style="width:40px;height:34px;background-color:#333;">
+					<span class="glyphicon glyphicon-chevron-right" aria-hidden="true" style="color:#eee;height: 20px; font-size:15;float:right;margin-top:2px;"></span>
+				</button>
+				<script>
+						$("#rightbutton").on("click", function(){
+							d.setYear(d.getFullYear()+1);
+							updateDate();
+						})
+				</script>
+			</div>
+			<div class="otherBox2">
+				<button type="button" class="btn btn-danger" style="height:34px;width:156px">
+						<label class="lbl3" style="margin-top:3px;color: #eee;font-size:11">Compare with usage</label>
+				</button>
+			</div>
+			<br>
+		</div>
+		<div class="footer2">
+			<label class="lbl4" style="margin-top:3px;">Help</label>
+			<label class="lbl4" style="margin-left:5px;margin-top:3px;">Contact</label>
+			<label class="lbl4" style="margin-left:5px;margin-top:3px;">T&C</label>
+		</div>
+	</body>
+
+</html>
