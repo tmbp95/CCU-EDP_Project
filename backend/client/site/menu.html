@@ -17,12 +17,6 @@
 		<script>
 			//localStorage.clear();
 			var username = localStorage.getItem("usernameStorage");
-			var balanceDay = localStorage.getItem("balanceValueStorage");
-			var balanceMonth = localStorage.getItem("balanceValueStorageMonth");
-			var balanceYear = localStorage.getItem("balanceValueStorageYear");
-			console.log("balance today - " + balanceDay);
-			console.log("balance this month - " + balanceMonth);
-			console.log("balance this year - " + balanceMonth);
 			console.log(username);
 			if(username==null){
 				window.location.replace("index.html");
@@ -40,6 +34,58 @@
 				$("#popupDiv-back").delay( 100 ).fadeIn(100);
 				$("#popupDiv").delay( 100 ).fadeIn(100);
 			}
+
+			function loadDoc(content, cFunction) {
+				var xhttp;
+				xhttp=new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						cFunction(this);
+					}
+				};
+				xhttp.open("GET", "http://85.247.219.175:4567/api/" + content, true);
+				xhttp.send();
+			}
+
+			function getProducedEnergy (xhttp) {
+				localStorage.setItem("production", xhttp.responseText);
+			}
+
+			function getConsumedEnergy (xhttp) {
+				localStorage.setItem("consumption", xhttp.responseText);
+			}
+
+			window.onload = function(){
+			 	loadDoc('producedenergies', getProducedEnergy);
+			 	loadDoc('consumeddenergies', getConsumedEnergy);
+			 }
+
+			var customerID, producedEnergy, consumedEnergy;
+			function getStuff(){
+				customerID = localStorage.getItem("customerIDStorage");
+				producedEnergy = localStorage.getItem("production");
+				producedEnergy = jQuery.parseJSON(producedEnergy);
+				consumedEnergy = localStorage.getItem("consumption");
+				consumedEnergy = jQuery.parseJSON(consumedEnergy);
+			}
+
+			function waitForElement(){
+				producedEnergy = localStorage.getItem("production");
+				consumedEnergy = localStorage.getItem("consumption");
+			    if(producedEnergy!=null){
+			    	getStuff();
+			    }
+			    if(consumedEnergy!=null){
+			    	getStuff();
+			    }
+			    else{
+			        setTimeout(waitForElement, 250);
+			    }
+			}
+			waitForElement();
+
+			console.log(producedEnergy);
+			console.log(consumedEnergy);
 		</script>
 
 		<div id="popupDiv-back"></div>
@@ -90,9 +136,56 @@
 		<div style="clear:both"></div>
 		<div class="balance">
 			<div class="panel panel-default">
-			  <div class="panel-body">Available Energy <div style="float: right;">35 Kw</div></div>
+			  <div class="panel-body">Available Energy <div style="float: right;" id="availableEnergy">35 Kw</div></div>
 			  
 			</div>
+			<script>
+			function showAvailableEnergy(){
+				var balance = getNum(getProducedEnergy(), getConsumedEnergy());
+				setTimeout(function() {
+						$("#availableEnergy").html("" +  balance + "kW");
+					}, 1);
+			}
+
+			function getProducedEnergy(){
+					var producedToday, consumedToday, quantity = 0;
+					producedEnergy.forEach(function(d) {
+						if(d.producer_id==customerID){
+	 							quantity += d.quantity;
+	 						}
+				    	});
+					console.log("produced - " + quantity);
+					return quantity;
+					
+				}
+
+
+			function getConsumedEnergy(){
+				var producedToday, consumedToday, quantity = 0;
+				consumedEnergy.forEach(function(d) {
+					if(d.producer_id==customerID){
+ 							quantity += d.quantity;
+ 						}
+			    	});
+				console.log("consumed - " + quantity);
+				return quantity;
+				
+			}
+
+			function getNum(val1, val2) {
+				if(val1 == 0){
+					return -Math.abs(val2);
+				}
+				else if(val2 == 0){
+					return val1;
+				}
+			   	else{
+			   		return val1 - val2;
+			   	}
+			}
+
+			showAvailableEnergy()
+			</script>
 		</div>
 		<div class="options">
 
