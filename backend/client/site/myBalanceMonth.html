@@ -7,7 +7,7 @@
 		<script src="js/jquery.min.js"></script>
 		<link href="style/css/bootstrap-toggle.min.css" rel="stylesheet">
 		<link href="style/css/bootstrap.min.css" rel="stylesheet">
-		<link href="style/style-consumption_month.css" rel="stylesheet">
+		<link href="style/style-balance_month.css" rel="stylesheet">
 		<link href="style/checkbox.css" rel="stylesheet">
 		<script src="style/js/bootstrap-toggle.min.js"></script>
 		<script>
@@ -27,25 +27,33 @@
 				xhttp.send();
 			}
 
+			function getProducedEnergy (xhttp) {
+				localStorage.setItem("production", xhttp.responseText);
+			}
+
 			function getConsumedEnergy (xhttp) {
 				localStorage.setItem("consumption", xhttp.responseText);
 			}
 
 			window.onload = function(){
-			 	loadDoc('consumedenergies', getConsumedEnergy);
+			 	loadDoc('producedenergies', getProducedEnergy);
+			 	loadDoc('consumeddenergies', getConsumedEnergy);
 			 }
 
-			var customerID, consumedEnergy;
+			var customerID, producedEnergy, consumedEnergy;
 			function getStuff(){
 				customerID = localStorage.getItem("customerIDStorage");
+				producedEnergy = localStorage.getItem("production");
+				producedEnergy = jQuery.parseJSON(producedEnergy);
 				consumedEnergy = localStorage.getItem("consumption");
 				consumedEnergy = jQuery.parseJSON(consumedEnergy);
 			}
 
 			function waitForElement(){
 				$('#loading').show();
+				producedEnergy = localStorage.getItem("production");
 				consumedEnergy = localStorage.getItem("consumption");
-			    if(consumedEnergy!=null){
+			    if(producedEnergy!=null && consumedEnergy!=null){
 			    	getStuff();
 			    }
 			    else{
@@ -53,6 +61,8 @@
 			    }
 			}
 			waitForElement();
+			console.log(producedEnergy);
+			console.log(consumedEnergy);
 
 		</script>
 
@@ -71,7 +81,7 @@
 			    </script>
 			</div>
 
-			<div class="title" style="margin-left:-10px;">Consumption</div>
+			<div class="title">Balance</div>
 
 			<div class="buttons">
 				<button id="homeButton" type="button" class="btn btn-default" aria-label="Left Align">
@@ -88,9 +98,9 @@
 		<br>
 		<div style="margin:0 auto;width:215px;font-family: EDPPreonMedium,sans-serif;">
 			<ul class="nav nav-pills">
-				<li role="presentation"><a href="consumption_day.html"><font style="position:relative;top:-5px">Day</font></a></li>
-				<li role="presentation" class="active" style="margin-left:5px;"><a href="consumption_month.html"><font style="position:relative;top:-5px">Month</font></a></li>
-				<li role="presentation" style="margin-left:5px;"><a href="consumption_year.html"><font style="position:relative;top:-5px">Year</font></a></li>
+				<li role="presentation"><a href="myBalanceDay.html"><font style="position:relative;top:-5px">Day</font></a></li>
+				<li role="presentation" class="active" style="margin-left:5px;"><a href="myBalanceMonth.html"><font style="position:relative;top:-5px">Month</font></a></li>
+				<li role="presentation" style="margin-left:5px;"><a href="myBalanceYear.html"><font style="position:relative;top:-5px">Year</font></a></li>
 			</ul>
 		</div>
 		<div class="panel panel-default" style="margin-top:10px;">
@@ -123,7 +133,7 @@
 				var year = date.getFullYear();
 			}	
 
-			$("#empty").html("There's no consumption in " + monthNames[month-1] + " " + year);
+			$("#empty").html("There's no balance in " + monthNames[month-1] + " " + year);
 
 			var widthCSS = $("#linechart").width();
 
@@ -161,7 +171,7 @@
 				var xAxis = d3.axisBottom(x),
 				    xAxis2 = d3.axisBottom(x2),
 				    yAxis = d3.axisLeft(y)
-				    			.ticks(10);
+				    			.ticks(6);
 
 				var brush = d3.brushX()
 				    .extent([[0, 0], [width, height2]])
@@ -197,7 +207,7 @@
 
 				var data = [];
 				var fullQty = -1;
-				consumedEnergy.forEach(function(d) {
+				producedEnergy.forEach(function(d) {
 					var calendario = new Date(d.posted_time);
 					d.posted_time = calendario;
 					//console.log(calendario.getMonth()+1);
@@ -223,7 +233,7 @@
 
 				//console.log(data);
 				  x.domain(d3.extent(data, function(d) { return d.posted_time; }));
-				  y.domain([0, d3.max(data, function(d) { return d.quantity; })]);
+				  y.domain([0, d3.max(data, function(d) { return d.quantity; })+50]);
 				  x2.domain(x.domain());
 				  y2.domain(y.domain());
 
@@ -320,22 +330,22 @@
 				var year = date.getFullYear();
 				$(".month").html(monthNames[month-1]);
 				$(".year").html(year);
-				$("#empty").html("There's no consumption in " + monthNames[month-1] + " " + year);
+				$("#empty").html("There's no production in " + monthNames[month-1] + " " + year);
 				d3.select("#linechart").selectAll("svg").remove();
 				drawLineChart(month);
 				setTimeout(function() {
-						$("#fullQtys").html("Consumption: " +  $(".inputQty").val() + "<font style='font-size:0.8em'>kW</font>");
+						$("#fullQtys").html("Production: " +  $(".inputQty").val() + "<font style='font-size:0.8em'>kW</font>");
 						var widthBox = parseFloat($("#fullQtys").css("width"));
 						$("#fullQtys").css("margin-left", -(widthBox/2));
 					}, 1);
 			}
 		</script>
-		<div class="headingBox" style="float:left; margin-left:70px;">		
-			<div class="stroke" ></div>
+		<div class="headingBox">
+			<div class="stroke"></div>
 			<div class="separator"></div>
-			<div class="text"> Consumption Log </div>				
+			<div class="text">Balance Log</div>
 			<div class="separator"></div>
-			<div class="stroke" style="float:right; margin-right:-10px; margin-top: -1px;"></div>
+			<div class="stroke"></div>
 		</div>
 		<br>
 		<div class="panel panel-default">
@@ -345,10 +355,10 @@
 			</div>
 			<script>
 				function waiting(){
-				    if(consumedEnergy!=null){
+				    if(producedEnergy!=null){
 				        drawLineChart();
 				        setTimeout(function() {
-						$("#fullQtys").html("Consumption: " +  $(".inputQty").val() + "<font style='font-size:0.8em'>kW</font>");
+						$("#fullQtys").html("Balance: " +  $(".inputQty").val() + "<font style='font-size:0.8em'>kW</font>");
 						var widthBox = parseFloat($("#fullQtys").css("width"));
 						$("#fullQtys").css("margin-left", -(widthBox/2));
 					}, 1);
@@ -380,7 +390,7 @@
 					</button>
 					<script>
 							$("#seeDetails").on("click", function(){
-								location.href = "consumption_month_stats.html?date=" + date;
+								location.href = "production_month_stats.html?date=" + date;
 							})
 					</script>
 					<button type="button" id="rightbuttonMonth" class="btn btn-default" style="width:40px;height:34px;background-color:#333;">
@@ -394,9 +404,22 @@
 					</script>
 			</div>
 			<div class="otherBox2">
-				<button type="button" class="btn btn-danger" style="height:34px;width:156px">
-						<label class="lbl3" style="margin-top:3px;color: #eee;font-size:11">Compare with usage</label>
+				<button type="button" class="btn btn-danger" id="seeConsumption"style="height:34px;width:156px">
+						<label class="lbl3" style="margin-top:3px;color: #eee;font-size:11">See consumption</label>
 				</button>
+				<script>
+						$("#seeConsumption").on("click", function(){
+							location.href = "consumption_month.html?date=" + date;
+						})
+				</script>
+				<button type="button" class="btn btn-danger" id="seeProduction" style="height:34px;width:156px;margin-top:3px;">
+						<label class="lbl3" style="margin-top:3px;color: #eee;font-size:11">See production</label>
+				</button>
+				<script>
+						$("#seeProduction").on("click", function(){
+							location.href = "production_month.html?date=" + date;
+						})
+				</script>
 			</div>
 			<br>
 		</div>
