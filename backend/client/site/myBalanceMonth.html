@@ -131,7 +131,7 @@
 				var month = date.getMonth()+1;
 				if(month<10) month =  "0" + month;
 				var year = date.getFullYear();
-			}	
+			}
 
 			$("#empty").html("There's no balance in " + monthNames[month-1] + " " + year);
 
@@ -144,7 +144,7 @@
 	     	 height2 = 270 - margin2.top - margin2.bottom;
 
 			function drawLineChart(monthReceived){
-				
+
 				if(monthReceived==null){
 					monthReceived = month;
 				}
@@ -154,7 +154,7 @@
 				          .attr("width", width + margin.left + margin.right + 20)
 				          .attr("height", height + margin.top + margin.bottom)
 				      .append("g")
-				          .attr("transform", 
+				          .attr("transform",
 				                "translate(" + margin.left + "," + margin.top + ")");
 
 				var div = d3.select("body").append("div")
@@ -225,9 +225,9 @@
 			    $(".inputQty").val(fullQty);
 			    console.log($(".inputQty").val());
 			    if(data.length!=0){
-			    	$("#empty").hide();	
+			    	$("#empty").hide();
 			    }else{
-			    	$("#empty").show();	
+			    	$("#empty").show();
 			    	d3.select("#linechart").selectAll("svg").remove();
 			    }
 
@@ -241,7 +241,7 @@
 				      .datum(data)
 				      .attr("class", "area")
 				      .attr("d", area(data));
-				      
+
 
 
 				  focus.append("g")
@@ -321,7 +321,7 @@
 
 			}
 
-	
+
 			function updateDate(){
 				var day = date.getDate();
 				if(day<10) day =  "0" + day;
@@ -395,7 +395,7 @@
 			<script>
 				function waiting(){
 				    if(producedEnergy!=null){
-				        updateDate();			        
+				        updateDate();
 				    }
 				    else{
 				        setTimeout(waiting, 250);
@@ -438,7 +438,7 @@
 					</button>
 					<script>
 							$("#seeDetails").on("click", function(){
-								location.href = "production_month_stats.html?date=" + date;
+								location.href = "mybalance_month_stats.html?date=" + date;
 							})
 					</script>
 					<button type="button" id="rightbuttonMonth" class="btn btn-default" style="width:40px;height:34px;background-color:#333;">

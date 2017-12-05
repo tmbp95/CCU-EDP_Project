@@ -2,9 +2,9 @@
 
 	<head>
 		<title>EDP platform</title>
-		<meta charset="utf-8" />   
+		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<script src="js/jquery.min.js"></script>   
+		<script src="js/jquery.min.js"></script>
 		<link href="style/css/bootstrap-toggle.min.css" rel="stylesheet">
 		<link href="style/css/bootstrap.min.css" rel="stylesheet">
 		<link href="style/style-balance_year.css" rel="stylesheet">
@@ -79,7 +79,7 @@
 					})
 			    </script>
 			</div>
-				
+
 			<div class="title">Balance</div>
 
 			<div class="buttons">
@@ -183,7 +183,7 @@
 			    .attr("width", width + margin.left + margin.right)
 			    .attr("height", height + margin.top + margin.bottom)
 			  .append("g")
-			    .attr("transform", 
+			    .attr("transform",
 			          "translate(" + margin.left + "," + margin.top + ")");
 
 
@@ -192,7 +192,7 @@
 	"date": "January",
 	"mindate": "Jan",
 	"numberMonth": 0,
-	"close": 0	
+	"close": 0
 },
 {
 	"date" : "February",
@@ -273,40 +273,40 @@ var fullQty = -1;
  							fullQty += d.quantity;
  							var month = parseInt(d.posted_time.split("T")[0].split("-")[1]);
  							if(month-1 == 0){
- 								data[0].close += d.quantity; 
+ 								data[0].close += d.quantity;
  							}
  							if(month-1 == 1){
- 								data[1].close += d.quantity; 
+ 								data[1].close += d.quantity;
  							}
  							if(month-1 == 2){
- 								data[2].close += d.quantity; 
+ 								data[2].close += d.quantity;
  							}
  							if(month-1 == 3){
- 								data[3].close += d.quantity; 
+ 								data[3].close += d.quantity;
  							}
  							if(month-1 == 4){
- 								data[4].close += d.quantity; 
+ 								data[4].close += d.quantity;
  							}
  							if(month-1 == 5){
- 								data[5].close += d.quantity; 
+ 								data[5].close += d.quantity;
  							}
  							if(month-1 == 6){
- 								data[6].close += d.quantity; 
+ 								data[6].close += d.quantity;
  							}
  							if(month-1 == 7){
- 								data[7].close += d.quantity; 
+ 								data[7].close += d.quantity;
  							}
  							if(month-1 == 8){
- 								data[8].close += d.quantity; 
+ 								data[8].close += d.quantity;
  							}
  							if(month-1 == 9){
- 								data[9].close += d.quantity; 
+ 								data[9].close += d.quantity;
  							}
  							if(month-1 == 10){
- 								data[10].close += d.quantity; 
+ 								data[10].close += d.quantity;
  							}
  							if(month-1 == 11){
- 								data[11].close += d.quantity; 
+ 								data[11].close += d.quantity;
  							}
 
  						}
@@ -323,29 +323,29 @@ var fullQty = -1;
 			    for(i=0;i<data.length;i++){
 			    	if(i==data.length-1){
 			    		if(data[i].close!=0){
-				    		$("#empty").hide();	
+				    		$("#empty").hide();
 				    		break;
 				    	}else{
-				    		$("#empty").show();	
+				    		$("#empty").show();
 				    		d3.select("#barchart").selectAll("svg").remove();
 				    	}
 			    	}else{
 				    	if(data[i].close!=0){
-				    		$("#empty").hide();	
+				    		$("#empty").hide();
 				    		break;
 				    	}else{
-				    		$("#empty").show();	
+				    		$("#empty").show();
 				    		continue;
 				    	}
 				    }
-			    	
+
 			    }
 
-				
+
 			  // scale the range of the data
 			  x.domain(data.map(function(d) { return d.mindate; }));
 			  for(i=0;i<data.length;i++){
-			  	if(data[i].close == 0 ){ 
+			  	if(data[i].close == 0 ){
 			    	y.domain([0, d3.max(data, function(x) { return x.close; })]);
 			  	}else{
 			  		y.domain([0, d3.max(data, function(x) { return x.close; })+100]);
@@ -374,7 +374,7 @@ var fullQty = -1;
 			      .attr("dy", ".71em")
 			      .style("text-anchor", "end")
 			      .style("font-size", "0.7em")
-			      .text("kW"); 
+			      .text("kW");
 
 
 			  // Add bar chart
@@ -396,7 +396,7 @@ var fullQty = -1;
 		          })
 
 			}
-				
+
 			function updateDate(){
 				var day = d.getDate();
 				if(day<10) day =  "0" + day;
@@ -501,7 +501,7 @@ var fullQty = -1;
 				</button>
 				<script>
 						$("#seeDetails").on("click", function(){
-							location.href = "production_year_stats.html?date=" + d;
+							location.href = "mybalance_year_stats.html?date=" + d;
 						})
 				</script>
 				<button type="button" id="rightbutton" class="btn btn-default" style="width:40px;height:34px;background-color:#333;">

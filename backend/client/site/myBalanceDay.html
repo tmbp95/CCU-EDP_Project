@@ -2,9 +2,9 @@
 
 	<head>
 		<title>EDP platform</title>
-		<meta charset="utf-8" />   
+		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<script src="js/jquery.min.js"></script>   
+		<script src="js/jquery.min.js"></script>
 		<link href="style/css/bootstrap-toggle.min.css" rel="stylesheet">
 		<link href="style/css/bootstrap.min.css" rel="stylesheet">
 		<link href="style/style-balance_day.css" rel="stylesheet">
@@ -95,7 +95,7 @@
 					})
 			    </script>
 			</div>
-		</div>		
+		</div>
 
 		<div style="clear:both"></div>
 		<br>
@@ -181,7 +181,7 @@
 			    .attr("width", width + margin.left + margin.right)
 			    .attr("height", height + margin.top + margin.bottom)
 			  .append("g")
-			    .attr("transform", 
+			    .attr("transform",
 			          "translate(" + margin.left + "," + margin.top + ")");
 
 			// define the axis
@@ -221,40 +221,40 @@
  							fullQty += d.quantity;
  							var hours = parseInt(d.posted_time.split("T")[1].split(".")[0].split(":")[0]);
  							if(0 <= hours && hours < 2){
- 								data[0].close += d.quantity; 
+ 								data[0].close += d.quantity;
  							}
  							if(2 <= hours && hours < 4){
- 								data[1].close += d.quantity; 
+ 								data[1].close += d.quantity;
  							}
  							if(4 <= hours && hours < 6){
- 								data[2].close += d.quantity; 
+ 								data[2].close += d.quantity;
  							}
  							if(6 <= hours && hours < 8){
- 								data[3].close += d.quantity; 
+ 								data[3].close += d.quantity;
  							}
  							if(8 <= hours && hours < 10){
- 								data[4].close += d.quantity; 
+ 								data[4].close += d.quantity;
  							}
  							if(10 <= hours && hours < 12){
- 								data[5].close += d.quantity; 
+ 								data[5].close += d.quantity;
  							}
  							if(12 <= hours && hours < 14){
- 								data[6].close += d.quantity; 
+ 								data[6].close += d.quantity;
  							}
  							if(14 <= hours && hours < 16){
- 								data[7].close += d.quantity; 
+ 								data[7].close += d.quantity;
  							}
  							if(16 <= hours && hours < 18){
- 								data[8].close += d.quantity; 
+ 								data[8].close += d.quantity;
  							}
  							if(18 <= hours && hours < 20){
- 								data[9].close += d.quantity; 
+ 								data[9].close += d.quantity;
  							}
  							if(20 <= hours && hours < 22){
- 								data[10].close += d.quantity; 
+ 								data[10].close += d.quantity;
  							}
  							if(22 <= hours && hours < 24){
- 								data[11].close += d.quantity; 
+ 								data[11].close += d.quantity;
  							}
 
  						}
@@ -275,35 +275,35 @@
 			    for(i=0;i<data.length;i++){
 			    	if(i==data.length-1){
 			    		if(data[i].close!=0){
-				    		$("#empty").hide();	
+				    		$("#empty").hide();
 				    		break;
 				    	}else{
-				    		$("#empty").show();	
+				    		$("#empty").show();
 				    		d3.select("#barchart").selectAll("svg").remove();
 				    	}
 			    	}else{
 				    	if(data[i].close!=0){
-				    		$("#empty").hide();	
+				    		$("#empty").hide();
 				    		break;
 				    	}else{
-				    		$("#empty").show();	
+				    		$("#empty").show();
 				    		continue;
 				    	}
 				    }
-			    	
+
 			    }
-				
+
 			  // scale the range of the data
 			  x.domain(data.map(function(d) { return d.date; }));
 			  for(i=0;i<data.length;i++){
-			  	if(data[i].close == 0 ){ 
+			  	if(data[i].close == 0 ){
 			    	y.domain([0, d3.max(data, function(x) { return x.close; })]);
 			  	}else{
 			  		y.domain([0, d3.max(data, function(x) { return x.close; })+20]);
 			  		break;
 			  	}
 			  }
-			  
+
 
 			  // add axis
 			  svg.append("g")
@@ -379,7 +379,7 @@
 
 			function waiting(){
 			    if(producedEnergy!=null){
-			        updateDate();			        
+			        updateDate();
 			    }
 			    else{
 			        setTimeout(waiting, 250);
@@ -459,7 +459,7 @@
 				</button>
 				<script>
 						$("#seeDetails").on("click", function(){
-							location.href = "production_day_stats.html?date=" + d;
+							location.href = "mybalance_day_stats.html?date=" + d;
 						})
 				</script>
 				<button type="button" id="rightbutton" class="btn btn-default" style="width:40px;height:34px;background-color:#333;">
