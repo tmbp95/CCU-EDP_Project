@@ -29,7 +29,7 @@
 			}
 
 			function getProducedEnergy (xhttp) {
-				localStorage.setItem("production", xhttp.responseText);
+				localStorage.setItem("productionA", xhttp.responseText);
 			}
 
 			window.onload = function(){
@@ -39,13 +39,13 @@
 			var customerID, producedEnergy;
 			function getStuff(){
 				customerID = localStorage.getItem("customerIDStorage");
-				producedEnergy = localStorage.getItem("production");
+				producedEnergy = localStorage.getItem("productionA");
 				producedEnergy = jQuery.parseJSON(producedEnergy);
 			}
 
 			function waitForElement(){
 				$('#loading').show();
-				producedEnergy = localStorage.getItem("production");
+				producedEnergy = localStorage.getItem("productionA");
 			    if(producedEnergy!=null){
 			    	getStuff();
 			    }
@@ -204,7 +204,9 @@
 			    producedEnergy.forEach(function(d) {
 			    	if(d.producer_id==customerID){
 			    		var OldDate = new Date(d.posted_time.split("T")[0]);
- 						var NewDate = OldDate.getDate() + '-' + (OldDate.getMonth() + 1) + '-' + OldDate.getFullYear();
+			    		var oldDateDay = OldDate.getDate()
+			    		if(oldDateDay<10) oldDateDay = "0" + oldDateDay;
+ 						var NewDate = oldDateDay + '-' + (OldDate.getMonth() + 1) + '-' + OldDate.getFullYear();
  						if(NewDate == datereceived){
  							fullQty += d.quantity;
  							var hours = parseInt(d.posted_time.split("T")[1].split(".")[0].split(":")[0]);

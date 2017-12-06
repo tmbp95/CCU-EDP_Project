@@ -157,7 +157,9 @@
 				    producedEnergy.forEach(function(d) {
 				    	if(d.producer_id==customerID){
 				    		var OldDate = new Date(d.posted_time.split("T")[0]);
-	 						var NewDate = OldDate.getDate() + '-' + (OldDate.getMonth() + 1) + '-' + OldDate.getFullYear();
+				    		var oldDateDay = OldDate.getDate()
+				    		if(oldDateDay<10) oldDateDay = "0" + oldDateDay;
+	 						var NewDate = oldDateDay + '-' + (OldDate.getMonth() + 1) + '-' + OldDate.getFullYear();
 	 						if(NewDate == ThisDate){
 	 							var hours = parseInt(d.posted_time.split("T")[1].split(".")[0].split(":")[0]);
 	 							if(0 <= hours && hours < 2){

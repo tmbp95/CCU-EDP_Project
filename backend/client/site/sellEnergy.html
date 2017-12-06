@@ -33,13 +33,23 @@
 				localStorage.setItem("transactions", xhttp.responseText);
 			}
 
+			function getProducedEnergy (xhttp) {
+				localStorage.setItem("production", xhttp.responseText);
+			}
+
+			function getConsumedEnergy (xhttp) {
+				localStorage.setItem("consumption", xhttp.responseText);
+			}
+
 			
-			var energies, customerID, transactions;
+			var energies, customerID, transactions, producedEnergy, consumedEnergy;
 
 			window.onload = function(){
 				customerID = localStorage.getItem("customerIDStorage");
 				loadDoc('energies?filter=%7B%22where%22%3A%7B%22producer_id%22%3A' + customerID + '%7D%7D', getEnergy);
 				loadDoc('transactions', getTransactions);
+				loadDoc('producedenergies', getProducedEnergy);
+			 	loadDoc('consumedenergies', getConsumedEnergy);
 			}
 
 			function getStuff(){
@@ -50,6 +60,12 @@
 				energies = jQuery.parseJSON(energies);
 				energies.reverse();
 				transactions = jQuery.parseJSON(transactions);
+				producedEnergy = localStorage.getItem("production");
+				producedEnergy = jQuery.parseJSON(producedEnergy);
+				consumedEnergy = localStorage.getItem("consumption");
+				consumedEnergy = jQuery.parseJSON(consumedEnergy);
+				console.log(producedEnergy);
+			console.log(consumedEnergy);
 				setTimeout(function () {
 				        parseData();
 				    }, 250);
@@ -60,7 +76,9 @@
 				$('#loading').show();
 				energies = localStorage.getItem("energies");
 				transactions = localStorage.getItem("transactions");
-			    if(energies!=null && transactions!=null){
+				producedEnergy = localStorage.getItem("production");
+				consumedEnergy = localStorage.getItem("consumption");
+			    if(energies!=null && transactions!=null && producedEnergy!=null && consumedEnergy!=null){
 			    	getStuff();
 			    }
 			    else{
@@ -68,6 +86,7 @@
 			    }
 			}
 			waitForElement();
+
 
 
 		</script>
@@ -97,7 +116,7 @@
 					$(".oldPriceInput").val(price);
 					$(".id").val(value);
 					$(".quantity").val(quantity);
-					$(".amountEarn2").html($(".oldPriceInput").val()*$(".quantity").val());
+					$(".amountEarn2").html(($(".oldPriceInput").val()*$(".quantity").val()).toFixed(2));
 				})
 			}
 
@@ -204,7 +223,7 @@
 								var energy = JSON.stringify({ KWhPrice: parseFloat(price),
 																							active: 1,
 																							energy_id: id,
-																							holder: 40,
+																							holder: 0,
 																							packDescript: packDescript,
 																							packName: name,
 																							percentage: 100,
@@ -269,11 +288,16 @@
 					</tr>
 					<tr>
 						<td class="lbl4" >Average Price Today: </td>
-						<td class="lbl4" style="text-align:center;">1 €/Kw</td>
+						<td class="lbl4" style="text-align:center;"><label id="mean"></label> €/Kw</td>
 						<td style="text-align:right;">
-							<button type="button" class="btn btn-danger" style="margin-top: 0px;margin-left: 0%;height:30px;width:100px;">
+							<button type="button" id="checkmarket" class="btn btn-danger" style="margin-top: 0px;margin-left: 0%;height:30px;width:100px;">
 								<label class="lbl4" style="position:relative;top:0px;left:-4px;">Check Market</label>
 							</button>
+							<script>
+								$("#checkmarket").on("click", function(){
+									location.href = "checkmarket.html";
+								})
+							</script>
 						</td>
 					</tr>
 					<tr style="font-size:0.5em;">
@@ -283,11 +307,62 @@
 					</tr>
 					<tr>
 						<td class="lbl4">Available Energy: </td>
-						<td class="lbl4" style="text-align:center;">35 Kw</td>
+						<td class="lbl4" id="availableEnergy" style="text-align:center;">35 Kw</td>
 						<td style="text-align:right;">
-							<button type="button" class="btn btn-danger" style="margin-top: 0px;margin-left: 0%;height:30px;width:100px;">
+							<button type="button" id="balance" class="btn btn-danger" style="margin-top: 0px;margin-left: 0%;height:30px;width:100px;">
 								<label class="lbl4" style="position:relative;top:0px;left:0px;">My Balance</label>
 							</button>
+							<script>
+								$("#balance").on("click", function(){
+									location.href = "myBalanceDay.html";
+								})
+
+								function showAvailableEnergy(){
+									var balance = getNum(getProducedEnergy(), getConsumedEnergy());
+									setTimeout(function() {
+											$("#availableEnergy").html("" +  balance + " kW");
+										}, 1);
+								}
+
+								function getProducedEnergy(){
+										var producedToday, consumedToday, quantity = 0;
+										producedEnergy.forEach(function(d) {
+											if(d.producer_id==customerID){
+						 							quantity += d.quantity;
+						 						}
+									    	});
+										console.log("produced - " + quantity);
+										return quantity;
+										
+									}
+
+
+								function getConsumedEnergy(){
+									var producedToday, consumedToday, quantity = 0;
+									consumedEnergy.forEach(function(d) {
+										if(d.producer_id==customerID){
+					 							quantity += d.quantity;
+					 						}
+								    	});
+									console.log("consumed - " + quantity);
+									return quantity;
+									
+								}
+
+								function getNum(val1, val2) {
+									if(val1 == 0){
+										return -Math.abs(val2);
+									}
+									else if(val2 == 0){
+										return val1;
+									}
+								   	else{
+								   		return val1 - val2;
+								   	}
+								}
+								
+
+							</script>
 						</td>
 					</tr>
 				</table>
@@ -373,7 +448,7 @@
 								var energy = JSON.stringify({ KWhPrice: parseFloat(price),
 																							active: 1,
 																							energy_id: 0,
-																							holder: 40,
+																							holder: 0,
 																							packDescript: name,
 																							packName: name,
 																							percentage: 100,
@@ -444,14 +519,41 @@
 				<br><br>
 			</div>
 			<script>
-
+	
 				function parseData() {
+
+					var sum = 0;
+					var mean = 0;
+					var count = 0;
+					showAvailableEnergy()
+
 					top:for(i=0;i<energies.length;i++){	
 						for(t=0;t<transactions.length;t++){	
 							if(energies[i].energy_id==transactions[t].energy_id){		
 								continue top;
 							}
 					    }
+
+
+					    var calendario = new Date(energies[i].posted_time);
+					    var novadata = new Date();
+						energies[i].posted_time = calendario;
+						if(calendario.getMonth()+1 == novadata.getMonth()){
+					  		data.push(energies[i]);
+					  	}
+					  	if(calendario.getDate() == novadata.getDate()){
+					  		sum += energies[i].KWhPrice;
+					  		count++;
+					  	}	
+					  	console.log(calendario.getDate()+1, novadata.getDate())
+						if(sum == 0 || count == 0){
+							mean = 0;
+						}else{
+							mean = sum/count;
+						}
+
+						$("#mean").html(mean.toFixed(2));
+
 
 					    var date = new Date(energies[i].posted_time);
 						var day = date.getDate();
