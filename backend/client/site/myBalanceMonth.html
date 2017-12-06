@@ -142,7 +142,7 @@
 	     	 height = 270 - margin.top - margin.bottom
 	     	 margin2 = {top: 220, right: 5, bottom: 25, left: 10},
 	     	 height2 = 270 - margin2.top - margin2.bottom;
-
+			var fullQty2 = -1;
 			function drawLineChart(monthReceived){
 
 				if(monthReceived==null){
@@ -173,15 +173,8 @@
 				    yAxis = d3.axisLeft(y)
 				    			.ticks(6);
 
-				var brush = d3.brushX()
-				    .extent([[0, 0], [width, height2]])
-				    .on("brush end", brushed);
 
-				var zoom = d3.zoom()
-				    .scaleExtent([1, 4])
-				    .translateExtent([[0, 0], [width, height]])
-				    .extent([[0, 0], [width, height]])
-				    .on("zoom", zoomed);
+
 
 				var area = d3.line()
 				    .x(function(d) { return x(d.posted_time); })
@@ -204,17 +197,23 @@
 				var context = svg.append("g")
 				    .attr("class", "context")
 				    .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
-
+				var highestprod = 0;
+				var highestcons = 0;
 				var data = [];
 				var fullQty = -1;
 				producedEnergy.forEach(function(d) {
 					var calendario = new Date(d.posted_time);
+					if (highestprod < d.quantity){highestprod = d.quantity;}
 					d.posted_time = calendario;
 					//console.log(calendario.getMonth()+1);
 					//console.log(monthReceived);
 					if(calendario.getMonth()+1 == monthReceived){
 						fullQty += d.quantity;
-				  		data.push(d);
+						dataline={
+							"posted_time" : d.posted_time,
+							"quantity": d.quantity
+						},
+				  		data.push(dataline);
 				  	}
 				});
 				if(fullQty==-1){
@@ -224,23 +223,91 @@
 			    }
 			    $(".inputQty").val(fullQty);
 			    console.log($(".inputQty").val());
-			    if(data.length!=0){
-			    	$("#empty").hide();
-			    }else{
-			    	$("#empty").show();
-			    	d3.select("#linechart").selectAll("svg").remove();
-			    }
 
-				//console.log(data);
-				  x.domain(d3.extent(data, function(d) { return d.posted_time; }));
-				  y.domain([0, d3.max(data, function(d) { return d.quantity; })+50]);
+
+					var data2 = [];
+
+					consumedEnergy.forEach(function(d) {
+						var calendario2 = new Date(d.posted_time);
+						var consumed = 0;
+						d.posted_time = calendario2;
+						if (highestcons < d.quantity){highestcons = d.quantity;}
+						//console.log(calendario.getMonth()+1);
+						//console.log(monthReceived);
+						if(calendario2.getMonth()+1 == monthReceived){
+							fullQty2 += d.quantity;
+							consumed = d.quantity;
+							dataline={
+								"posted_time" : d.posted_time,
+								"quantity": consumed
+							},
+					  		data2.push(dataline);
+					  	}
+					});
+					console.log(data);
+					console.log(data2);
+					if(fullQty2==-1){
+				    	fullQty2 = 0;
+				    }else{
+				    	fullQty2++;
+				    }
+						if(data.length!=0 || data2.length!=0 ){
+							$("#empty").hide();
+						}else{
+							$("#empty").show();
+							d3.select("#linechart").selectAll("svg").remove();
+						}
+
+						if (highestprod > highestcons){
+						// 5. X scale will use the index of our data
+						var xScale = d3.scaleTime()
+						    .domain(d3.extent(data, function(d) { return d.posted_time; })) // input
+						    .range([0, width]); // output
+
+						// 6. Y scale will use the randomly generate number
+						var yScale = d3.scaleLinear()
+						    .domain([0, d3.max(data, function(d) { return d.quantity; })+50]) // input
+						    .range([height, 0]); // output
+						}
+						else if (data2.length!=0){
+							// 5. X scale will use the index of our data
+							var xScale = d3.scaleTime()
+									.domain(d3.extent(data2, function(d) { return d.posted_time; })) // input
+									.range([0, width]); // output
+
+							// 6. Y scale will use the randomly generate number
+							var yScale = d3.scaleLinear()
+									.domain([0, d3.max(data2, function(d) { return d.quantity; })+50]) // input
+									.range([height, 0]); // output
+						}
+						// 7. d3's line generator
+						var lineGen = d3.line()
+						    .x(function(d) { return xScale(d.posted_time); }) // set the x values for the line generator
+						    .y(function(d) { return yScale(d.quantity); }) // set the y values for the line generator
+						    .curve(d3.curveMonotoneX) // apply smoothing to the line
+
+
+						if (data.length!=0){
+							console.log("ui")
+							focus.append('path')
+								.attr('d', lineGen(data))
+								.attr('stroke', 'green')
+								.attr('stroke-width', 2)
+								.attr('fill', 'none');
+						}
+						if (data2.length!=0){
+							console.log("ai")
+							focus.append('path')
+								.attr('d', lineGen(data2))
+								.attr('stroke', 'red')
+								.attr('stroke-width', 2)
+								.attr('fill', 'none');
+						}
+
 				  x2.domain(x.domain());
 				  y2.domain(y.domain());
 
-				  focus.append("path")
-				      .datum(data)
-				      .attr("class", "area")
-				      .attr("d", area(data));
+
 
 
 
@@ -265,53 +332,11 @@
 						.style("text-anchor", "end")
 						.text("KW");
 
-				  context.append("path")
-				      .datum(data)
-				      .attr("class", "area")
-				      .attr("d", area2(data));
 
 
-				  context.append("g")
-				      .attr("class", "brush")
-				      .call(brush)
-				      .call(brush.move, x.range());
 
-				  svg.append("rect")
-				      .attr("class", "zoom")
-				      .attr("width", width)
-				      .attr("height", height)
-				      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-				      .call(zoom);
 
-				function brushed() {
-				  if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return; // ignore brush-by-zoom
-				  var s = d3.event.selection || x2.range();
-				  x.domain(s.map(x2.invert, x2));
-				  focus.select(".area").attr("d", area);
-				  focus.select(".axis--x").call(xAxis);
-				  focus.selectAll("text")
-							      .style("text-anchor", "end")
-							      .attr("dx", "-.8em")
-							      .attr("dy", "-.55em")
-							      .attr("transform", "rotate(-90)" );
-				  svg.select(".zoom").call(zoom.transform, d3.zoomIdentity
-				      .scale(width / (s[1] - s[0]))
-				      .translate(-s[0], 0));
-				}
 
-				function zoomed() {
-				  if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") return; // ignore zoom-by-brush
-				  var t = d3.event.transform;
-				  x.domain(t.rescaleX(x2).domain());
-				  focus.select(".area").attr("d", area);
-				  focus.select(".axis--x").call(xAxis);
-				  focus.selectAll("text")
-							      .style("text-anchor", "end")
-							      .attr("dx", "-.8em")
-							      .attr("dy", "-.55em")
-							      .attr("transform", "rotate(-90)" );
-				  context.select(".brush").call(brush.move, x.range().map(t.invertX, t));
-				}
 
 				function type(d) {
 				  d.posted_time = parseDate(d.posted_time);
@@ -330,10 +355,10 @@
 				var year = date.getFullYear();
 				$(".month").html(monthNames[month-1]);
 				$(".year").html(year);
-				$("#empty").html("There's no production in " + monthNames[month-1] + " " + year);
+				$("#empty").html("There's no balance for " + monthNames[month-1] + " " + year);
 				d3.select("#linechart").selectAll("svg").remove();
 				drawLineChart(month);
-				var consumed = getConsumedEnergy(month);
+				var consumed = fullQty2;
 				console.log("consumed is " + consumed);
 				balance = getNum(parseInt($(".inputQty").val()), consumed);
 				console.log('balance value is ' + balance);
@@ -345,26 +370,6 @@
 					}, 1);
 			}
 
-			function getConsumedEnergy(month){
-				var producedMonth, consumedMonth, quantity = 0;
-
-				consumedEnergy.forEach(function(d) {
-					if(d.producer_id==customerID){
-
-			    		var OldDate = new Date(d.posted_time.split("T")[0]);
-
-			    		var NewMonth = (OldDate.getMonth() + 1);
-
-			    		if (NewMonth<10) NewMonth = '0' + (OldDate.getMonth() + 1);
-
- 						if(NewMonth == month){
- 							quantity += d.quantity;
- 						}
-			    	}
-				});
-				console.log("Consumed quantity this month is " + quantity);
-				return quantity;
-			}
 
 			function getNum(val1, val2) {
 				if(val1 == 0){
