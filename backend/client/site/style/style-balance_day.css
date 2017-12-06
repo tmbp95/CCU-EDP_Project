@@ -23,10 +23,18 @@ a{
   	font-weight:normal;
 }
  .bar{
+    fill: green;
+  }
+
+  .bar2{
     fill: #c9302c;
   }
 
   .bar:hover{
+    fill: #333;
+  }
+
+  .bar2:hover{
     fill: #333;
   }
 

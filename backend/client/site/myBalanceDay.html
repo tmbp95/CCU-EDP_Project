@@ -114,6 +114,7 @@
 			<br>
 		</div>
 		<input class="inputQty" type="hidden" value=""/>
+		<input class="inputQty2" type="hidden" value=""/>
 		<div style="clear:both"></div>
 		<script src="js/d3v4.js"></script>
 		<script>
@@ -198,20 +199,21 @@
 
 
 				var data = [
-							  { "date" : "00h-02h","close" : 0},
-							  { "date" : "02h-04h","close" : 0},
-							  { "date" : "04h-06h" ,"close" :0 },
-							  { "date" : "06h-08h", "close" : 0},
-							  { "date" : "08h-10h","close" : 0},
-							  { "date" : "10h-12h","close" : 0},
-							  { "date" : "12h-14h","close" : 0},
-							  { "date" : "14h-16h","close" : 0},
-							  { "date" : "15h-18h","close" : 0},
-							  { "date" : "18h-20h","close" : 0},
-							  { "date" : "20h-22h","close" : 0},
-							  { "date" : "22h-24h","close" : 0}
+							  { "date" : "00h-02h","close" : 0,"close1" : 0},
+							  { "date" : "02h-04h","close" : 0,"close1" : 0},
+							  { "date" : "04h-06h" ,"close" :0 ,"close1" : 0},
+							  { "date" : "06h-08h", "close" : 0,"close1" : 0},
+							  { "date" : "08h-10h","close" : 0,"close1" : 0},
+							  { "date" : "10h-12h","close" : 0,"close1" : 0},
+							  { "date" : "12h-14h","close" : 0,"close1" : 0},
+							  { "date" : "14h-16h","close" : 0,"close1" : 0},
+							  { "date" : "15h-18h","close" : 0,"close1" : 0},
+							  { "date" : "18h-20h","close" : 0,"close1" : 0},
+							  { "date" : "20h-22h","close" : 0,"close1" : 0},
+							  { "date" : "22h-24h","close" : 0,"close1" : 0}
 							]
 
+/*################################################## PRODUCED #############################################################*/
 				var fullQty = -1;
 			    producedEnergy.forEach(function(d) {
 			    	if(d.producer_id==customerID){
@@ -267,25 +269,94 @@
 			    }
 			    $(".inputQty").val(fullQty);
 
+/*################################################## CONSUMED #############################################################*/
+				var fullQty2 = -1;
+			    consumedEnergy.forEach(function(d) {
+			    	if(d.producer_id==customerID){
+			    		var OldDate = new Date(d.posted_time.split("T")[0]);
+
+			    		var day = OldDate.getDate();
+			    		var month = (OldDate.getMonth() + 1);
+
+			    		if (day<10) day = '0' + OldDate.getDate();
+			    		if (month<10) month = '0' + (OldDate.getMonth() + 1);
+
+ 						var NewDate = day + '-' + month + '-' + OldDate.getFullYear();
+ 						
+ 						if(NewDate == datereceived){
+ 							fullQty2 += d.quantity;
+ 							var hours = parseInt(d.posted_time.split("T")[1].split(".")[0].split(":")[0]);
+ 							if(0 <= hours && hours < 2){
+ 								data[0].close1 += d.quantity;
+ 							}
+ 							if(2 <= hours && hours < 4){
+ 								data[1].close1 += d.quantity;
+ 							}
+ 							if(4 <= hours && hours < 6){
+ 								data[2].close1 += d.quantity;
+ 							}
+ 							if(6 <= hours && hours < 8){
+ 								data[3].close1 += d.quantity;
+ 							}
+ 							if(8 <= hours && hours < 10){
+ 								data[4].close1 += d.quantity;
+ 							}
+ 							if(10 <= hours && hours < 12){
+ 								data[5].close1 += d.quantity;
+ 							}
+ 							if(12 <= hours && hours < 14){
+ 								data[6].close1 += d.quantity;
+ 							}
+ 							if(14 <= hours && hours < 16){
+ 								data[7].close1 += d.quantity;
+ 							}
+ 							if(16 <= hours && hours < 18){
+ 								data[8].close1 += d.quantity;
+ 							}
+ 							if(18 <= hours && hours < 20){
+ 								data[9].close1 += d.quantity;
+ 							}
+ 							if(20 <= hours && hours < 22){
+ 								data[10].close1 += d.quantity;
+ 							}
+ 							if(22 <= hours && hours < 24){
+ 								data[11].close1 += d.quantity;
+ 							}
+
+ 						}
+			    	}
+			    });
+			    if(fullQty2==-1){
+			    	fullQty2 = 0;
+			    }else{
+			    	fullQty2++;
+			    }
+			    $(".inputQty2").val(fullQty2);
+/*
+
 			    data.forEach(function(d){
 			    	d.date = d.date;
-			        d.close = +d.close;
+			        d.close += d.close;
+			        d.close1 += d.close1;
 			    });
 
+*/
 			    for(i=0;i<data.length;i++){
 			    	if(i==data.length-1){
-			    		if(data[i].close!=0){
+			    		if(data[i].close!=0 || data[i].close1!=0){
 				    		$("#empty").hide();
 				    		break;
-				    	}else{
+				    	}
+				    	else{
 				    		$("#empty").show();
 				    		d3.select("#barchart").selectAll("svg").remove();
 				    	}
 			    	}else{
-				    	if(data[i].close!=0){
+				    	if(data[i].close!=0 || data[i].close1!=0){
 				    		$("#empty").hide();
 				    		break;
-				    	}else{
+				    	}
+				    	else{
 				    		$("#empty").show();
 				    		continue;
 				    	}
@@ -300,6 +371,15 @@
 			    	y.domain([0, d3.max(data, function(x) { return x.close; })]);
 			  	}else{
 			  		y.domain([0, d3.max(data, function(x) { return x.close; })+20]);
+			  		break;
+			  	}
+			  }
+
+			  for(i=0;i<data.length;i++){
+			  	if(data[i].close1 == 0 ){
+			    	y.domain([0, d3.max(data, function(x) { return x.close1; })]);
+			  	}else{
+			  		y.domain([0, d3.max(data, function(x) { return x.close1; })+20]);
 			  		break;
 			  	}
 			  }
@@ -329,8 +409,7 @@
 			      .style("font-size", "0.7em")
 			      .text("kW");
 
-
-			  // Add bar chart
+			  // Add bar chart of produced
 			  svg.selectAll("bar")
 			      .data(data)
 			    .enter().append("rect")
@@ -346,8 +425,29 @@
 		               .style("opacity", 1);
 		            div.html("<strong style='color:white'>" + d.close + " kW</span>")
 		               .style("left", (d3.event.pageX) + "px")
-		               .style("top", (d3.event.pageY) + "px");
+		               .style("top", (d3.event.pageY) + "px");    
 		          })
+
+		          // Add bar chart of consumed
+			  svg.selectAll("bar")
+			      .data(data)
+			    .enter().append("rect")
+			      .attr("class", "bar2")
+			      .attr("title", function(d) { return d.date; })
+			      .attr("x", function(d) { return x(d.date)+1; })
+			      .attr("width", 9)
+			      .attr("y", function(d) { return y(d.close1); })
+			      .attr("height", function(d) { return height - y(d.close1); })
+			      .on("click", function(d){
+		            div.transition()
+		               .duration(100)
+		               .style("opacity", 1);
+		            div.html("<strong style='color:white'>" + d.close1 + " kW</span>")
+		               .style("left", (d3.event.pageX) + "px")
+		               .style("top", (d3.event.pageY) + "px");    
+		          })
+
+
 			}
 
 			function updateDate(){
@@ -379,6 +479,9 @@
 
 			function waiting(){
 			    if(producedEnergy!=null){
+			        updateDate();
+			    }
+			    if(consumedEnergy!=null){
 			        updateDate();
 			    }
 			    else{
