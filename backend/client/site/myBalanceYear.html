@@ -25,7 +25,7 @@
 				};
 				xhttp.open("GET", "http://85.247.219.175:4567/api/" + content, true);
 				xhttp.send();
-			}
+			} 	
 
 			function getProducedEnergy (xhttp) {
 				localStorage.setItem("production", xhttp.responseText);
@@ -37,7 +37,7 @@
 
 			window.onload = function(){
 			 	loadDoc('producedenergies', getProducedEnergy);
-			 	loadDoc('consumeddenergies', getConsumedEnergy);
+			 	loadDoc('consumedenergies', getConsumedEnergy);
 			 }
 
 			var customerID, producedEnergy, consumedEnergy;
@@ -109,6 +109,7 @@
 		</div>
 		<div style="clear:both"></div>
 		<input class="inputQty" type="hidden" value=""/>
+		<input class="inputQtyC" type="hidden" value=""/>
 		<script src="js/d3v4.js"></script>
 		<script>
 
@@ -261,6 +262,82 @@
 	"close" : 0
 }
 ];
+			
+			var dataC = [
+				{
+					"date": "January",
+					"mindate": "Jan",
+					"numberMonth": 0,
+					"close": 0
+				},
+				{
+					"date" : "February",
+					"mindate": "Feb",
+					"numberMonth": 1,
+					"close": 0
+				},
+				{
+					"date" : "March",
+					"mindate": "Mar",
+					"numberMonth": 2,
+					"close": 0
+				},
+				{
+					"date" : "April",
+					"mindate": "Apr",
+					"numberMonth": 3,
+					"close": 0
+				},
+				{
+					"date" : "May",
+					"mindate": "May",
+					"numberMonth": 4,
+					"close" : 0
+				},
+				{
+					"date" : "June",
+					"mindate": "Jun",
+					"numberMonth": 5,
+					"close" : 0
+				},
+				{
+					"date" : "July",
+					"mindate": "Jul",
+					"numberMonth": 6,
+					"close" : 0
+				},
+				{
+					"date" : "August",
+					"mindate": "Aug",
+					"numberMonth": 7,
+					"close" : 0
+				},
+				{
+					"date" : "September",
+					"mindate": "Sep",
+					"numberMonth": 8,
+					"close" : 0
+				},
+				{
+					"date" : "October",
+					"mindate": "Oct",
+					"numberMonth": 9,
+					"close" : 0
+				},
+				{
+					"date" : "November",
+					"mindate": "Nov",
+					"numberMonth": 10,
+					"close" : 0
+				},
+				{
+					"date" : "December",
+					"mindate": "Dec",
+					"numberMonth": 11,
+					"close" : 0
+				}
+				];
+			
 var fullQty = -1;
 
 				console.log(data[0].close);
@@ -321,7 +398,7 @@ var fullQty = -1;
 			    $(".inputQty").val(fullQty);
 
 			    for(i=0;i<data.length;i++){
-			    	if(i==data.length-1){
+			    	if(i==data.length-1){			    		
 			    		if(data[i].close!=0){
 				    		$("#empty").hide();
 				    		break;
@@ -340,6 +417,8 @@ var fullQty = -1;
 				    }
 
 			    }
+			    
+			    
 
 
 			  // scale the range of the data
@@ -394,8 +473,144 @@ var fullQty = -1;
 		               .style("left", (d3.event.pageX) + "px")
 		               .style("top", (d3.event.pageY) + "px");
 		          })
+		          
+		        
+		          
+		        //CONSUMED ENERGY		          
+		        var fullQtyC=-1;
+			    var consumed=0;
+			    
+			    consumedEnergy.forEach(function(d) {
+			    	if(d.producer_id==customerID){
+			    		var OldDate = new Date(d.posted_time.split("T")[0]);
+							var NewDate = OldDate.getDate() + '-' + (OldDate.getMonth() + 1) + '-' + OldDate.getFullYear();
+							NewDate = NewDate.split("-")[2];
+							if(NewDate == datereceived){
+								fullQtyC += d.quantity;
+								var month = parseInt(d.posted_time.split("T")[0].split("-")[1]);
+								if(month-1 == 0){
+									dataC[0].close += d.quantity;
+								}
+								if(month-1 == 1){
+									dataC[1].close += d.quantity;
+								}
+								if(month-1 == 2){
+									dataC[2].close += d.quantity;
+								}
+								if(month-1 == 3){
+									dataC[3].close += d.quantity;
+								}
+								if(month-1 == 4){
+									dataC[4].close += d.quantity;
+								}
+								if(month-1 == 5){
+									dataC[5].close += d.quantity;
+								}
+								if(month-1 == 6){
+									dataC[6].close += d.quantity;
+								}
+								if(month-1 == 7){
+									dataC[7].close += d.quantity;
+								}
+								if(month-1 == 8){
+									dataC[8].close += d.quantity;
+								}
+								if(month-1 == 9){
+									dataC[9].close += d.quantity;
+								}
+								if(month-1 == 10){
+									dataC[10].close += d.quantity;
+								}
+								if(month-1 == 11){
+									dataC[11].close += d.quantity;
+								}
 
-			}
+							}
+			    	}
+			    });
+			    
+			    if(fullQtyC==-1){
+			    	fullQtyC = 0;
+			    }else{
+			    	fullQtyC++;
+			    }
+			    $(".inputQtyC").val(fullQtyC);
+			    for(i=0;i<dataC.length;i++){
+			    	if(i==dataC.length-1){
+			    		if(dataC[i].close!=0){
+				    		$("#empty").hide();
+				    		break;
+				    	}else{
+				    		$("#empty").show();
+				    		d3.select("#barchart").selectAll("svg").remove();
+				    	}
+			    	}else{
+				    	if(dataC[i].close!=0){
+				    		console.log("q", data[i]);
+				    		$("#empty").hide();
+				    		break;
+				    	}else{
+				    		$("#empty").show();
+				    		continue;
+				    	}
+				    }
+
+			    }
+			    
+			 // scale the range of the data
+				  x.domain(dataC.map(function(d) { return d.mindate; }));
+				  for(i=0;i<dataC.length;i++){
+				  	if(dataC[i].close == 0 ){
+				    	y.domain([0, d3.max(dataC, function(x) { return x.close; })]);
+				  	}else{
+				  		y.domain([0, d3.max(dataC, function(x) { return x.close; })+100]);
+				  		break;
+				  	}
+				  }
+				  // add axis
+				  svg.append("g")
+				      .attr("class", "x axis")
+				      .attr("transform", "translate(0," + height + ")")
+				      .call(xAxis)
+				    .selectAll("text")
+				      .style("text-anchor", "end")
+				      .attr("dx", "-.8em")
+				      .attr("dy", "-.55em")
+				      .attr("transform", "rotate(-90)" );
+
+				   svg.append("g")
+			          .attr("class", "y axis")
+			          .call(yAxis)
+			          .data(dataC.slice());
+
+			      svg.append("text")
+				      .attr("transform", "rotate(-90)")
+				      .attr("y", -17)
+				      .attr("x", 12)
+				      .attr("dy", ".71em")
+				      .style("text-anchor", "end")
+				      .style("font-size", "0.7em")
+				      .text("kW");
+				   
+			      console.log("f", dataC[10]);
+				  // Add bar chart
+				  svg.selectAll("bar")
+				      .data(dataC)
+				    .enter().append("rect")
+				      .attr("class", "barC")
+				      .attr("x", function(d) { return x(d.mindate)+1; })
+				      .attr("width", 9)
+				      .attr("y", function(d) { return y(d.close); })
+				      .attr("height", function(d) { return height - y(d.close); })
+				      .on("click", function(d){
+			            div.transition()
+			               .duration(100)
+			               .style("opacity", 1);
+			            div.html("<strong style='color:white'>" + d.close + " kW</span>")
+			               .style("left", (d3.event.pageX) + "px")
+			               .style("top", (d3.event.pageY) + "px");
+			          })
+			}		        
 
 			function updateDate(){
 				var day = d.getDate();
@@ -411,7 +626,7 @@ var fullQty = -1;
 				d3.select("#barchart").selectAll("svg").remove();
 				drawChart(ThisDate);
 				console.log(ThisDate);
-				var consumed = getConsumedEnergy(ThisDate);
+				var consumed = parseInt($(".inputQtyC").val());
 				console.log("produced is " + $(".inputQty").val());
 				console.log("consumed is " + consumed);
 				balance = getNum(parseInt($(".inputQty").val()), consumed);
@@ -434,7 +649,7 @@ var fullQty = -1;
 			    }
 			}
 
-			function getConsumedEnergy(year){
+			/*function getConsumedEnergy(year){
 				var producedYear, consumedYear, quantity = 0;
 
 				consumedEnergy.forEach(function(d) {
@@ -451,7 +666,7 @@ var fullQty = -1;
 				});
 				console.log("Consumed quantity this year is " + quantity);
 				return quantity;
-			}
+			}*/
 
 			function getNum(val1, val2) {
 				if(val1 == 0){
@@ -466,6 +681,10 @@ var fullQty = -1;
 			}
 
 		</script>
+		<ul class="legend" style=" ">
+		    <li><span class="production"></span> Production</li>
+		    <li><span class="consumption"></span> Consumption</li>
+		</ul>
 		<div class="headingBox">
 			<div class="stroke"></div>
 			<div class="separator"></div>
@@ -474,7 +693,7 @@ var fullQty = -1;
 			<div class="stroke"></div>
 		</div>
 		<br>
-		<div class="panel panel-default">
+		<div class="panel panel-default" style="margin-top: 30px;">
 			<div style="width:100%;height:5px;"></div>
 			<div class="headingBoxYear">
 				<div class="text"><label class="year"></label></div>

@@ -18,11 +18,49 @@
   	cursor: default;
   	font-weight:normal;
 }
+
+.legend { 
+	list-style: none;
+	margin-top:-10px;
+	float:left;
+	margin-left:40px; 
+	font-family: EDPPreonMedium,sans-serif;
+	font-size:90%;
+	color: #333;
+}
+.legend li {
+	float: left; 
+	margin-right: 10px; 
+}
+.legend span { 
+	border: 1px solid #ccc; 
+	float: left; 
+	width: 12px; 
+	height: 12px; 
+	margin: 2px; 
+	
+}
+.legend .production { 
+	background-color: #228B22; 
+}
+.legend .consumption { 
+	background-color: #c9302c; 
+}
+
+
  .bar{
+    fill: #228B22;
+  }
+  
+  .barC{
     fill: #c9302c;
   }
 
   .bar:hover{
+    fill: #333;
+  }
+  
+  .barC:hover{
     fill: #333;
   }
 
@@ -121,8 +159,8 @@ div.tooltip {
 
 	div.headingBox{
 		width:201px;
-		margin:0 auto;
-		margin-top:-5px;
+		margin-left:90px;
+		margin-top:-10px;
 	}
 	label.text{
 		font-family: EDPPreonMedium,sans-serif;
@@ -238,6 +276,7 @@ div.tooltip {
 		width: 20%;
 		text-align: center;
 		margin: 5px;
+		margin-left: 30px;
 		padding-left: 14%;
 		font-family: EDPPreonMedium,sans-serif;
 		color: #d52b1e;
