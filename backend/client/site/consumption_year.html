@@ -467,9 +467,14 @@ var fullQty = -1;
 				</script>
 			</div>
 			<div class="otherBox2">
-				<button type="button" class="btn btn-danger" style="height:34px;width:156px">
-						<label class="lbl3" style="margin-top:3px;color: #eee;font-size:11">Compare with usage</label>
+				<button type="button" id="goDate" class="btn btn-danger" style="height:34px;width:186px">
+						<label class="lbl3" style="margin-top:3px;color: #eee;font-size:11">Compare with production</label>
 				</button>
+				<script>
+						$("#goDate").on("click", function(){
+							location.href = "myBalanceYear.html?date=" + d;
+						})
+				</script>
 			</div>
 			<br>
 		</div>
