@@ -418,7 +418,7 @@
 			      .attr("class", "bar")
 			      .attr("title", function(d) { return d.date; })
 			      .attr("x", function(d) { return x(d.date)+1; })
-			      .attr("width", 18)
+			      .attr("width", 9)
 			      .attr("y", function(d) { return y(d.close); })
 			      .attr("height", function(d) { return height - y(d.close); })
 			      .on("click", function(d){
@@ -436,7 +436,7 @@
 			    .enter().append("rect")
 			      .attr("class", "bar2")
 			      .attr("title", function(d) { return d.date; })
-			      .attr("x", function(d) { return x(d.date)+1; })
+			      .attr("x", function(d) { return x(d.date)+10; })
 			      .attr("width", 9)
 			      .attr("y", function(d) { return y(d.close1); })
 			      .attr("height", function(d) { return height - y(d.close1); })

@@ -461,8 +461,8 @@ var fullQty = -1;
 			      .data(data)
 			    .enter().append("rect")
 			      .attr("class", "bar")
-			      .attr("x", function(d) { return x(d.mindate)+1; })
-			      .attr("width", 18)
+			      .attr("x", function(d) { return x(d.mindate)+10; })
+			      .attr("width", 9)
 			      .attr("y", function(d) { return y(d.close); })
 			      .attr("height", function(d) { return height - y(d.close); })
 			      .on("click", function(d){
