@@ -218,9 +218,14 @@
 			    producedEnergy.forEach(function(d) {
 			    	if(d.producer_id==customerID){
 			    		var OldDate = new Date(d.posted_time.split("T")[0]);
-			    		var oldDateDay = OldDate.getDate()
-				    	if(oldDateDay<10) oldDateDay = "0" + oldDateDay;
- 						var NewDate = oldDateDay + '-' + (OldDate.getMonth() + 1) + '-' + OldDate.getFullYear();
+
+			    		var day = OldDate.getDate();
+			    		var month = (OldDate.getMonth() + 1);
+
+			    		if (day<10) day = '0' + OldDate.getDate();
+			    		if (month<10) month = '0' + (OldDate.getMonth() + 1);
+
+ 						var NewDate = day + '-' + month + '-' + OldDate.getFullYear();
  						if(NewDate == datereceived){
  							fullQty += d.quantity;
  							var hours = parseInt(d.posted_time.split("T")[1].split(".")[0].split(":")[0]);
@@ -344,6 +349,7 @@
 
 */
 			    for(i=0;i<data.length;i++){
+			    	console.log(data)
 			    	if(i==data.length-1){
 			    		if(data[i].close!=0 || data[i].close1!=0){
 				    		$("#empty").hide();
@@ -371,17 +377,25 @@
 			  for(i=0;i<data.length;i++){
 			  	if(data[i].close == 0 ){
 			    	y.domain([0, d3.max(data, function(x) { return x.close; })]);
+			    	if(data[i].close1 == 0 ){
+				  	}else{
+				  		if(d3.max(data, function(x) { return x.close; }) >= d3.max(data, function(x) { return x.close1; })){
+				  			y.domain([0, d3.max(data, function(x) { return x.close; })+20]);
+				  		}else{
+				  			y.domain([0, d3.max(data, function(x) { return x.close1; })+20]);
+				  		}
+				  	}
+
 			  	}else{
 			  		y.domain([0, d3.max(data, function(x) { return x.close; })+20]);
-			  		break;
-			  	}
-			  }
-
-			  for(i=0;i<data.length;i++){
-			  	if(data[i].close1 == 0 ){
-			    	y.domain([0, d3.max(data, function(x) { return x.close1; })]);
-			  	}else{
-			  		y.domain([0, d3.max(data, function(x) { return x.close1; })+20]);
+			  		if(data[i].close1 == 0 ){
+				  	}else{
+				  		if(d3.max(data, function(x) { return x.close1; }) >= d3.max(data, function(x) { return x.close; })){
+				  			y.domain([0, d3.max(data, function(x) { return x.close1; })+20]);
+				  		}else{
+				  			y.domain([0, d3.max(data, function(x) { return x.close; })+20]);
+				  		}
+				  	}
 			  		break;
 			  	}
 			  }
