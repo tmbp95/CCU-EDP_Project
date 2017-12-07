@@ -18,6 +18,37 @@
   	cursor: default;
   	font-weight:normal;
 }
+
+
+.legend {
+	list-style: none;
+	margin-top:-10px;
+	float:left;
+	margin-left:40px;
+	font-family: EDPPreonMedium,sans-serif;
+	font-size:90%;
+	color: #333;
+}
+.legend li {
+	float: left;
+	margin-right: 10px;
+}
+.legend span {
+	border: 1px solid #ccc;
+	float: left;
+	width: 12px;
+	height: 12px;
+	margin: 2px;
+
+}
+.legend .production {
+	background-color: #228B22;
+}
+.legend .consumption {
+	background-color: #c9302c;
+}
+
+
  .bar{
     fill: #c9302c;
   }
