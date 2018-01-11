@@ -8,8 +8,7 @@
   "properties": {
     "creditcard_id": {
       "type": "number",
-      "id": true,
-      "required": true
+      "id": true
     },
     "creditcard_number": {
       "type": "string"
@@ -25,6 +24,10 @@
     },
     "holder": {
       "type": "number"
+    },
+    "active": {
+      "type": "number",
+      "default": 1
     }
   },
   "validations": [],

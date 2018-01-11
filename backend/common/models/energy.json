@@ -33,7 +33,7 @@
     },
     "holder": {
       "type": "number",
-      "default": null
+      "default": 0
     },
     "active": {
       "type": "number",
@@ -42,6 +42,9 @@
     "percentage": {
       "type": "number",
       "default": 100
+    },
+    "finalPrice": {
+      "type": "number"
     }
   },
   "validations": [],

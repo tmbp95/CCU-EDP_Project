@@ -8,8 +8,7 @@
   "properties": {
     "transaction_id": {
       "type": "number",
-      "id": true,
-      "required": true
+      "id": true
     },
     "client_id": {
       "type": "number",
@@ -23,8 +22,10 @@
       "type": "string"
     },
     "transaction_time": {
-      "type": "date",
-      "required": true
+      "type": "date"
+    },
+    "creditcard_used": {
+      "type": "number"
     }
   },
   "validations": [],

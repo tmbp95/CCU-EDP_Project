@@ -48,5 +48,9 @@
   "creditCards": {
      "dataSource": "db",
      "public": true
+   },
+   "consumedenergy": {
+     "dataSource": "db",
+     "public": true
    }
 }
