@@ -1,0 +1,12 @@
+{
+  "db": {
+    "host": "127.0.0.1",
+    "port": 3306,
+    "url": "mysql://ist174270:ehve4389@db.tecnico.ulisboa.pt/ist174270",
+    "database": "ist174270",
+    "password": "vagrant",
+    "name": "db",
+    "user": "ist174270",
+    "connector": "mysql"
+  }
+}
