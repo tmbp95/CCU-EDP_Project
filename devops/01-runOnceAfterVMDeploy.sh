@@ -1,5 +1,7 @@
 #!/bin/bash
 
+chmod a+x ~/ccu/devops/02-runStart.sh
+
 # To solve problems with Nodejs global permissions
 mkdir ~/.npm-global
 npm config set prefix '~/.npm-global'
