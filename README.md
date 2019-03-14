@@ -1,8 +1,8 @@
-Message from Hexaminer: You must check devops, frontend and backend folders.
+### Front-End Directory - [Link](https://github.com/tmbp95/ccu/tree/backend-v0.0.0/backend/client/site)
 
-Check: https://github.com/tmbp95/ccu/wiki/Environment-Setup
+#### Check - [Setup](https://github.com/tmbp95/ccu/wiki/Environment-Setup)
 
-# CCU Platform (EDP)
+#### CCU Platform (EDP)
 
 |Group  | Number  |Name                                      |Email                     |GitHub     |
 |-------|---------|------------------------------------------|--------------------------|-----------|
